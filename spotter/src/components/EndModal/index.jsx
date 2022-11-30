@@ -1,6 +1,10 @@
+import React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import Paper from '@mui/material/Paper';
 import Draggable from 'react-draggable';
+import { animated, useSpring } from "react-spring";
+import getCharacterTypes from "../CharacterCoin/getTypes";
+import ImageScroller from "../ImageScroller";
 
 function PaperComponent(props) {
   return (
@@ -18,8 +22,15 @@ function EndModal ({ setGameState, highscore = 0, score = 0 }) {
     if (reason && reason === 'backdropClick') return;
     setGameState(-1);
   }
+  const AnimatedDialog = animated(Dialog);
+
   return (
-    <Dialog
+    <AnimatedDialog
+      style={useSpring({
+        from: { opacity: 0, y: -50 },
+        to: { opacity: 1, y: 0 },
+        delay: 2000
+      })}
       hideBackdrop
       open={true}
       onClose={handleClose}
@@ -35,20 +46,21 @@ function EndModal ({ setGameState, highscore = 0, score = 0 }) {
         {'Game Over'}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText mt={2} fontSize={20} color='whitesmoke' align='center'>
+        <ImageScroller images={getCharacterTypes()} />
+        <DialogContentText mt={2} fontSize={25} color='whitesmoke' align='center' sx={{ bgcolor: 'rgba(0,0,0,0.3)' }}>
           {`Final score: ${score}`}
         </DialogContentText>
-        <DialogContentText mt={2} fontSize={20} color='whitesmoke' align='center'>
+        <DialogContentText fontSize={25} color='whitesmoke' align='center'>
           {`Highscore: ${highscore}`}
         </DialogContentText>
-        <DialogContentText mb={-2} mt={8}>
-          {'(You can move this dialog box)'}
+        <DialogContentText mb={-2} mt={2}>
+          {'(You can move this dialog box by dragging the top)'}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Restart Game</Button>
       </DialogActions>
-    </Dialog>
+    </AnimatedDialog>
   )
 }
 

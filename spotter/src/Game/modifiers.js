@@ -4,8 +4,14 @@ export const zoomInOut = keyframes`
   0% {
     scale: 0;
   }
-  25%, 75% {
+  30% {
+    scale: 0;
+  }
+  45%, 55% {
     scale: 1.0;
+  }
+  70% {
+    scale: 0;
   }
   100% {
     scale: 0;
@@ -14,25 +20,25 @@ export const zoomInOut = keyframes`
 
 export const translateY = keyframes`
   0% {
-    translate: 0% 100%;
+    translate: 0% 200%;
   }
   50% {
-    translate: 0% -100%;
+    translate: 0% -200%;
   }
   100% {
-    translate: 0% 100%;
+    translate: 0% 200%;
   }
 `;
 
 export const translateX = keyframes`
   0% {
-    translate: 100% 0%;
+    translate: 200% 0%;
   }
   50% {
-    translate: -100% 0%;
+    translate: -200% 0%;
   }
   100% {
-    translate: 100% 0%;
+    translate: 200% 0%;
   }
 `;
 

@@ -35,6 +35,19 @@ function TimeLeft ({ currTimeLeft, maxTime }) {
           color={(currTimeLeft <= 15) ? 'error' : 'primary'}
           value={(currTimeLeft / maxTime) * 100}
         />
+        <CircularProgress
+          sx={{
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            translate: '-50% -50%',
+            opacity: 0.25
+          }}
+          size={'120px'}
+          variant='determinate'
+          color={(currTimeLeft <= 15) ? 'error' : 'primary'}
+          value={100}
+        />
         <Typography
           fontSize={60}
           sx={{

@@ -4,6 +4,7 @@ import { Box } from '@mui/material';
 import Game from './Game';
 import StartModal from './components/StartModal';
 import EndModal from './components/EndModal';
+import { decrypt } from './helpers';
 
 const ENUM = {
   title: 0,
@@ -14,7 +15,7 @@ const ENUM = {
 function App() {
   const [gameState, setGameState] = useState(ENUM.title);
   const [highScore, setHighScore] = useState(
-    localStorage.getItem('highscore') || 0
+    decrypt(localStorage.getItem('highscore')) || 0
   );
   const [score, setScore] = useState(0);
 

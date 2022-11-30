@@ -1,4 +1,4 @@
-import getTotalCharacters from '../components/CharacterCoin/getTotalCharacters';
+import getCharacterTypes from '../components/CharacterCoin/getTypes';
 import { rng } from '../helpers';
 import { v4 as uuidv4 } from 'uuid';
 import * as mod from './modifiers';
@@ -9,25 +9,25 @@ export function generateLevel (level) {
 
   const totalChars = ((level === 0) ? 0 : Math.min(
     Math.max(Math.floor(level), 3),
-    100
-  )) + ((level >= 15 && noModifiers) ? rng(10, 20) : 0);
+    150
+  )) + ((level >= 15 && noModifiers) ? rng(50, 60) : 0);
 
-  const characterToSpotID = rng(0, getTotalCharacters() - 1);
+  const characterToSpotID = rng(0, getCharacterTypes().length - 1);
 
   const generateRandomID = () => {
-    let returnID = rng(0, getTotalCharacters() - 1);
+    let returnID = rng(0, getCharacterTypes().length - 1);
     while (returnID === characterToSpotID) {
-      returnID = rng(0, getTotalCharacters() - 1);
+      returnID = rng(0, getCharacterTypes().length - 1);
     }
     return returnID;
   }
 
   const generateRandomModifier = () => {
     switch (rng(0, 4)) {
-      case 1: return `${mod.translateX} ease-in-out 6s infinite`;
-      case 2: return `${mod.translateY} ease-in-out 6s infinite`;
+      case 1: return `${mod.translateX} linear 4s infinite`;
+      case 2: return `${mod.translateY} linear 4s infinite`;
       case 3: return `${mod.zoomInOut} ease-in-out 3s infinite`;
-      case 4: return `${mod.rotater} linear 3s infinite`;
+      case 4: return `${mod.rotater} linear 2s infinite`;
       default: return '';
     }
   }
@@ -35,30 +35,30 @@ export function generateLevel (level) {
   const generateModifiers = () => {
     const modifiers = [];
     const filters = [];
-    switch (Math.floor(level / 4)) {
+    switch (Math.floor(level / 3)) {
       case 0:
         break;
       case 1:
         if (rng(0, 10) === 0) modifiers.push(...[
-          `${mod.rotater} linear 4s infinite`
+          `${mod.rotater} linear 2s infinite`
         ]);
         break;
       case 2:
         // Rotating
         modifiers.push(...[
-          `${mod.rotater} linear 4s infinite`
+          `${mod.rotater} linear 2s infinite`
         ]);
         break;
       case 3:
         // Move left and right
         modifiers.push(...[
-          `${mod.translateX} ease-in-out 6s infinite`
+          `${mod.translateX} linear 6s infinite`
         ]);
         break;
       case 4:
         // Move up and down
         modifiers.push(...[
-          `${mod.translateY} ease-in-out 6s infinite`
+          `${mod.translateY} linear 6s infinite`
         ]);
         break;
       case 5:
@@ -76,47 +76,47 @@ export function generateLevel (level) {
       case 7:
         // Rotater and move left and right
         modifiers.push(...[
-          `${mod.translateX} ease-in-out 5s infinite`,
-          `${mod.rotater} linear 4s infinite`
+          `${mod.translateX} linear 5s infinite`,
+          `${mod.rotater} linear 2s infinite`
         ]);
         break;
       case 8:
         // Rotater and move up and down
         modifiers.push(...[
-          `${mod.translateY} ease-in-out 5s infinite`,
-          `${mod.rotater} linear 4s infinite`
+          `${mod.translateY} linear 5s infinite`,
+          `${mod.rotater} linear 2s infinite`
         ]);
         break;
       case 9:
         // Rotater and zoom in and out
         modifiers.push(...[
-          `${mod.zoomInOut} ease-in-out 3s infinite`,
-          `${mod.rotater} linear 4s infinite`
+          `${mod.zoomInOut} linear 3s infinite`,
+          `${mod.rotater} linear 2s infinite`
         ]);
         break;
       case 10:
         // Rotater and zoom in and out and translate left to right
         modifiers.push(...[
           `${mod.zoomInOut} ease-in-out 3s infinite`,
-          `${mod.rotater} linear 4s infinite`,
-          `${mod.translateX} ease-in-out 4s infinite`,
+          `${mod.rotater} linear 2s infinite`,
+          `${mod.translateX} linear 4s infinite`,
         ]);
         break;
       case 11:
         // Rotater and zoom in and out and translate up to down
         modifiers.push(...[
           `${mod.zoomInOut} ease-in-out 3s infinite`,
-          `${mod.rotater} linear 4s infinite`,
-          `${mod.translateY} ease-in-out 4s infinite`,
+          `${mod.rotater} linear 2s infinite`,
+          `${mod.translateY} linear 4s infinite`,
         ]);
         break;
       case 12:
         // Rotater and zoom in and out and translate diagonal
         modifiers.push(...[
           `${mod.zoomInOut} ease-in-out 3s infinite`,
-          `${mod.rotater} linear 4s infinite`,
-          `${mod.translateY} ease-in-out 4s infinite`,
-          `${mod.translateX} ease-in-out 4s infinite`,
+          `${mod.rotater} linear 2s infinite`,
+          `${mod.translateY} linear 4s infinite`,
+          `${mod.translateX} linear 4s infinite`,
         ]);
         break;
       case 13:
@@ -182,9 +182,10 @@ export function generateLevel (level) {
   const otherCharacterData = [...Array(Math.max(totalChars))].map(() => ({
     id: uuidv4(),
     cid: generateRandomID(),
-    top: `${rng(0, 150) / 1.5}%`,
-    left: `${rng(0, 150) / 1.5}%`,
-    modifiers: (noModifiers) ? {} : generateModifiers()
+    top: `${rng(0, 200) / 2}%`,
+    left: `${rng(0, 200) / 2}%`,
+    modifiers: (noModifiers) ? {} : generateModifiers(),
+    zIndex: rng(0,5)
   }));
 
   return {
@@ -195,8 +196,10 @@ export function generateLevel (level) {
       top: `${rng(10, 90)}%`,
       left: `${rng(10, 90)}%`,
       modifiers: (noModifiers) ? {} : generateModifiers(),
+      zIndex: rng(0,5)
     },
     otherCharacterData,
-    spotlightRadius: (ghostMode) ? rng(20, 40) : 0
+    spotlightRadius: (ghostMode) ? rng(20, 40) : 0,
+    distraction: (level > 15 && rng(0, 5) === 0)
   }
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, IconButton } from '@mui/material';
-import types from './types.json';
+import getCharacterTypes from './getTypes';
 
 function CharacterCoin ({
   onClick,
@@ -10,12 +10,15 @@ function CharacterCoin ({
   correct = false
 }) {
   const [clicked, setClicked] = useState(false);
+  const [hover, setHover] = useState(false);
   const prunedSx = {...sx};
   delete prunedSx.opacity;
 
   return (
     <IconButton
       disableRipple
+      onMouseEnter={() => { setHover(true) }}
+      onMouseLeave={() => { setHover(false) }}
       sx={{
         overflow: 'hidden',
         width: size,
@@ -24,7 +27,8 @@ function CharacterCoin ({
         opacity: (clicked) ? '0.15' : sx?.opacity,
         transition: 'opacity 0.1s ease-out',
         pointerEvents: (clicked) ? 'none' : 'auto',
-        bgcolor: 'rgba(101,200,255,0.5)'
+        bgcolor: 'rgba(101,200,255,0.5)',
+        border: (hover) ? '3px solid whitesmoke' : ''
       }}
       onClick={() => {
         if (!correct) setClicked(true);
@@ -38,7 +42,7 @@ function CharacterCoin ({
         src={
           (characterID < 0)
             ? process.env.PUBLIC_URL + '/images/unidentified.png'
-            : process.env.PUBLIC_URL + types.characters[characterID]
+            : process.env.PUBLIC_URL + getCharacterTypes()[characterID]
         }
         alt={`character-${characterID}`}
       />

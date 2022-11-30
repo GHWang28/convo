@@ -54,6 +54,9 @@ function StartModal ({ setGameState, highscore = 0}) {
           <strong>{'can not'}</strong>
           {' pause the game once started.'}
         </DialogContentText>
+        <DialogContentText mb={1} fontSize={18}>
+          <strong>{'This game is not supported on mobile (yet).'}</strong>
+        </DialogContentText>
         <DialogContentText fontWeight={'bold'} mt={2} fontSize={25} color='whitesmoke' align='center'>
           {`Current Highscore: ${highscore}`}
         </DialogContentText>

@@ -14,7 +14,7 @@ function LevelDisplay ({ level }) {
         top: '50%',
         translate: '-50% -50%',
         color: 'whitesmoke',
-        opacity: '0.1',
+        opacity: '0.2',
         textTransform: 'uppercase'
       }}
       fontSize={'min(70px, 7vw)'}

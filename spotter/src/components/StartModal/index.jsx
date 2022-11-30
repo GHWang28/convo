@@ -54,7 +54,7 @@ function StartModal ({ setGameState, highscore = 0}) {
           <strong>{'can not'}</strong>
           {' pause the game once started.'}
         </DialogContentText>
-        <DialogContentText mb={1} fontSize={18}>
+        <DialogContentText mb={1} fontSize={18} sx={{ bgcolor: 'rgba(0,0,0,0.3)' }}>
           <strong>{'This game is not supported on mobile (yet).'}</strong>
         </DialogContentText>
         <DialogContentText fontWeight={'bold'} mt={2} fontSize={25} color='whitesmoke' align='center'>

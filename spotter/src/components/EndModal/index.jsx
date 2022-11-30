@@ -5,6 +5,7 @@ import Draggable from 'react-draggable';
 import { animated, useSpring } from "react-spring";
 import getCharacterTypes from "../CharacterCoin/getTypes";
 import ImageScroller from "../ImageScroller";
+import PropTypes from 'prop-types';
 
 function PaperComponent(props) {
   return (
@@ -63,5 +64,11 @@ function EndModal ({ setGameState, highscore = 0, score = 0 }) {
     </AnimatedDialog>
   )
 }
+
+EndModal.propTypes = {
+  setGameState: PropTypes.func.isRequired,
+  highscore: PropTypes.number,
+  score: PropTypes.number
+};
 
 export default EndModal;

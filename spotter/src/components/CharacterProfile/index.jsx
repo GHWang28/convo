@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import CharacterCoin from "../CharacterCoin";
+import PropTypes from 'prop-types';
 
 function CharacterProfile ({ characterID = -1, title = 'To Spot:' }) {
   const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm'));
@@ -30,5 +31,10 @@ function CharacterProfile ({ characterID = -1, title = 'To Spot:' }) {
     </Box>
   )
 }
+
+CharacterProfile.propTypes = {
+  characterID: PropTypes.number,
+  title: PropTypes.string
+};
 
 export default CharacterProfile;

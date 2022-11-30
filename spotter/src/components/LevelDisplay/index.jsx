@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Box, Typography } from '@mui/material';
+import PropTypes from 'prop-types'
 
 function LevelDisplay ({ level }) {
   return (
@@ -41,5 +42,9 @@ function LevelDisplay ({ level }) {
     </Typography>
   )
 }
+
+LevelDisplay.propTypes = {
+  level: PropTypes.number.isRequired, 
+};
 
 export default LevelDisplay;

@@ -3,6 +3,11 @@ import { rng } from '../helpers';
 import { v4 as uuidv4 } from 'uuid';
 import * as mod from './modifiers';
 
+/**
+ * Generates a level object based on the provided level
+ * @param {Number} level 
+ * @returns {Object}
+ */
 export function generateLevel (level) {
   const ghostMode = (rng(0, 4) === 0 && level >= 15);
   const noModifiers = (rng(0, 6) === 0);

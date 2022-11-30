@@ -4,6 +4,7 @@ import config from '../../config.json';
 import { animated, useSpring } from "react-spring";
 import getCharacterTypes from "../CharacterCoin/getTypes";
 import ImageScroller from "../ImageScroller";
+import PropTypes from 'prop-types';
 
 function StartModal ({ setGameState, highscore = 0}) {
   const handleClose = (_, reason) => {
@@ -63,5 +64,10 @@ function StartModal ({ setGameState, highscore = 0}) {
     </AnimatedDialog>
   )
 }
+
+StartModal.propTypes = {
+  setGameState: PropTypes.func.isRequired,
+  highscore: PropTypes.number
+};
 
 export default StartModal;

@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { Box } from "@mui/material";
 import { getMousePos } from '../../helpers';
+import PropTypes from 'prop-types';
 
 function Spotlight ({ radius }) {
 
@@ -43,5 +44,9 @@ function Spotlight ({ radius }) {
     />
   )
 }
+
+Spotlight.propTypes = {
+  radius: PropTypes.number.isRequired, 
+};
 
 export default Spotlight;

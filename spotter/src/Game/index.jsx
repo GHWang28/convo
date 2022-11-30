@@ -14,6 +14,7 @@ import config from '../config.json';
 import Spotlight from '../components/Spotlight';
 import Distraction from '../components/Distraction';
 import { decrypt, encrypt } from '../helpers';
+import PropTypes from 'prop-types';
 
 function Game ({ setGameState, setHighScore, setScore}) {
   const time = new Date();
@@ -27,6 +28,7 @@ function Game ({ setGameState, setHighScore, setScore}) {
   const [gameOver, setGameOver] = useState(false);
 
   useEffect(() => {
+    // Build level
     setLevelData(generateLevel(0));
   }, [])
 
@@ -56,6 +58,7 @@ function Game ({ setGameState, setHighScore, setScore}) {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
+      {/* The box that wraps around the place where the characters spawn */}
       <Box
         id={'playing-field'}
         sx={{
@@ -65,6 +68,7 @@ function Game ({ setGameState, setHighScore, setScore}) {
           overflow: 'hidden'
         }}
       >
+        {/* External modifiers */}
         {(!gameOver) && <Spotlight radius={levelData?.spotlightRadius}/>}
         {(levelData?.distraction && !gameOver) && <Distraction />}
         <LevelDisplay level={levelData?.level} />
@@ -101,6 +105,7 @@ function Game ({ setGameState, setHighScore, setScore}) {
           />
         ))}
       </Box>
+
       {/* Bottom Bar to display who to click on*/}
       <Box
         id={'bottom-bar'}
@@ -126,19 +131,33 @@ function Game ({ setGameState, setHighScore, setScore}) {
     </Box>
   )
 
+  /**
+   * This function is called when the correct character
+   * is spotted
+   * @param {Number} characterID 
+   */
   function onFind (characterID) {
+    // Add time to timer
     const newTime = new Date();
     newTime.setSeconds(
       newTime.getSeconds()
       + Math.min(currTimeLeft + config.SPOT_TIME, config.MAX_TIME)
     );
     restart(newTime);
+    
+    // Load in next level
     setLevelData(generateLevel(levelData.level + 1));
     setLastClicked(-1);
     playCorrect();
   }
 
+  /**
+   * This function is called when the wrong character
+   * is spotted
+   * @param {Number} characterID 
+   */
   function onError (characterID) {
+    // Subtract time from timer
     const newTime = new Date();
     newTime.setSeconds(
       newTime.getSeconds()
@@ -149,5 +168,11 @@ function Game ({ setGameState, setHighScore, setScore}) {
     playError();
   }
 }
+
+Game.propTypes = {
+  setGameState: PropTypes.func.isRequired, 
+  setHighScore: PropTypes.func.isRequired,
+  setScore: PropTypes.func.isRequired
+};
 
 export default Game;

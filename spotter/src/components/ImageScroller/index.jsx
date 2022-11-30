@@ -1,4 +1,5 @@
 import { Box, keyframes } from "@mui/material";
+import PropTypes from 'prop-types';
 
 const tickScroll = keyframes`
   0% {
@@ -25,5 +26,9 @@ function ImageScroller ({ images }) {
     </Box>
   )
 }
+
+ImageScroller.propTypes = {
+  images: PropTypes.arrayOf(PropTypes.string).isRequired
+};
 
 export default ImageScroller;

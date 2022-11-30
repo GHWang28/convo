@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box, IconButton } from '@mui/material';
 import getCharacterTypes from './getTypes';
+import PropTypes from 'prop-types';
 
 function CharacterCoin ({
   onClick,
@@ -49,5 +50,13 @@ function CharacterCoin ({
     </IconButton>
   )
 }
+
+CharacterCoin.propTypes = {
+  onClick: PropTypes.func,
+  sx: PropTypes.object,
+  size: PropTypes.string,
+  characterID: PropTypes.number,
+  correct: PropTypes.bool
+};
 
 export default CharacterCoin;

@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, CircularProgress, Typography } from "@mui/material";
 import useSound from 'use-sound';
 import TickSFX from '../../sfx/tick.ogg';
+import PropTypes from 'prop-types';
 
 function TimeLeft ({ currTimeLeft, maxTime }) {
   const [playTick] = useSound(TickSFX);
@@ -64,5 +65,10 @@ function TimeLeft ({ currTimeLeft, maxTime }) {
     </Box>
   )
 }
+
+TimeLeft.propTypes = {
+  currTimeLeft: PropTypes.number.isRequired,
+  maxTime: PropTypes.number.isRequired
+};
 
 export default TimeLeft;

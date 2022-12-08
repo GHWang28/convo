@@ -92,7 +92,7 @@ function Game ({ setGameState, setHighScore, setScore}) {
         {(!(!isRunning && levelData?.level !== 0)) && (
           <Fragment>
             {/* External modifiers */}
-            {(!gameOver && isMobile) && <Spotlight radius={levelData?.spotlightRadius}/>}
+            {(!gameOver && !isMobile) && <Spotlight radius={levelData?.spotlightRadius}/>}
             {(levelData?.distraction && !gameOver) && <Distraction />}
             <LevelDisplay level={levelData?.level} />
             {/* The correct character to click on */}

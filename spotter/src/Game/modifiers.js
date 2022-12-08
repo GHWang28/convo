@@ -1,6 +1,6 @@
 import { keyframes } from '@mui/system';
 
-export const zoomInOut = keyframes`
+const zoomInOut = keyframes`
   0% {
     scale: 0;
   }
@@ -12,7 +12,10 @@ export const zoomInOut = keyframes`
   }
 `;
 
-export const translateY = keyframes`
+export const zoomInOutAnimation = `${zoomInOut} ease-in-out 2s infinite`;
+export const zoomInOutAnimationFast = `${zoomInOut} ease-in-out 1s infinite`;
+
+const translateY = keyframes`
   0% {
     translate: 0% 200%;
   }
@@ -24,7 +27,9 @@ export const translateY = keyframes`
   }
 `;
 
-export const translateX = keyframes`
+export const translateYAnimation = `${translateY} linear 4s infinite`
+
+const translateX = keyframes`
   0% {
     translate: 200% 0%;
   }
@@ -36,7 +41,9 @@ export const translateX = keyframes`
   }
 `;
 
-export const rotater = keyframes`
+export const translateXAnimation = `${translateX} linear 4s infinite`
+
+const rotater = keyframes`
   0% {
     rotate: 0deg;
   }
@@ -44,3 +51,6 @@ export const rotater = keyframes`
     rotate: 360deg;
   }
 `;
+
+export const rotaterAnimation = `${rotater} linear 2s infinite`;
+export const rotaterAnimationFast = `${rotater} linear 1.2s infinite`;

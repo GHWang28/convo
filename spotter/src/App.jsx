@@ -28,7 +28,7 @@ function App() {
     /* Stage */ 
     <Box sx={{ width: '100vw', height: '100vh' }}>
       {(gameState === ENUM.title) && (
-        <StartModal setGameState={setGameState} highscore={highScore} />
+        <StartModal setGameState={setGameState} highscore={Number(highScore)} />
       )}
       {(gameState === ENUM.end) && (
         <EndModal setGameState={setGameState} highscore={highScore} score={score}/>

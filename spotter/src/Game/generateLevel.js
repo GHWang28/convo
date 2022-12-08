@@ -29,10 +29,10 @@ export function generateLevel (level) {
 
   const generateRandomModifier = () => {
     switch (rng(0, 4)) {
-      case 1: return `${mod.translateX} linear 4s infinite`;
-      case 2: return `${mod.translateY} linear 4s infinite`;
-      case 3: return `${mod.zoomInOut} ease-in-out 3s infinite`;
-      case 4: return `${mod.rotater} linear 2s infinite`;
+      case 1: return mod.translateXAnimation;
+      case 2: return mod.translateYAnimation;
+      case 3: return mod.zoomInOutAnimation;
+      case 4: return mod.rotaterAnimation;
       default: return '';
     }
   }
@@ -45,83 +45,85 @@ export function generateLevel (level) {
         break;
       case 1:
         if (rng(0, 10) === 0) modifiers.push(...[
-          `${mod.rotater} linear 2s infinite`
+          mod.rotaterAnimation
         ]);
         break;
       case 2:
         // Rotating
         modifiers.push(...[
-          `${mod.rotater} linear 2s infinite`
+          mod.rotaterAnimationFast
         ]);
         break;
       case 3:
         // Move left and right
         modifiers.push(...[
-          `${mod.translateX} linear 6s infinite`
+          mod.translateXAnimation
         ]);
         break;
       case 4:
         // Move up and down
         modifiers.push(...[
-          `${mod.translateY} linear 6s infinite`
+          mod.translateYAnimation
         ]);
         break;
       case 5:
         // Zooming in and out quicker
         modifiers.push(...[
-          `${mod.zoomInOut} ease-in-out 3.0s infinite`
+          mod.zoomInOutAnimationFast
         ]);
         break;
       case 6:
         // Zooming in and out quicker
         modifiers.push(...[
-          `${mod.zoomInOut} ease-in-out 1.5s infinite`
+          mod.zoomInOutAnimationFast,
+          mod.rotaterAnimationFast
         ]);
         break;
       case 7:
         // Rotater and move left and right
         modifiers.push(...[
-          `${mod.translateX} linear 5s infinite`,
-          `${mod.rotater} linear 2s infinite`
+          mod.translateXAnimation,
+          mod.rotaterAnimation
         ]);
         break;
       case 8:
         // Rotater and move up and down
         modifiers.push(...[
-          `${mod.translateY} linear 5s infinite`,
-          `${mod.rotater} linear 2s infinite`
+          mod.translateYAnimation,
+          mod.rotaterAnimation
         ]);
         break;
       case 9:
-        // Rotater and zoom in and out
+        // Rotater and zoom in and out and move up and down
         modifiers.push(...[
-          `${mod.zoomInOut} linear 3s infinite`,
-          `${mod.rotater} linear 2s infinite`
+          mod.translateYAnimation,
+          mod.rotaterAnimation,
+          mod.zoomInOutAnimation
         ]);
         break;
       case 10:
         // Rotater and zoom in and out and translate left to right
         modifiers.push(...[
-          `${mod.zoomInOut} ease-in-out 3s infinite`,
-          `${mod.rotater} linear 2s infinite`,
-          `${mod.translateX} linear 4s infinite`,
+          mod.translateXAnimation,
+          mod.rotaterAnimation,
+          mod.zoomInOutAnimation
         ]);
         break;
       case 11:
-        // Rotater and zoom in and out and translate up to down
+        // Rotater and zoom in and out and translate up to down fast
         modifiers.push(...[
-          `${mod.zoomInOut} ease-in-out 3s infinite`,
-          `${mod.rotater} linear 2s infinite`,
-          `${mod.translateY} linear 4s infinite`,
+          mod.translateYAnimation,
+          mod.rotaterAnimationFast,
+          mod.zoomInOutAnimationFast
         ]);
         break;
       case 12:
         // Rotater and zoom in and out and translate diagonal
         modifiers.push(...[
-          `${mod.zoomInOut} ease-in-out 3s infinite`,
-          `${mod.rotater} linear 2s infinite`,
-          `${mod.translateY} linear 4s infinite`,
-          `${mod.translateX} linear 4s infinite`,
+          mod.zoomInOutAnimation,
+          mod.rotaterAnimation,
+          mod.translateYAnimation,
+          mod.translateYAnimation
         ]);
         break;
       case 13:
@@ -187,8 +189,8 @@ export function generateLevel (level) {
   const otherCharacterData = [...Array(Math.max(totalChars))].map(() => ({
     id: uuidv4(),
     cid: generateRandomID(),
-    top: `${rng(0, 200) / 2}%`,
-    left: `${rng(0, 200) / 2}%`,
+    top: `${rng(0, 500) / 5}%`,
+    left: `${rng(0, 500) / 5}%`,
     modifiers: (noModifiers) ? {} : generateModifiers(),
     zIndex: rng(0,5)
   }));

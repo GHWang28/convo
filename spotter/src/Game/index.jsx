@@ -75,7 +75,7 @@ function Game ({ setGameState, setHighScore, setScore}) {
             sx={{
               position: 'fixed',
               width: '100vw',
-              height: '100vh',
+              height: 'calc(100vh - 200px)',
               display: 'flex',
               justifyContent: 'center',
               flexDirection: 'column',

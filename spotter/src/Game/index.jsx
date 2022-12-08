@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useMediaQuery } from '@mui/material';
+import React, { Fragment, useEffect, useState } from 'react';
+import { Typography, useMediaQuery } from '@mui/material';
 import { Box } from '@mui/material';
 import { useTimer } from 'react-timer-hook'
 import TimeLeft from '../components/TimeLeft';
@@ -14,6 +14,7 @@ import config from '../config.json';
 import Spotlight from '../components/Spotlight';
 import Distraction from '../components/Distraction';
 import { decrypt, encrypt } from '../helpers';
+import { isMobile } from 'react-device-detect';
 import PropTypes from 'prop-types';
 
 function Game ({ setGameState, setHighScore, setScore}) {
@@ -35,10 +36,10 @@ function Game ({ setGameState, setHighScore, setScore}) {
   const {
     seconds,
     minutes,
-    // isRunning,
+    isRunning,
     // start,
-    // pause,
-    // resume,
+    pause,
+    resume,
     restart,
   } = useTimer({
     expiryTimestamp: time,
@@ -68,42 +69,66 @@ function Game ({ setGameState, setHighScore, setScore}) {
           overflow: 'hidden'
         }}
       >
-        {/* External modifiers */}
-        {(!gameOver) && <Spotlight radius={levelData?.spotlightRadius}/>}
-        {(levelData?.distraction && !gameOver) && <Distraction />}
-        <LevelDisplay level={levelData?.level} />
-        {/* The correct character to click on */}
-        <CharacterCoin
-          correct
-          key={levelData?.characterToSpotData?.id}
-          characterID={levelData?.characterToSpotData?.cid}
-          sx={{
-            top: levelData?.characterToSpotData?.top,
-            left: levelData?.characterToSpotData?.left,
-            position: 'absolute',
-            translate: '-50% -50%',
-            zIndex: levelData?.characterToSpotData?.zIndex,
-            ...levelData?.characterToSpotData?.modifiers
-          }}
-          onClick={(!gameOver) ? onFind : null}
-        />
-        {/* The wrong characters to click on */}
-        {levelData?.otherCharacterData.map((charData, index) => (
-          <CharacterCoin
-            key={`${index}-${charData?.id}`}
-            characterID={charData?.cid}
+        {/* Pause screen */}
+        {(!isRunning && levelData?.level !== 0) && (
+          <Box
             sx={{
-              top: charData?.top,
-              left: charData?.left,
-              position: 'absolute',
-              translate: '-50% -50%',
-              zIndex: charData?.zIndex,
-              opacity: (gameOver) ? '0.15' : '1.0',
-              ...charData?.modifiers
+              position: 'fixed',
+              width: '100vw',
+              height: '100vh',
+              display: 'flex',
+              justifyContent: 'center',
+              flexDirection: 'column',
+              alignItems: 'center',
+              color: 'whitesmoke'
             }}
-            onClick={(!gameOver) ? onError : null}
-          />
-        ))}
+          >
+            <Typography fontSize={30} fontWeight='bold'>
+              Click on Timer to Unpause
+            </Typography>
+          </Box>
+        )}
+        {/* Display game */}
+        {(!(!isRunning && levelData?.level !== 0)) && (
+          <Fragment>
+            {/* External modifiers */}
+            {(!gameOver && isMobile) && <Spotlight radius={levelData?.spotlightRadius}/>}
+            {(levelData?.distraction && !gameOver) && <Distraction />}
+            <LevelDisplay level={levelData?.level} />
+            {/* The correct character to click on */}
+            <CharacterCoin
+              correct
+              key={levelData?.characterToSpotData?.id}
+              characterID={levelData?.characterToSpotData?.cid}
+              sx={{
+                top: levelData?.characterToSpotData?.top,
+                left: levelData?.characterToSpotData?.left,
+                position: 'absolute',
+                translate: '-50% -50%',
+                zIndex: levelData?.characterToSpotData?.zIndex,
+                ...levelData?.characterToSpotData?.modifiers
+              }}
+              onClick={(!gameOver) ? onFind : null}
+            />
+            {/* The wrong characters to click on */}
+            {levelData?.otherCharacterData.map((charData, index) => (
+              <CharacterCoin
+                key={`${index}-${charData?.id}`}
+                characterID={charData?.cid}
+                sx={{
+                  top: charData?.top,
+                  left: charData?.left,
+                  position: 'absolute',
+                  translate: '-50% -50%',
+                  zIndex: charData?.zIndex,
+                  opacity: (gameOver) ? '0.15' : '1.0',
+                  ...charData?.modifiers
+                }}
+                onClick={(!gameOver) ? onError : null}
+              />
+            ))}
+          </Fragment>
+        )}
       </Box>
 
       {/* Bottom Bar to display who to click on*/}
@@ -124,7 +149,18 @@ function Game ({ setGameState, setHighScore, setScore}) {
         {/* Who to spot */}
         <CharacterProfile characterID={levelData?.characterToSpotData?.cid}/>
         {/* Time Left */}
-        <TimeLeft currTimeLeft={currTimeLeft} maxTime={config.MAX_TIME} />
+        <TimeLeft
+          onPause={() => {
+            if (levelData?.level === 0) return;
+            if (isRunning) {
+              pause();
+            } else {
+              resume();
+            }
+          }}
+          currTimeLeft={currTimeLeft}
+          maxTime={config.MAX_TIME}
+        />
         {/* Last Spotted Character */}
         <CharacterProfile characterID={lastClicked} title='Last Error:'/>
       </Box>

@@ -4,7 +4,7 @@ import useSound from 'use-sound';
 import TickSFX from '../../sfx/tick.ogg';
 import PropTypes from 'prop-types';
 
-function TimeLeft ({ currTimeLeft, maxTime }) {
+function TimeLeft ({ currTimeLeft, maxTime, onPause }) {
   const [playTick] = useSound(TickSFX);
   if (currTimeLeft <= 5) playTick();
 
@@ -17,10 +17,13 @@ function TimeLeft ({ currTimeLeft, maxTime }) {
         alignItems: 'center',
         boxShadow: '0px 0px 50px 10px rgba(0,0,0,0.5)',
         px: 2,
-        width: '120px'
+        width: '120px',
+        cursor: 'pointer',
+        zIndex: 12
       }}
+      onClick={onPause}
     >
-      <Typography fontSize={20}>
+      <Typography sx={{ userSelect: 'none' }} fontSize={20}>
         {'Time:'}
       </Typography>
       <Box sx={{ flexGrow: 1, position: 'relative' }}>
@@ -56,7 +59,8 @@ function TimeLeft ({ currTimeLeft, maxTime }) {
             left: '50%',
             top: '50%',
             translate: '-50% -50%',
-            color: (currTimeLeft <= 15) ? 'lightcoral' : ''
+            color: (currTimeLeft <= 15) ? 'lightcoral' : '',
+            userSelect: 'none'
           }}
         >
           {currTimeLeft}
@@ -68,7 +72,8 @@ function TimeLeft ({ currTimeLeft, maxTime }) {
 
 TimeLeft.propTypes = {
   currTimeLeft: PropTypes.number.isRequired,
-  maxTime: PropTypes.number.isRequired
+  maxTime: PropTypes.number.isRequired,
+  onPause: PropTypes.func.isRequired,
 };
 
 export default TimeLeft;

@@ -50,12 +50,7 @@ function StartModal ({ setGameState, highscore = 0}) {
           {`Your final score will be the level you lost at.`}
         </DialogContentText>
         <DialogContentText mb={1} fontSize={18}>
-          {'You '}
-          <strong>{'can not'}</strong>
-          {' pause the game once started.'}
-        </DialogContentText>
-        <DialogContentText mb={1} fontSize={18} sx={{ bgcolor: 'rgba(0,0,0,0.3)' }}>
-          <strong>{'This game is not supported on mobile (yet).'}</strong>
+          {'You can pause the game by clicking on the timer.'}
         </DialogContentText>
         <DialogContentText fontWeight={'bold'} mt={2} fontSize={25} color='whitesmoke' align='center'>
           {`Current Highscore: ${highscore}`}

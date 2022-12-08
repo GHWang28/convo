@@ -4,14 +4,8 @@ export const zoomInOut = keyframes`
   0% {
     scale: 0;
   }
-  30% {
-    scale: 0;
-  }
   45%, 55% {
     scale: 1.0;
-  }
-  70% {
-    scale: 0;
   }
   100% {
     scale: 0;

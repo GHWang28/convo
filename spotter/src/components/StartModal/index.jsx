@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import config from '../../config.json';
 import { animated, useSpring } from "react-spring";
 import getCharacterTypes from "../CharacterCoin/getTypes";
@@ -36,7 +36,9 @@ function StartModal ({ setGameState, highscore = 0}) {
           <strong>{`${config.SPOT_TIME} more seconds.`}</strong>
         </DialogContentText>
         <DialogContentText mb={1} fontSize={18}>
-          {'Each wrong click will cost you '}
+          {'Each '}
+          <Box component='span' sx={{ color: 'lightcoral' }}>{'wrong'}</Box>
+          {' click will cost you '}
           <strong>{`${config.ERROR_TIME * -1} seconds.`}</strong>
         </DialogContentText>
         <DialogContentText mb={1} fontSize={18} sx={{ bgcolor: 'rgba(0,0,0,0.3)' }}>

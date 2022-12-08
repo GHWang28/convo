@@ -201,7 +201,7 @@ export function generateLevel (level) {
       top: `${rng(10, 90)}%`,
       left: `${rng(10, 90)}%`,
       modifiers: (noModifiers) ? {} : generateModifiers(),
-      zIndex: rng(0,5)
+      zIndex: rng(3,7)
     },
     otherCharacterData,
     spotlightRadius: (ghostMode) ? rng(20, 40) : 0,

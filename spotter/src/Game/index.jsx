@@ -70,8 +70,9 @@ function Game ({ setGameState, setHighScore, setScore}) {
         }}
       >
         {/* Pause screen */}
-        {(!isRunning && levelData?.level !== 0) && (
+        {(!isRunning && levelData?.level !== 0 && !gameOver) && (
           <Box
+            name='pause'
             sx={{
               position: 'fixed',
               width: '100vw',
@@ -89,7 +90,7 @@ function Game ({ setGameState, setHighScore, setScore}) {
           </Box>
         )}
         {/* Display game */}
-        {(!(!isRunning && levelData?.level !== 0)) && (
+        {(!(!isRunning && levelData?.level !== 0 && !gameOver)) && (
           <Fragment>
             {/* External modifiers */}
             {(!gameOver && !isMobile) && <Spotlight radius={levelData?.spotlightRadius}/>}

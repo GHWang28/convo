@@ -25,6 +25,10 @@ function ImageScroller ({ images }) {
       </Box>
       {/* Attributions */}
       <Typography fontWeight={'bold'} mt={0.2} fontSize={13} color='whitesmoke' align='center'>
+      <em>{'Spotter'}</em>{' developed by '}
+        <Link href='https://ghwang28.github.io/' target='_blank'>Gordon Wang</Link>
+        {'.'}
+        <br/>
         {'Character Art by '}
         <Link href='https://twitter.com/pablostanley' target='_blank'>Pablo Stanley</Link>
         {' and generated using '}

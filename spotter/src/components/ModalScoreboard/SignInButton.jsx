@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { Alert, Box, Button, Tooltip, Typography } from '@mui/material';
+import React, { Fragment, useState } from 'react';
+import { Alert, Button, Tooltip, Typography } from '@mui/material';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, githubProvider, googleProvider } from '../../Firebase';
 import GoogleIcon from '@mui/icons-material/Google';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import PropTypes from 'prop-types';
 
 export default function SignInButton ({ setUserInfo }) {
   const [error, setError] = useState({});
@@ -24,7 +25,7 @@ export default function SignInButton ({ setUserInfo }) {
   }
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+    <Fragment>
       <Typography>{'Sign in to show off your High Score to the world:'}</Typography>
       <Tooltip placement='top' title='Sign in with Google' arrow >
         <Button startIcon={<GoogleIcon />} variant='contained' sx={{ mt: 2, width: '33.333%' }} onClick={() => { signIn(googleProvider) }}>
@@ -45,6 +46,10 @@ export default function SignInButton ({ setUserInfo }) {
             : `${error?.message}`}
         </Alert>
       )}
-    </Box>
+    </Fragment>
   )
 }
+
+SignInButton.propTypes = {
+  setUserInfo: PropTypes.func.isRequired,
+};

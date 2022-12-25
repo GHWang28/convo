@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 function CharacterCoin ({
   onClick,
   sx,
-  size = 'min(90px, 13vw)',
+  size = 'min(70px, 10vw)',
   characterID = -1,
   correct = false
 }) {

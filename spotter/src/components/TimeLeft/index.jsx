@@ -19,7 +19,7 @@ function TimeLeft ({ currTimeLeft, maxTime, onPause }) {
         alignItems: 'center',
         boxShadow: '0px 0px 50px 10px rgba(0,0,0,0.5)',
         px: 2,
-        width: '8vw',
+        width: '20vw',
         cursor: 'pointer',
         zIndex: 12
       }}

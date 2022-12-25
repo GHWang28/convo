@@ -36,7 +36,7 @@ function TimeLeft ({ currTimeLeft, maxTime, onPause }) {
             top: '50%',
             translate: '-50% -50%'
           }}
-          size={'15vh'}
+          size='min(20vw,120px)'
           variant='determinate'
           color={(currTimeLeft <= 15) ? 'error' : 'primary'}
           value={(currTimeLeft / maxTime) * 100}
@@ -49,13 +49,13 @@ function TimeLeft ({ currTimeLeft, maxTime, onPause }) {
             translate: '-50% -50%',
             opacity: 0.25
           }}
-          size={'15vh'}
+          size='min(20vw,120px)'
           variant='determinate'
           color={(currTimeLeft <= 15) ? 'error' : 'primary'}
           value={100}
         />
         <Typography
-          fontSize={'8vh'}
+          fontSize='min(10vw,70px)'
           sx={{
             position: 'absolute',
             left: '50%',

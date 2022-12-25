@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, keyframes } from "@mui/material";
+import { isMobile } from 'react-device-detect';
 
 const slide = keyframes`
   0% {
@@ -11,6 +12,7 @@ const slide = keyframes`
 `;
 
 function Distraction () {
+
   return (
     <Box
       name='distraction'
@@ -31,7 +33,7 @@ function Distraction () {
           <Box
             key={`distraction-${index}`}
             height='100%'
-            width='39%'
+            width={(isMobile) ? '20vw' : '32vw'}
             sx={{
               bgcolor: 'rgb(60,60,60)',
               borderLeft: '2px solid whitesmoke',
@@ -45,7 +47,7 @@ function Distraction () {
           <Box
             key={`distraction-${index}`}
             height='100%'
-            width='39%'
+            width={(isMobile) ? '20vw' : '32vw'}
             sx={{
               bgcolor: 'rgb(60,60,60)',
               borderLeft: '2px solid whitesmoke',

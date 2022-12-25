@@ -81,12 +81,12 @@ function ModalScoreBoard ({ show, onClose, highscore }) {
         <LinearProgress variant={(fetching) ? 'indeterminate' : 'determinate'} value={(fetching) ? 0 : 100}/>
       </DialogTitle>
 
-      <DialogContent>
+      <DialogContent sx={{ overflow: 'overlay' }}>
         <Grid container sx={{ border: '1px solid whitesmoke' }}>
           {/* Title */}
           <Grid item xs={2} p={1} sx={{ borderBottom: '1px solid whitesmoke', bgcolor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
             <Tooltip placement='top' arrow title='Refetch for scores'>
-              <IconButton onClick={updateScoreboard}>
+              <IconButton sx={{ border: '2px solid whitesmoke' }} onClick={updateScoreboard}>
                 <RefreshIcon />
               </IconButton>
             </Tooltip>
@@ -129,7 +129,7 @@ function ModalScoreBoard ({ show, onClose, highscore }) {
                   zIndex: 2
                 } : {}}
               >
-                <Grid item xs={2} p={1} sx={{ display: 'flex', alignItems: 'center', bgcolor: 'rgba(0,0,0,0.5)' }}>
+                <Grid item xs={2} p={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'rgba(0,0,0,0.5)' }}>
                   <Typography>
                     {`#${index + 1}`}
                   </Typography>
@@ -144,7 +144,7 @@ function ModalScoreBoard ({ show, onClose, highscore }) {
                     {score?.name}
                   </Typography>
                 </Grid>
-                <Grid item xs={2.5} p={1} sx={{ bgcolor: 'rgba(0,0,0,0.5)' }}>
+                <Grid item xs={2.5} p={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'rgba(0,0,0,0.5)' }}>
                   <Typography align='center'>
                     {score?.score}
                   </Typography>

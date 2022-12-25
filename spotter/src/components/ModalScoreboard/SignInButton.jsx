@@ -26,7 +26,8 @@ export default function SignInButton ({ setUserInfo }) {
 
   return (
     <Fragment>
-      <Typography>{'Sign in to show off your High Score to the world:'}</Typography>
+      <Typography align='center' fontSize={13}>{'Become the envy of your friends and dominate the leaderboards by signing in and showcasing your impressive highscore to the world!'}</Typography>
+      <Typography align='center' fontSize={13}>{'Sign in with...'}</Typography>
       <Tooltip placement='top' title='Sign in with Google' arrow >
         <Button startIcon={<GoogleIcon />} variant='contained' sx={{ mt: 2, width: '33.333%' }} onClick={() => { signIn(googleProvider) }}>
           {'Google'}

@@ -12,8 +12,8 @@ const zoomInOut = keyframes`
   }
 `;
 
-export const zoomInOutAnimation = `${zoomInOut} ease-in-out 2s infinite`;
-export const zoomInOutAnimationFast = `${zoomInOut} ease-in-out 1s infinite`;
+export const zoomInOutAnimation = `${zoomInOut} ease-in-out 3.5s infinite`;
+export const zoomInOutAnimationFast = `${zoomInOut} ease-in-out 2.5s infinite`;
 
 const translateY = keyframes`
   0% {

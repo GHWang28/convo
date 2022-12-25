@@ -23,8 +23,8 @@ export function getMousePos (canvas, event) {
   const scaleY = canvas.height / rect.height;
 
   return {
-    x: (event.clientX - rect.left) * scaleX,   // scale mouse coordinates after they have
-    y: (event.clientY - rect.top) * scaleY     // been adjusted to be relative to element
+    x: (event.clientX - rect.left) * scaleX,
+    y: (event.clientY - rect.top) * scaleY
   }
 }
 

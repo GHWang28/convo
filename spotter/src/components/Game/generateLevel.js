@@ -13,7 +13,7 @@ export function generateLevel (level) {
   const noModifiers = (rng(0, 6) === 0);
 
   const totalChars = ((level === 0) ? 0 : Math.min(
-    Math.max(Math.floor(level), 3),
+    Math.max(Math.floor(level) * 2, 5),
     150
   )) + ((level >= 15 && noModifiers) ? rng(50, 60) : 0);
 
@@ -40,7 +40,7 @@ export function generateLevel (level) {
   const generateModifiers = () => {
     const modifiers = [];
     const filters = [];
-    switch (Math.floor(level / 3)) {
+    switch (Math.floor(level / 4)) {
       case 0:
         break;
       case 1:
@@ -189,8 +189,8 @@ export function generateLevel (level) {
   const otherCharacterData = [...Array(Math.max(totalChars))].map(() => ({
     id: uuidv4(),
     cid: generateRandomID(),
-    top: `${rng(0, 500) / 5}%`,
-    left: `${rng(0, 500) / 5}%`,
+    top: `${rng(50, 450) / 5}%`,
+    left: `${rng(50, 450) / 5}%`,
     modifiers: (noModifiers) ? {} : generateModifiers(),
     zIndex: rng(0,5)
   }));
@@ -203,7 +203,7 @@ export function generateLevel (level) {
       top: `${rng(10, 90)}%`,
       left: `${rng(10, 90)}%`,
       modifiers: (noModifiers) ? {} : generateModifiers(),
-      zIndex: rng(3,7)
+      zIndex: 6
     },
     otherCharacterData,
     spotlightRadius: (ghostMode) ? rng(20, 40) : 0,

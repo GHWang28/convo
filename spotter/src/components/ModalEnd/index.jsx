@@ -55,7 +55,7 @@ function ModalEnd ({ show, setGameState, highscore = 0, score = 0, setShowScoreb
           />
         </Box>
         <DialogContentText mb={-2} mt={2}>
-          {'(You can move this dialog box by dragging the top)'}
+          {'(Drag this box from the top to see where your character was on the board)'}
         </DialogContentText>
       </DialogContent>
       <DialogActions>

@@ -13,7 +13,7 @@ const tickScroll = keyframes`
 function ImageScroller ({ images }) {
   return (
     <Box sx={{ width: '100%', overflowX: 'hidden' }}>
-      <Box sx={{ width: 'fit-content', display: 'flex', animation: `${tickScroll} 15s linear infinite` }}>
+      <Box sx={{ width: 'fit-content', display: 'flex', animation: `${tickScroll} 15s linear infinite`, height: '16vh' }}>
         {([...images, ...images].map((src, index) => (
           <Box
             key={`img-scroll-${index}`}

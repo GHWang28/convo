@@ -1,11 +1,13 @@
 import React from 'react';
-import { Button } from '@mui/material';
+import { Button, Tooltip } from '@mui/material';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 export default function ButtonHighscore ({ onClick }) {
   return (
-    <Button startIcon={<EmojiEventsIcon />} title='See Public Scoreboard' variant='contained' onClick={onClick}>
-      {'Public Scoreboard'}
-    </Button>
+    <Tooltip placement='top' title='See Public Scoreboard' arrow >
+      <Button startIcon={<EmojiEventsIcon />} variant='contained' onClick={onClick}>
+        {'Public Scoreboard'}
+      </Button>
+    </Tooltip>
   )
 }

@@ -137,7 +137,7 @@ function Game ({ setGameState, setHighScore, setScore}) {
         id={'bottom-bar'}
         sx={{
           width: '100%',
-          height: '200px',
+          height: '18vh',
           bgcolor: 'rgb(60,64,67)',
           color: 'whitesmoke',
           display: 'flex',

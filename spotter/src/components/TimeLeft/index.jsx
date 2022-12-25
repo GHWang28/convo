@@ -19,13 +19,13 @@ function TimeLeft ({ currTimeLeft, maxTime, onPause }) {
         alignItems: 'center',
         boxShadow: '0px 0px 50px 10px rgba(0,0,0,0.5)',
         px: 2,
-        width: '120px',
+        width: '8vw',
         cursor: 'pointer',
         zIndex: 12
       }}
       onClick={onPause}
     >
-      <Typography sx={{ userSelect: 'none' }} fontSize={20}>
+      <Typography sx={{ userSelect: 'none' }} fontSize={'2vh'}>
         {'Time:'}
       </Typography>
       <Box sx={{ flexGrow: 1, position: 'relative' }}>
@@ -36,7 +36,7 @@ function TimeLeft ({ currTimeLeft, maxTime, onPause }) {
             top: '50%',
             translate: '-50% -50%'
           }}
-          size={'120px'}
+          size={'15vh'}
           variant='determinate'
           color={(currTimeLeft <= 15) ? 'error' : 'primary'}
           value={(currTimeLeft / maxTime) * 100}
@@ -49,13 +49,13 @@ function TimeLeft ({ currTimeLeft, maxTime, onPause }) {
             translate: '-50% -50%',
             opacity: 0.25
           }}
-          size={'120px'}
+          size={'15vh'}
           variant='determinate'
           color={(currTimeLeft <= 15) ? 'error' : 'primary'}
           value={100}
         />
         <Typography
-          fontSize={60}
+          fontSize={'8vh'}
           sx={{
             position: 'absolute',
             left: '50%',

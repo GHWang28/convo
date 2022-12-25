@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Box, Button, Typography } from '@mui/material';
+import { Alert, Box, Button, Tooltip, Typography } from '@mui/material';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, githubProvider, googleProvider } from '../../Firebase';
 import GoogleIcon from '@mui/icons-material/Google';
@@ -26,12 +26,16 @@ export default function SignInButton ({ setUserInfo }) {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
       <Typography>{'Sign in to show off your High Score to the world:'}</Typography>
-      <Button startIcon={<GoogleIcon />} variant='contained' sx={{ mt: 2, width: '33.333%' }} onClick={() => { signIn(googleProvider) }}>
-        {'Google'}
-      </Button>
-      <Button startIcon={<GitHubIcon />} variant='contained' sx={{ mt: 2, width: '33.333%' }} onClick={() => { signIn(githubProvider) }}>
-        {'GitHub'}
-      </Button>
+      <Tooltip placement='top' title='Sign in with Google' arrow >
+        <Button startIcon={<GoogleIcon />} variant='contained' sx={{ mt: 2, width: '33.333%' }} onClick={() => { signIn(googleProvider) }}>
+          {'Google'}
+        </Button>
+      </Tooltip>
+      <Tooltip placement='top' title='Sign in with GitHub' arrow >
+        <Button startIcon={<GitHubIcon />} variant='contained' sx={{ mt: 2, width: '33.333%' }} onClick={() => { signIn(githubProvider) }}>
+          {'GitHub'}
+        </Button>
+      </Tooltip>
       {(error?.code) && (
         <Alert severity='error' variant='outlined' sx={{ mt: 2 }}>
           {`Error ${error?.code}`}

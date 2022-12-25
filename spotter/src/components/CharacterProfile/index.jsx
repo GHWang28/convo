@@ -18,14 +18,14 @@ function CharacterProfile ({ characterID = -1, title = 'To Spot:' }) {
         px: 2
       }}
     >
-      <Typography fontSize={20} noWrap sx={{ userSelect: 'none' }}>
+      <Typography fontSize={'2vh'} noWrap sx={{ userSelect: 'none' }}>
         {title}
       </Typography>
       <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}>
         <CharacterCoin
           correct
           characterID={characterID}
-          size='min(130px, 20vw)'
+          size='min(15vh, 20vw)'
         />
       </Box>
     </Box>

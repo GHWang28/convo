@@ -5,8 +5,9 @@ import { animated, useSpring } from "react-spring";
 import getCharacterTypes from "../CharacterCoin/getTypes";
 import ImageScroller from "../ImageScroller";
 import PropTypes from 'prop-types';
+import ButtonHighscore from '../ButtonHighscore';
 
-function StartModal ({ setGameState, highscore = 0}) {
+function ModalStart ({ show, setGameState, highscore = 0, setShowScoreboard }) {
   const handleClose = (_, reason) => {
     if (reason && reason === 'backdropClick') return;
     setGameState(1);
@@ -22,7 +23,7 @@ function StartModal ({ setGameState, highscore = 0}) {
         delay: 500
       })}
       hideBackdrop
-      open={true}
+      open={show}
       onClose={handleClose}
     >
       <DialogTitle fontSize={30}>{'Spotter'}</DialogTitle>
@@ -57,6 +58,13 @@ function StartModal ({ setGameState, highscore = 0}) {
         <DialogContentText fontWeight={'bold'} mt={2} fontSize={25} color='whitesmoke' align='center'>
           {`Current Highscore: ${highscore}`}
         </DialogContentText>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }} mt={2}>
+          <ButtonHighscore
+            onClick={() => {
+              setShowScoreboard(true);
+            }}
+          />
+        </Box>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Close Dialog</Button>
@@ -65,9 +73,10 @@ function StartModal ({ setGameState, highscore = 0}) {
   )
 }
 
-StartModal.propTypes = {
+ModalStart.propTypes = {
+  show: PropTypes.bool.isRequired,
   setGameState: PropTypes.func.isRequired,
   highscore: PropTypes.number
 };
 
-export default StartModal;
+export default ModalStart;

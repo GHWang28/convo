@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, CircularProgress, Typography } from "@mui/material";
 import useSound from 'use-sound';
 import TickSFX from '../../sfx/tick.ogg';
@@ -6,7 +6,9 @@ import PropTypes from 'prop-types';
 
 function TimeLeft ({ currTimeLeft, maxTime, onPause }) {
   const [playTick] = useSound(TickSFX);
-  if (currTimeLeft <= 5) playTick();
+  useEffect(() => {
+    if (currTimeLeft <= 5) playTick();
+  }, [ currTimeLeft, playTick ])
 
   return (
     <Box

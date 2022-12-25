@@ -1,7 +1,7 @@
-import getCharacterTypes from '../components/CharacterCoin/getTypes';
-import { rng } from '../helpers';
+import getCharacterTypes from '../CharacterCoin/getTypes';
 import { v4 as uuidv4 } from 'uuid';
 import * as mod from './modifiers';
+import { rng } from '../../helpers';
 
 /**
  * Generates a level object based on the provided level

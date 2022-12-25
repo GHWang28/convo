@@ -1,10 +1,11 @@
 import './App.css';
 import React, {useEffect, useState} from 'react';
 import { Box } from '@mui/material';
-import Game from './Game';
-import StartModal from './components/StartModal';
-import EndModal from './components/EndModal';
+import ModalStart from './components/ModalStart';
+import ModalEnd from './components/ModalEnd';
 import { decrypt } from './helpers';
+import Game from './components/Game';
+import ModalScoreBoard from './components/ModalScoreboard';
 
 const ENUM = {
   title: 0,
@@ -14,6 +15,7 @@ const ENUM = {
 
 function App() {
   const [gameState, setGameState] = useState(ENUM.title);
+  const [showScoreboard, setShowScoreboard] = useState(false);
   const [highScore, setHighScore] = useState(
     decrypt(localStorage.getItem('highscore')) || 0
   );
@@ -27,12 +29,9 @@ function App() {
   return (
     /* Stage */ 
     <Box sx={{ width: '100vw', height: '100vh' }}>
-      {(gameState === ENUM.title) && (
-        <StartModal setGameState={setGameState} highscore={Number(highScore)} />
-      )}
-      {(gameState === ENUM.end) && (
-        <EndModal setGameState={setGameState} highscore={highScore} score={score}/>
-      )}
+      <ModalScoreBoard show={showScoreboard} onClose={() => { setShowScoreboard(false) }} highscore={Number(highScore)}/>
+      <ModalStart show={gameState === ENUM.title && !showScoreboard} setGameState={setGameState} highscore={Number(highScore)} setShowScoreboard={setShowScoreboard} />
+      <ModalEnd show={gameState === ENUM.end && !showScoreboard} setGameState={setGameState} highscore={Number(highScore)} score={score} setShowScoreboard={setShowScoreboard} />
       {(gameState >= 0) && (
         <Game setGameState={setGameState} setHighScore={setHighScore} setScore={setScore}/>
       )}

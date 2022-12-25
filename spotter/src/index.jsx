@@ -4,6 +4,7 @@ import App from './App';
 import { createTheme, ThemeProvider } from '@mui/material';
 import reportWebVitals from './reportWebVitals';
 
+
 const theme = createTheme({
   palette: {
     mode: 'dark',

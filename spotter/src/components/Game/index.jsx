@@ -2,20 +2,20 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Typography, useMediaQuery } from '@mui/material';
 import { Box } from '@mui/material';
 import { useTimer } from 'react-timer-hook'
-import TimeLeft from '../components/TimeLeft';
-import CharacterProfile from '../components/CharacterProfile';
-import { generateLevel } from './generateLevel';
-import CharacterCoin from '../components/CharacterCoin';
-import correctSFX from '../sfx/correct.ogg';
-import errorSFX from '../sfx/error.ogg';
-import useSound from 'use-sound';
-import LevelDisplay from '../components/LevelDisplay';
-import config from '../config.json';
-import Spotlight from '../components/Spotlight';
-import Distraction from '../components/Distraction';
-import { decrypt, encrypt } from '../helpers';
 import { isMobile } from 'react-device-detect';
+import { decrypt, encrypt } from '../../helpers';
+import { generateLevel } from './generateLevel';
+import TimeLeft from '../TimeLeft';
+import CharacterProfile from '../CharacterProfile';
+import CharacterCoin from '../CharacterCoin';
+import LevelDisplay from '../LevelDisplay';
+import config from '../../config.json';
+import Spotlight from '../Spotlight';
+import Distraction from '../Distraction';
 import PropTypes from 'prop-types';
+import correctSFX from '../../sfx/correct.ogg';
+import errorSFX from '../../sfx/error.ogg';
+import useSound from 'use-sound';
 
 function Game ({ setGameState, setHighScore, setScore}) {
   const time = new Date();
@@ -24,9 +24,10 @@ function Game ({ setGameState, setHighScore, setScore}) {
   const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm'));
   const [levelData, setLevelData] = useState(null);
   const [lastClicked, setLastClicked] = useState(-1);
+  const [gameOver, setGameOver] = useState(false);
+
   const [playCorrect] = useSound(correctSFX);
   const [playError] = useSound(errorSFX);
-  const [gameOver, setGameOver] = useState(false);
 
   useEffect(() => {
     // Build level
@@ -37,7 +38,6 @@ function Game ({ setGameState, setHighScore, setScore}) {
     seconds,
     minutes,
     isRunning,
-    // start,
     pause,
     resume,
     restart,

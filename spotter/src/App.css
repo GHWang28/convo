@@ -6,3 +6,30 @@ body {
   height: 100vh;
   background-color: rgb(32,32,32);
 }
+
+::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar {
+  opacity: 0.5;
+  width: 14px;
+  height: 14px;
+}
+
+/* Track of scrollbar. Where the thumb can move to */
+::-webkit-scrollbar-track {
+  background: rgba(17, 19, 20, 0.5);
+}
+
+/* Thumb of scrollbar. Where to click and drag */
+::-webkit-scrollbar-thumb {
+  border: 0.5px solid rgba(245, 245, 245, 0.5);
+  background: rgba(65, 70, 80, 0.5); 
+  border-radius: 5px;
+}
+
+/* Hover color */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(93, 99, 109);
+}

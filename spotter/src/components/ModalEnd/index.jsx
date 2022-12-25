@@ -1,24 +1,22 @@
 import React from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import Paper from '@mui/material/Paper';
 import Draggable from 'react-draggable';
 import { animated, useSpring } from "react-spring";
 import getCharacterTypes from "../CharacterCoin/getTypes";
 import ImageScroller from "../ImageScroller";
 import PropTypes from 'prop-types';
+import ButtonHighscore from '../ButtonHighscore';
 
 function PaperComponent(props) {
   return (
-    <Draggable
-      handle='#draggable-dialog'
-      cancel={'[class*="MuiDialogContent-root"]'}
-    >
+    <Draggable handle='#draggable-dialog' cancel={'[class*="MuiDialogContent-root"]'}>
       <Paper {...props} />
     </Draggable>
   );
 }
 
-function EndModal ({ setGameState, highscore = 0, score = 0 }) {
+function ModalEnd ({ show, setGameState, highscore = 0, score = 0, setShowScoreboard }) {
   const handleClose = (_, reason) => {
     if (reason && reason === 'backdropClick') return;
     setGameState(-1);
@@ -33,17 +31,12 @@ function EndModal ({ setGameState, highscore = 0, score = 0 }) {
         delay: 2000
       })}
       hideBackdrop
-      open={true}
+      open={show}
       onClose={handleClose}
       PaperComponent={PaperComponent}
       aria-labelledby='draggable-dialog'
     >
-      <DialogTitle
-        fontSize={30}
-        sx={{
-          cursor: 'move'
-        }}
-      >
+      <DialogTitle fontSize={30} sx={{ cursor: 'move' }}>
         {'Game Over'}
       </DialogTitle>
       <DialogContent>
@@ -54,6 +47,13 @@ function EndModal ({ setGameState, highscore = 0, score = 0 }) {
         <DialogContentText fontSize={25} color='whitesmoke' align='center'>
           {`Highscore: ${highscore}`}
         </DialogContentText>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }} mt={2}>
+          <ButtonHighscore
+            onClick={() => {
+              setShowScoreboard(true);
+            }}
+          />
+        </Box>
         <DialogContentText mb={-2} mt={2}>
           {'(You can move this dialog box by dragging the top)'}
         </DialogContentText>
@@ -65,10 +65,11 @@ function EndModal ({ setGameState, highscore = 0, score = 0 }) {
   )
 }
 
-EndModal.propTypes = {
+ModalEnd.propTypes = {
+  show: PropTypes.bool.isRequired,
   setGameState: PropTypes.func.isRequired,
   highscore: PropTypes.number,
   score: PropTypes.number
 };
 
-export default EndModal;
+export default ModalEnd;

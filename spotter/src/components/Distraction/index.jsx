@@ -33,7 +33,7 @@ function Distraction () {
           <Box
             key={`distraction-${index}`}
             height='100%'
-            width={(isMobile) ? '20vw' : '32vw'}
+            width={(isMobile) ? '20vw' : '25vw'}
             sx={{
               bgcolor: 'rgb(60,60,60)',
               borderLeft: '2px solid whitesmoke',
@@ -47,7 +47,7 @@ function Distraction () {
           <Box
             key={`distraction-${index}`}
             height='100%'
-            width={(isMobile) ? '20vw' : '32vw'}
+            width={(isMobile) ? '20vw' : '25vw'}
             sx={{
               bgcolor: 'rgb(60,60,60)',
               borderLeft: '2px solid whitesmoke',

@@ -13,9 +13,9 @@ export function generateLevel (level) {
   const noModifiers = (rng(0, 6) === 0);
 
   const totalChars = ((level === 0) ? 0 : Math.min(
-    Math.max(Math.floor(level) * 2, 5),
+    Math.max(level * 2, 4),
     150
-  )) + ((level >= 15 && noModifiers) ? rng(50, 60) : 0);
+  )) + ((level >= 10 && noModifiers) ? rng(50, 60) : 0);
 
   const characterToSpotID = rng(0, getCharacterTypes().length - 1);
 
@@ -40,60 +40,54 @@ export function generateLevel (level) {
   const generateModifiers = () => {
     const modifiers = [];
     const filters = [];
-    switch (Math.floor(level / 4)) {
+    switch (Math.floor(level / 3)) {
       case 0:
         break;
       case 1:
-        if (rng(0, 10) === 0) modifiers.push(...[
-          mod.rotaterAnimation
-        ]);
+        if (rng(0, 10) === 0) modifiers.push(mod.rotaterAnimation);
         break;
       case 2:
         // Rotating
-        modifiers.push(...[
-          mod.rotaterAnimationFast
-        ]);
+        modifiers.push(mod.rotaterAnimationFast);
         break;
       case 3:
         // Move left and right
-        modifiers.push(...[
-          mod.translateXAnimation
-        ]);
+        modifiers.push(mod.translateXAnimation);
         break;
       case 4:
         // Move up and down
-        modifiers.push(...[
-          mod.translateYAnimation
-        ]);
+        modifiers.push(mod.translateYAnimation);
         break;
       case 5:
-        // Zooming in and out quicker
-        modifiers.push(...[
-          mod.zoomInOutAnimationFast
-        ]);
+        // Grayscale
+        filters.push('grayscale(100%)')
         break;
       case 6:
+        // Zooming in and out quicker
+        modifiers.push(mod.zoomInOutAnimationFast);
+        break;
+      case 7:
         // Zooming in and out quicker
         modifiers.push(...[
           mod.zoomInOutAnimationFast,
           mod.rotaterAnimationFast
         ]);
         break;
-      case 7:
+      case 8:
         // Rotater and move left and right
         modifiers.push(...[
           mod.translateXAnimation,
           mod.rotaterAnimation
         ]);
         break;
-      case 8:
+      case 9:
         // Rotater and move up and down
         modifiers.push(...[
           mod.translateYAnimation,
           mod.rotaterAnimation
         ]);
         break;
-      case 9:
+      case 10:
         // Rotater and zoom in and out and move up and down
         modifiers.push(...[
           mod.translateYAnimation,
@@ -101,7 +95,7 @@ export function generateLevel (level) {
           mod.zoomInOutAnimation
         ]);
         break;
-      case 10:
+      case 11:
         // Rotater and zoom in and out and translate left to right
         modifiers.push(...[
           mod.translateXAnimation,
@@ -109,7 +103,7 @@ export function generateLevel (level) {
           mod.zoomInOutAnimation
         ]);
         break;
-      case 11:
+      case 12:
         // Rotater and zoom in and out and translate up to down fast
         modifiers.push(...[
           mod.translateYAnimation,
@@ -117,7 +111,7 @@ export function generateLevel (level) {
           mod.zoomInOutAnimationFast
         ]);
         break;
-      case 12:
+      case 13:
         // Rotater and zoom in and out and translate diagonal
         modifiers.push(...[
           mod.zoomInOutAnimation,
@@ -126,35 +120,35 @@ export function generateLevel (level) {
           mod.translateYAnimation
         ]);
         break;
-      case 13:
+      case 14:
         // grayscale
         filters.push('grayscale(100%)')
         break;
-      case 14:
+      case 15:
         // invert
         filters.push('invert(100%)')
         break;
-      case 15:
+      case 16:
         // blur
         filters.push('blur(3px)')
         break;
-      case 16:
+      case 17:
         // shape
         filters.push('invert(50%)')
         break;
-      case 17:
+      case 18:
         // Invert and grayscale
         filters.push('blur(3px)', 'grayscale(100%)')
         break;
-      case 18:
       case 19:
+      case 20:
         // Randomiser of modifiers
         modifiers.push(...[
           generateRandomModifier()
         ]);
         break;
-      case 20:
       case 21:
+      case 22:
         // Randomiser of modifiers and filters
         modifiers.push(...[
           generateRandomModifier()
@@ -189,8 +183,8 @@ export function generateLevel (level) {
   const otherCharacterData = [...Array(Math.max(totalChars))].map(() => ({
     id: uuidv4(),
     cid: generateRandomID(),
-    top: `${rng(50, 450) / 5}%`,
-    left: `${rng(50, 450) / 5}%`,
+    top: `${rng(25, 475) / 5}%`,
+    left: `${rng(25, 475) / 5}%`,
     modifiers: (noModifiers) ? {} : generateModifiers(),
     zIndex: rng(0,5)
   }));

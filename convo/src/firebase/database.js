@@ -1,6 +1,7 @@
-import { collection, doc, getDoc, getDocs, query, setDoc, where, serverTimestamp } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, setDoc, where, serverTimestamp, onSnapshot } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { firebaseDatabase } from ".";
+import { setFetching } from "../redux/actions";
 
 export function recordNewUser (user) {
   const docRef = doc(firebaseDatabase, 'users', user.uid);
@@ -36,13 +37,40 @@ export function joinUserToChannel (uid, cid, showToast = true) {
     })
 }
 
+/**
+ * Returns a promise with channel data of all channels the current uid is in
+ * @param {String} uid 
+ * @returns 
+ */
 export function getUserChannel (uid) {
   return getDocs(query(collection(firebaseDatabase, 'channelUserRelationship'), where('uid', '==', uid)))
     .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
-      });
+      return querySnapshot.docs.map((doc) => doc.data().cid);
+    }).then((channelIds) => {
+      return Promise.all(
+        channelIds.map((cid) => (
+          getDoc(doc(firebaseDatabase, 'channels', cid))
+            .then((channelData) => (
+              {...channelData.data(), cid}
+            ))
+        ))
+      )
     })
+}
+
+export function subscribeToChannelList (uid, setChannels, dispatch) {
+  if (!uid) return;
+
+  return onSnapshot(query(collection(firebaseDatabase, 'channelUserRelationship'), where('uid', '==', uid)), () => {
+    dispatch(setFetching(true));
+    getUserChannel(uid)
+      .then((allChannelData) => {
+        setChannels(allChannelData);
+      })
+      .finally(() => {
+        dispatch(setFetching(false));
+      })
+  })
 }
 
 export function getChannelUser (cid) {
@@ -71,5 +99,24 @@ export function postNewChannel (channelName, description, publicMode, uid) {
   })
   .then(() => {
     toast.success('Channel created successfully.')
+  })
+}
+
+/**
+ * 
+ * @param {String} searchTerm 
+ * @returns 
+ */
+export function searchChannel (searchTerm) {
+  const upperCaseTerm = searchTerm.toUpperCase();
+  const lowerCaseTerm = searchTerm.toLowerCase();
+
+  return getDocs(query(
+    collection(firebaseDatabase, 'channels'),
+    where('channelName', '>=', upperCaseTerm),
+    where('channelName', '<=', lowerCaseTerm),
+    where('publicMode', '==', true)
+  )).then((querySnapshot) => {
+    return querySnapshot.docs.map((doc) => ({...doc.data(), cid: doc.id}));
   })
 }

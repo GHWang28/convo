@@ -2,13 +2,12 @@ import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
 import React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { Route, Routes, useNavigate } from 'react-router';
+import { Route, Routes, useNavigate, useRoutes } from 'react-router';
 import { ToastContainer } from 'react-toastify';
 import ChannelsPage from './pages/ChannelsPage';
 import LoginRegisterPage from './pages/LoginRegisterPage';
 import LoadingCover from './components/LoadingCover';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setLogUserIn } from './redux/actions';
 import { auth } from './firebase';
@@ -35,28 +34,29 @@ export default function App() {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [user, loading] = useAuthState(auth);
-
-  // Recording new user and redirecting to appropriate pages
-  useEffect(() => {
-    if (!user) {
-      navigate('/');
-    } else {
-      recordNewUser(user)
-        .then((data) => {
-          navigate('/channels');
-          dispatch(setLogUserIn({...data, uid: user.uid}));
-        });
-    }
-  }, [user, navigate, dispatch]);
+  const isLoading = useAuthState(
+    auth,
+    {onUserChanged: (user) => {
+      if (!user) {
+        navigate('/');
+      } else {
+        recordNewUser(user)
+          .then((data) => {
+            navigate('/channels');
+            dispatch(setLogUserIn({...data, uid: user.uid}));
+          });
+      }
+    }}
+  )[1];
 
   return (
     <ThemeProvider theme={theme}>
       <ToastContainer theme='dark' position='bottom-right'/>
-      <LoadingCover display={loading} />
+      <LoadingCover display={isLoading} />
       <Routes>
         <Route path='/' element={<LoginRegisterPage />} />
-        <Route path='/channels' element={<ChannelsPage />} />
+        <Route path='/channels/' element={<ChannelsPage />} />
+        <Route path='/channels/:cid' element={<ChannelsPage />} />
       </Routes>
     </ThemeProvider>
   )

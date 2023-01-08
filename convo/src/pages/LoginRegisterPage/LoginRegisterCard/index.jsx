@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Button, Checkbox, CircularProgress, FormControlLabel, FormGroup, Typography } from '@mui/material';
 import { browserLocalPersistence, browserSessionPersistence, signInWithPopup } from 'firebase/auth';
-import { auth, githubProvider, googleProvider } from '../../firebase';
+import { auth, githubProvider, googleProvider } from '../../../firebase';
 import { toast } from 'react-toastify';
 import GoogleIcon from '@mui/icons-material/Google';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -72,20 +72,20 @@ export default function LoginRegisterCard () {
         <Button
           startIcon={<GoogleIcon />}
           variant='contained'
-          sx={{ mt: 'auto', mb: 2, width: '33.333%' }}
+          sx={{ mt: 'auto', mb: 1, width: 'min(500px, 50vw)' }}
           onClick={() => { signIn(googleProvider) }}
         >
-          {'Sign in with Google'}
+          {'Continue with Google'}
         </Button>
         <Button
           startIcon={<GitHubIcon />}
           variant='contained'
-          sx={{ mt: 2, mb: 'auto', width: '33.333%' }}
+          sx={{ mt: 1, width: 'min(500px, 50vw)' }}
           onClick={() => { signIn(githubProvider) }}
         >
-          {'Sign in with GitHub'}
+          {'Continue with GitHub'}
         </Button>
-        <FormGroup>
+        <FormGroup sx={{ mb: 'auto' }}>
           <FormControlLabel
             control={
               <Checkbox

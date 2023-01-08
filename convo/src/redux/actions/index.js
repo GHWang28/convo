@@ -25,6 +25,13 @@ export function setShowChannelCreateModal (boolean) {
   }
 }
 
+export function setShowChannelSearchModal (boolean) {
+  return {
+    type: 'CHANNEL_SEARCH_MODAL',
+    value: boolean
+  }
+}
+
 export function setFetching (boolean) {
   return {
     type: 'FETCHING',

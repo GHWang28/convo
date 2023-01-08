@@ -1,5 +1,6 @@
+import React from 'react';
 import { Box, Grid } from '@mui/material';
-import LoginRegisterCard from '../../components/LoginRegisterCard';
+import LoginRegisterCard from './LoginRegisterCard';
 
 export default function LoginRegisterPage () {
   return (

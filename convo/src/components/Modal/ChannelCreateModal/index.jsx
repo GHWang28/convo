@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Modal from '.';
-import { setFetching, setShowChannelCreateModal } from '../../redux/actions';
+import Modal from '..';
+import { setFetching, setShowChannelCreateModal } from '../../../redux/actions';
 import { FormControlLabel, Grid, TextField, Switch, Alert } from '@mui/material';
-import { postNewChannel } from '../../firebase/database';
+import { postNewChannel } from '../../../firebase/database';
 import { toast } from 'react-toastify';
 
 export default function ChannelCreateModal () {
@@ -42,7 +42,7 @@ export default function ChannelCreateModal () {
   return (
     <Modal
       open={useSelector(state => state.channelCreateModal)}
-      title={'Channel Create'}
+      title='Channel Create'
       handleConfirm={onConfirm}
       handleClose={onClose}
       confirmColor='success'
@@ -51,6 +51,7 @@ export default function ChannelCreateModal () {
       <Grid container sx={{ alignItems: 'center' }}>
         <Grid item xs={9}>
           <TextField
+            sx={{ bgcolor: 'trayColorBg' }}
             label='Channel Name *'
             variant='outlined'
             fullWidth
@@ -70,7 +71,7 @@ export default function ChannelCreateModal () {
         </Grid>
       </Grid>
       <TextField
-        sx={{ mt: 2 }}
+        sx={{ mt: 2, bgcolor: 'trayColorBg' }}
         label='Channel Description'
         variant='outlined'
         fullWidth

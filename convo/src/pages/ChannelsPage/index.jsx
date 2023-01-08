@@ -3,6 +3,9 @@ import React, { Fragment } from 'react';
 import ChannelCreateModal from '../../components/Modal/ChannelCreateModal';
 import LogOutModal from '../../components/Modal/LogOutModal';
 import ChannelTray from './ChannelTray';
+import { useParams } from 'react-router-dom';
+import ChannelView from './ChannelView';
+import ChannelSearchModal from '../../components/Modal/ChannelSearchModal';
 
 export default function ChannelsPage () {
 
@@ -10,6 +13,7 @@ export default function ChannelsPage () {
     <Fragment>
       <LogOutModal />
       <ChannelCreateModal />
+      <ChannelSearchModal />
       <Box
         sx={{
           width: '100vw',
@@ -18,9 +22,7 @@ export default function ChannelsPage () {
         }}
       >
         <ChannelTray />
-        <Typography>
-          {'Heyheyhehyehyeyh'}
-        </Typography>
+        <ChannelView />
       </Box>
     </Fragment>
   )

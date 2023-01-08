@@ -6,13 +6,13 @@ import { Route, Routes, useNavigate } from 'react-router';
 import LoginRegisterPage from './Pages/LoginRegisterPage';
 import { ToastContainer } from 'react-toastify';
 import ChannelsPage from './Pages/ChannelsPage';
-import { auth, firebaseDatabase } from './Firebase';
+import { auth } from './Firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setLogUserIn } from './redux/actions';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
 import LoadingCover from './components/LoadingCover';
+import { recordNewUser } from './Firebase/database';
 
 export default function App() {
   const theme = createTheme({
@@ -37,29 +37,12 @@ export default function App() {
   const dispatch = useDispatch();
   const [user, loading] = useAuthState(auth);
 
+  // Recording new user and redirecting to appropriate pages
   useEffect(() => {
     if (!user) {
       navigate('/');
     } else {
-      const docRef = doc(firebaseDatabase, 'user-data', user.uid);
-      getDoc(docRef)
-        .then((doc) => {
-          if (!doc.exists()) {
-            const newData = {
-              handler: user.displayName,
-              bio: '',
-              profilePic: user.photoURL
-            }
-            return setDoc(
-              docRef,
-              newData
-            ).then(() => {
-              return newData;
-            })
-          } else {
-            return doc.data();
-          }
-        })
+      recordNewUser(user)
         .then((data) => {
           navigate('/channels');
           dispatch(setLogUserIn(data));

@@ -1,19 +1,3 @@
 {
-    "PRIVATE_KEY": "@#SPOTTYSPOT#@",
-    "START_TIME": 20,
-    "MAX_TIME": 50,
-    "SPOT_TIME": 10,
-    "ERROR_TIME": -15,
-    "CHARACTERS": [
-        "/images/characters/8.svg",
-        "/images/characters/2.svg",
-        "/images/characters/1.svg",
-        "/images/characters/9.svg",
-        "/images/characters/3.svg",
-        "/images/characters/7.svg",
-        "/images/characters/5.svg",
-        "/images/characters/4.svg",
-        "/images/characters/6.svg",
-        "/images/characters/10.svg"
-    ]
+    
 }

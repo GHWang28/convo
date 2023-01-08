@@ -3,16 +3,16 @@ import 'react-toastify/dist/ReactToastify.css';
 import React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { Route, Routes, useNavigate } from 'react-router';
-import LoginRegisterPage from './Pages/LoginRegisterPage';
 import { ToastContainer } from 'react-toastify';
-import ChannelsPage from './Pages/ChannelsPage';
-import { auth } from './Firebase';
+import ChannelsPage from './pages/ChannelsPage';
+import LoginRegisterPage from './pages/LoginRegisterPage';
+import LoadingCover from './components/LoadingCover';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setLogUserIn } from './redux/actions';
-import LoadingCover from './components/LoadingCover';
-import { recordNewUser } from './Firebase/database';
+import { auth } from './firebase';
+import { recordNewUser } from './firebase/database';
 
 export default function App() {
   const theme = createTheme({
@@ -45,7 +45,7 @@ export default function App() {
       recordNewUser(user)
         .then((data) => {
           navigate('/channels');
-          dispatch(setLogUserIn(data));
+          dispatch(setLogUserIn({...data, uid: user.uid}));
         });
     }
   }, [user, navigate, dispatch]);

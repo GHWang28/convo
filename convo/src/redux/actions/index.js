@@ -17,3 +17,17 @@ export function setShowLogOutModal (boolean) {
     value: boolean
   }
 }
+
+export function setShowChannelCreateModal (boolean) {
+  return {
+    type: 'CHANNEL_CREATE_MODAL',
+    value: boolean
+  }
+}
+
+export function setFetching (boolean) {
+  return {
+    type: 'FETCHING',
+    value: boolean
+  }
+}

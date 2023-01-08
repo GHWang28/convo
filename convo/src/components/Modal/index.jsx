@@ -13,6 +13,7 @@ export default function Modal ({
   handleClose,
   title,
   subtitle,
+  fullWidth = false,
   children
 }) {
   return (
@@ -20,6 +21,7 @@ export default function Modal ({
       open={open}
       TransitionComponent={Transition}
       onClose={handleClose}
+      fullWidth={fullWidth}
       aria-labelledby='dialog-title'
       PaperProps={{
         sx: {

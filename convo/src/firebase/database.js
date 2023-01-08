@@ -25,11 +25,14 @@ export function recordNewUser (user) {
     })
 }
 
-export function joinUserToChannel (uid, cid) {
+export function joinUserToChannel (uid, cid, showToast = true) {
   const docRef = doc(collection(firebaseDatabase, 'channelUserRelationship'));
   return setDoc(docRef, { uid, cid })
+    .then(() => {
+      if (showToast) toast.success('Channel joined.')
+    })
     .catch(() => {
-      toast.error('An error occurred when joining this channel')
+      toast.error('An error occurred when joining this channel.')
     })
 }
 
@@ -64,6 +67,9 @@ export function postNewChannel (channelName, description, publicMode, uid) {
       dateCreated: serverTimestamp()
     }
   ).then(() => {
-    return joinUserToChannel(uid, channelId);
+    return joinUserToChannel(uid, channelId, false);
+  })
+  .then(() => {
+    toast.success('Channel created successfully.')
   })
 }

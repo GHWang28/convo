@@ -1,16 +1,15 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '.';
-import { auth } from '../../Firebase';
+import { auth } from '../../firebase';
 import { setLogUserOut, setShowLogOutModal } from '../../redux/actions';
 
 export default function LogOutModal () {
-  const logOutModal = useSelector(state => state.logOutModal);
   const dispatch = useDispatch();
 
   return (
     <Modal
-      open={logOutModal}
+      open={useSelector(state => state.logOutModal)}
       handleClose={() => { dispatch(setShowLogOutModal(false)) }}
       title={'Log out'}
       subtitle={'Are you sure you want to log out?'}

@@ -32,6 +32,24 @@ export function setShowChannelSearchModal (boolean) {
   }
 }
 
+export function setShowChannelInfoModal (boolean, channelName, channelDescription, channelId) {
+  if (!boolean) {
+    return {
+      type: 'CHANNEL_INFO_MODAL_HIDE',
+      value: boolean
+    }
+  }
+  
+  return {
+    type: 'CHANNEL_INFO_MODAL_SHOW',
+    value: {
+      channelName,
+      channelDescription,
+      channelId
+    }
+  }
+}
+
 export function setFetching (boolean) {
   return {
     type: 'FETCHING',

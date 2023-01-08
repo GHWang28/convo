@@ -51,7 +51,7 @@ export default function ChannelCreateModal () {
       <Grid container sx={{ alignItems: 'center' }}>
         <Grid item xs={9}>
           <TextField
-            sx={{ bgcolor: 'trayColorBg' }}
+            sx={{ bgcolor: 'mainColorNormal' }}
             label='Channel Name *'
             variant='outlined'
             fullWidth
@@ -71,7 +71,7 @@ export default function ChannelCreateModal () {
         </Grid>
       </Grid>
       <TextField
-        sx={{ mt: 2, bgcolor: 'trayColorBg' }}
+        sx={{ mt: 2, bgcolor: 'mainColorNormal' }}
         label='Channel Description'
         variant='outlined'
         fullWidth

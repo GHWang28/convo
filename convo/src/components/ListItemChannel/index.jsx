@@ -1,74 +1,83 @@
-import React, { useState } from 'react';
-import { Grid, Typography } from '@mui/material';
+import React from 'react';
+import { Box, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { setShowChannelSearchModal } from '../../redux/actions';
+import BootstrapTooltip from '../BootstrapTooltip';
 
 export default function ListItemChannel ({ channelData, closeSearchModal, showDesc, showPressed }) {
-  const [hover, setHover] = useState(false);
   const currViewingChannel = useParams().cid;
+  const pressed = (currViewingChannel === channelData.cid && showPressed);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   return (
-    <Grid
-      container
-      mt={1}
-      p={1}
-      role='button'
-      sx={{
-        minHeight: (showDesc) ? '60px' : '50px',
-        border: '1px solid whitesmoke',
-        borderRadius: '5px',
-        cursor: 'pointer',
-        bgcolor: hover && 'rgba(255,255,255,0.25)',
-        filter: (currViewingChannel === channelData.cid && showPressed) && 'brightness(50%)'
-      }}
-      onClick={() => {
-        if (closeSearchModal) dispatch(setShowChannelSearchModal(false));
-        navigate(`/channels/${channelData?.cid}`);
-      }}
-      onMouseEnter={() => { setHover(true) }}
-      onMouseLeave={() => { setHover(false) }}
-    >
-      <Grid item xs={2}>
-        {/* Possible Server Profile Picture */}
-      </Grid>
-      <Grid
-        item
-        xs={10}
+    <BootstrapTooltip title={channelData?.name} placement='right'>
+      <Box
+        mt={1}
+        p={1}
+        role='button'
         sx={{
+          borderWidth: '1px',
+          borderStyle: 'solid',
+          borderColor: (channelData.publicMode) ? 'publicColor' : 'privateColor',
+          borderRadius: '5px',
           display: 'flex',
-          flexDirection: (showDesc) ? 'column' : 'row',
-          alignItems: 'center'
+          cursor: (!pressed) && 'pointer',
+          transition: 'background-color 0.25s ease-in-out',
+          '&:hover': {
+            bgcolor: (!pressed) && 'highlightColor'
+          },
+          bgcolor: (pressed) && ((channelData.publicMode) ? 'publicColor' : 'privateColor')
+        }}
+        onClick={() => {
+          if (pressed) return;
+          if (closeSearchModal) dispatch(setShowChannelSearchModal(false));
+          navigate(`/channels/${channelData?.cid}`);
         }}
       >
-        <Typography
+        <Box sx={{ width: (showDesc) ? '48px' : '24px'}}>
+          {/* Possible Server Profile Picture */}
+        </Box>
+        <Box
           sx={{
-            fontWeight: 'bold',
-            textOverflow: 'ellipsis',
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            width: '95%',
+            flexGrow: 1,
+            display: 'flex',
+            flexDirection: (showDesc) ? 'column' : 'row',
+            alignItems: 'center'
           }}
         >
-          {channelData.channelName}
-        </Typography>
-        {(showDesc) && (
           <Typography
             sx={{
+              fontWeight: 'bold',
               textOverflow: 'ellipsis',
               overflow: 'hidden',
               whiteSpace: 'nowrap',
-              width: '95%'
+              width: '95%',
+              transition: 'color 0.25s ease-in-out',
+              color: (pressed)
+                ? 'black'
+                : (channelData.publicMode) ? 'publicColor' : 'privateColor'
             }}
-            color='secondary'
           >
-            &nbsp;&nbsp;{channelData.description || 'No Description'}
+            {channelData.name}
           </Typography>
-        )}
-      </Grid>
-    </Grid>
+          {(showDesc) && (
+            <Typography
+              sx={{
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                width: '95%'
+              }}
+              color='secondary'
+            >
+              &nbsp;&nbsp;{channelData.description || 'No Description'}
+            </Typography>
+          )}
+        </Box>
+      </Box>
+    </BootstrapTooltip>
   )
 }

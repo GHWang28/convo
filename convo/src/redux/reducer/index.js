@@ -1,5 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import channelCreateModalReducer from './channelCreateModalReducer';
+import channelInfoModalReducer from './channelInfoModalReducer';
 import channelSearchModalReducer from './channelSearchModalReducer';
 import fetchingReducer from './fetchingReducer';
 import loggedInUserDataReducer from './loggedInUserDataReducer';
@@ -13,6 +14,7 @@ const combinedReducer = combineReducers({
   logOutModal: logOutModalReducer,
   channelCreateModal: channelCreateModalReducer,
   channelSearchModal: channelSearchModalReducer,
+  channelInfoModal: channelInfoModalReducer,
   fetching: fetchingReducer
 })
 

@@ -1,11 +1,11 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import React, { Fragment } from 'react';
 import ChannelCreateModal from '../../components/Modal/ChannelCreateModal';
 import LogOutModal from '../../components/Modal/LogOutModal';
 import ChannelTray from './ChannelTray';
-import { useParams } from 'react-router-dom';
 import ChannelView from './ChannelView';
 import ChannelSearchModal from '../../components/Modal/ChannelSearchModal';
+import ChannelInfoModal from '../../components/Modal/ChannelInfoModal';
 
 export default function ChannelsPage () {
 
@@ -14,6 +14,7 @@ export default function ChannelsPage () {
       <LogOutModal />
       <ChannelCreateModal />
       <ChannelSearchModal />
+      <ChannelInfoModal />
       <Box
         sx={{
           width: '100vw',

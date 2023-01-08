@@ -2,7 +2,7 @@ import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
 import React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { Route, Routes, useNavigate, useRoutes } from 'react-router';
+import { Route, Routes, useNavigate } from 'react-router';
 import { ToastContainer } from 'react-toastify';
 import ChannelsPage from './pages/ChannelsPage';
 import LoginRegisterPage from './pages/LoginRegisterPage';
@@ -19,10 +19,17 @@ export default function App() {
       secondary: {
         main: 'rgb(192,192,192)'
       },
-      trayColorBg: 'rgb(29, 32, 37)',
-      trayTabColorBg: 'rgb(21, 24, 27)',
+      tooltipColor: {
+        bg: 'white',
+        text: 'black'
+      },
+      publicColor: 'rgb(150, 246, 246)',
+      privateColor: 'rgb(185, 239, 164)',
+      mainColorNormal: 'rgb(29, 32, 37)',
+      mainColorDark: 'rgb(21, 24, 27)',
+      mainColorLight: 'rgb(54, 57, 63)',
+      highlightColor: 'rgba(255, 255, 255, 0.1)',
       iconColor: 'whitesmoke',
-      trayFooterColor: 'rgb(53, 58, 68)',
       mode: 'dark',
     },
     typography: {
@@ -30,6 +37,13 @@ export default function App() {
         color: 'whitesmoke'
       },
       fontFamily: '"Inter"'
+    },
+    components: {
+      MuiButtonBase: {
+        defaultProps: {
+          disableRipple: true
+        }
+      }
     }
   });
   const navigate = useNavigate();

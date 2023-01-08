@@ -22,8 +22,8 @@ export default function TrayContent ({ height }) {
     <Box
       sx={{
         height,
-        width: 'min(300px, calc(100vw - 60px))',
-        bgcolor: 'trayColorBg',
+        width: 'min(250px, calc(100vw - 60px))',
+        bgcolor: 'mainColorNormal',
         display: 'flex',
         flexDirection: 'column',
       }}
@@ -35,7 +35,7 @@ export default function TrayContent ({ height }) {
           boxShadow: '0 0 30px rgba(0,0,0,0.5)',
           clipPath: 'inset(0px 0px -30px 0px)',
           p: 1,
-          bgcolor: 'trayFooterColor',
+          bgcolor: 'mainColorLight',
           boxSizing: 'border-box'
         }}
       >
@@ -44,9 +44,7 @@ export default function TrayContent ({ height }) {
           fullWidth
           defaultValue='Search Public Channels'
           InputProps={{
-            sx: {
-              bgcolor: 'trayColorBg'
-            },
+            sx: { bgcolor: 'mainColorNormal', height: '35px', color: 'secondary.main' },
             readOnly: true,
             endAdornment: <SearchIcon />
           }}
@@ -57,6 +55,7 @@ export default function TrayContent ({ height }) {
           {'Your Channels'}
         </Typography>
       </Box>
+
       {/* Contains all channel items */}
       <Box
         sx={{
@@ -80,7 +79,7 @@ export default function TrayContent ({ height }) {
           clipPath: 'inset(-30px 0px 0px 0px)',
           width: '100%',
           height: '60px',
-          bgcolor: 'trayFooterColor',
+          bgcolor: 'mainColorLight',
           alignItems: 'center'
         }}
       >

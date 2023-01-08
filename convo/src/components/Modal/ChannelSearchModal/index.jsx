@@ -44,7 +44,7 @@ export default function ChannelSearchModal () {
         value={searchTerm}
         InputProps={{
           sx: {
-            bgcolor: 'trayColorBg'
+            bgcolor: 'mainColorNormal'
           },
           endAdornment: (
             <IconButton onClick={onSearch}>
@@ -61,7 +61,7 @@ export default function ChannelSearchModal () {
         sx={{
           maxHeight: '500px',
           overflowY: 'auto',
-          bgcolor: 'trayColorBg',
+          bgcolor: 'mainColorNormal',
           borderRadius: '5px',
           p: 1,
         }}
@@ -70,7 +70,7 @@ export default function ChannelSearchModal () {
           <Typography my={1} align='center'>
             {(searched)
               ? `No channels have a name similar to "${searched}".`
-              : 'Enter key words above to find Channels with similar names to the key words.'
+              : 'Search for channels with similar names by entering keywords.'
             }
           </Typography>
         )}

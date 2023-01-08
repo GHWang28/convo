@@ -6,7 +6,7 @@ import TrayContent from './TrayContent';
 
 export default function ChannelTray () {
   const [showChannelTray, setShowChannelTray] = useState(true);
-  const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm'));
+  const mediumMq = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
   const onToggleTray = () => {
     setShowChannelTray(!showChannelTray);
@@ -16,25 +16,23 @@ export default function ChannelTray () {
 
   return (
     <Fragment>
-      <Box
-        sx={{
-          position: (smallMq) ? 'static' : 'absolute',
-          display: 'flex'
-        }}
-      >
-        {/* Info */}
+      <Box sx={{ position: (mediumMq) ? 'static' : 'absolute', display: 'flex' }}>
+        {/* Info with tray content */}
         <Collapse in={showChannelTray} orientation='horizontal' sx={{ zIndex: 2 }}>
           <TrayContent height={height} />
         </Collapse>
 
         {/* Tab */}
-        {(smallMq) ? (
+        {(mediumMq) ? (
           <Box
             role='button'
             sx={{
               height,
-              width: '40px',
-              bgcolor: 'trayTabColorBg',
+              width: '25px',
+              bgcolor: 'mainColorDark',
+              '&:hover': {
+                filter: 'brightness(110%)'
+              },
               cursor: 'pointer',
               display: 'flex',
               justifyContent: 'center',
@@ -66,7 +64,7 @@ export default function ChannelTray () {
         )}
       </Box>
       <Backdrop
-        open={!smallMq && showChannelTray}
+        open={!mediumMq && showChannelTray}
         sx={{ zIndex: 0 }}
         onClick={onToggleTray}
       />

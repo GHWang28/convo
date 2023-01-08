@@ -82,14 +82,23 @@ export function getChannelUser (cid) {
     })
 }
 
-export function postNewChannel (channelName, description, publicMode, uid) {
+export function getChannel (cid) {
+  const docRef = doc(firebaseDatabase, 'channels', cid);
+  return getDoc(docRef)
+    .then((channelData) => {
+      if (!channelData.exists()) return null;
+      return { ...channelData.data(), cid: channelData.id }
+    })
+}
+
+export function postNewChannel (name, description, publicMode, uid) {
   const docRef = doc(collection(firebaseDatabase, 'channels'));
   const channelId = docRef.id;
 
   return setDoc(
     docRef,
     {
-      channelName,
+      name,
       description,
       publicMode,
       dateCreated: serverTimestamp()
@@ -113,8 +122,8 @@ export function searchChannel (searchTerm) {
 
   return getDocs(query(
     collection(firebaseDatabase, 'channels'),
-    where('channelName', '>=', upperCaseTerm),
-    where('channelName', '<=', lowerCaseTerm),
+    where('name', '>=', upperCaseTerm),
+    where('name', '<=', lowerCaseTerm),
     where('publicMode', '==', true)
   )).then((querySnapshot) => {
     return querySnapshot.docs.map((doc) => ({...doc.data(), cid: doc.id}));

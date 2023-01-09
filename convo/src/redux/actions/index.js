@@ -56,3 +56,10 @@ export function setFetching (boolean) {
     value: boolean
   }
 }
+
+export const setImageZoom = (src) => {
+  return {
+    type: 'SET_IMAGE_ZOOM',
+    value: src
+  };
+}

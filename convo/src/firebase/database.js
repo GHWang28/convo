@@ -162,3 +162,13 @@ export function postMessage (cid, uid, text) {
 
   return setDoc(doc(collection(firebaseDatabase, 'channels', cid, 'messages')), messagePackage);
 }
+
+export function isUrlToImage (url) {
+  const img = new Image();
+  img.src = url;
+
+  return new Promise((resolve) => {
+    img.onerror = () => resolve(false);
+    img.onload = () => resolve(true);
+  });
+}

@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { setLogUserIn } from './redux/actions';
 import { auth } from './firebase';
 import { recordNewUser } from './firebase/database';
+import ImageZoomer from './components/ImageZoomer';
 
 export default function App() {
   const theme = createTheme({
@@ -66,6 +67,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <ImageZoomer />
       <ToastContainer theme='dark' position='bottom-right'/>
       <LoadingCover display={isLoading} />
       <Routes>

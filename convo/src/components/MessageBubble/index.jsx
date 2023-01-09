@@ -1,21 +1,27 @@
 import { Avatar, Box, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { getUser } from '../../firebase/database';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser, isUrlToImage } from '../../firebase/database';
+import { setImageZoom } from '../../redux/actions';
 import DateDisplay from '../DateDisplay';
 import TypographyTruncate from '../TypographyTruncate';
 
 export default function MessageBubble ({ messageData, publicMode, arrow }) {
   const [sender, setSender] = useState(null);
   const [hover, setHover] = useState(false);
+  const [isImg, setIsImg] = useState(false);
+  const dispatch = useDispatch();
   const viewerIsSender = (useSelector(state => state.loggedInUserData)?.uid === sender?.uid);
 
   useEffect(() => {
     getUser(messageData?.uid)
       .then((userData) => {
         setSender(userData);
+        return isUrlToImage(messageData?.text);
+      }).then((status) => {
+        setIsImg(status);
       })
-  }, [messageData?.uid]);
+  }, [messageData?.uid, messageData?.text]);
 
   return (
     <Box
@@ -43,8 +49,8 @@ export default function MessageBubble ({ messageData, publicMode, arrow }) {
           position: 'relative',
           ml: (!viewerIsSender) && 2,
           mr: (viewerIsSender) && 2,
-          p: 1,
-          pl: 2
+          pt: 1,
+          px: 2
         }}
       >
         {(arrow) && <MessageTail publicMode={publicMode} right={viewerIsSender} />}
@@ -53,10 +59,33 @@ export default function MessageBubble ({ messageData, publicMode, arrow }) {
           text={sender?.handler}
           sx={{ fontWeight: 'bold' }}
         />
-        
-        <Typography sx={{ wordBreak: 'break-word' }}>
-          {messageData?.text}
-        </Typography>
+        {(isImg) ? (
+          <Box
+            component='img'
+            mt={2}
+            src={messageData?.text}
+            onClick={() => {
+              dispatch(setImageZoom(messageData?.text))
+            }}
+            sx={{
+              borderStyle: 'solid',
+              borderWidth: '1px',
+              borderRadius: '5px',
+              borderColor: (publicMode) ? 'publicColor' : 'privateColor',
+              maxHeight: '500px',
+              maxWidth: '100%',
+              cursor: 'pointer',
+              transition: 'scale 0.25s ease-in-out',
+              '&:hover': {
+                scale: '1.02'
+              }
+            }}
+          />
+        ) : (
+          <Typography sx={{ wordBreak: 'break-word' }}>
+            {messageData?.text}
+          </Typography>
+        )}
         <DateDisplay time={messageData?.timestamp?.seconds} align='right' shorten={!hover}/>
       </Box>
     </Box>

@@ -3,6 +3,8 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { getChannel } from '../../../firebase/database';
 import ChannelHeader from './ChannelHeader';
+import ChannelMessages from './ChannelMessages';
+import ChannelSender from './ChannelSender';
 
 export default function ChannelView () {
   const cid = useParams().cid;
@@ -18,10 +20,8 @@ export default function ChannelView () {
     getChannel(cid)
       .then((channelData) => {
         setChannelData(channelData);
-      })
-      .finally(() => {
         setFetching(false);
-      })
+      });
   }, [cid]);
 
   // Display error or info message if fetching or channelId not given or channelData does not exist
@@ -48,11 +48,12 @@ export default function ChannelView () {
       )}
     </Box>
   )
-
   // Returning regular view
   return (
-    <Box sx={{ width: '100%', height: '100%' }}>
+    <Box sx={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
       <ChannelHeader channelData={channelData} />
+      <ChannelMessages channelData={channelData} />
+      <ChannelSender cid={cid} />
     </Box>
   )
 }

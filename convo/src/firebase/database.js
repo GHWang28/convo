@@ -76,9 +76,16 @@ export function subscribeToChannelList (uid, setChannels, dispatch) {
 export function getChannelUser (cid) {
   return getDocs(query(collection(firebaseDatabase, 'channelUserRelationship'), where('cid', '==', cid)))
     .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        console.log(doc.id, ' => ', doc.data());
-      });
+      return querySnapshot.docs.map((doc) => doc.data().uid);
+    }).then((userIds) => {
+      return Promise.all(
+        userIds.map((uid) => (
+          getDoc(doc(firebaseDatabase, 'users', uid))
+            .then((userData) => (
+              {...userData.data(), uid}
+            ))
+        ))
+      )
     })
 }
 
@@ -88,6 +95,22 @@ export function getChannel (cid) {
     .then((channelData) => {
       if (!channelData.exists()) return null;
       return { ...channelData.data(), cid: channelData.id }
+    })
+}
+
+const userCache = {};
+
+export function getUser (uid) {
+  if (userCache[uid]) {
+    return Promise.resolve(userCache[uid]);
+  }
+
+  return getDoc(doc(firebaseDatabase, 'users', uid))
+    .then((userData) => {
+      if (!userData.exists()) return null;
+      const newData = {...userData.data(), uid};
+      userCache[uid] = newData;
+      return newData;
     })
 }
 
@@ -128,4 +151,14 @@ export function searchChannel (searchTerm) {
   )).then((querySnapshot) => {
     return querySnapshot.docs.map((doc) => ({...doc.data(), cid: doc.id}));
   })
+}
+
+export function postMessage (cid, uid, text) {
+  const messagePackage = {
+    text, 
+    timestamp: serverTimestamp(),
+    uid
+  }
+
+  return setDoc(doc(collection(firebaseDatabase, 'channels', cid, 'messages')), messagePackage);
 }

@@ -55,6 +55,7 @@ export default function ChannelTray () {
               height: '40px',
               width: '40px',
               cursor: 'pointer',
+              bgcolor: 'mainColorLight',
               zIndex: 2
             }}
             onClick={onToggleTray}
@@ -65,7 +66,7 @@ export default function ChannelTray () {
       </Box>
       <Backdrop
         open={!mediumMq && showChannelTray}
-        sx={{ zIndex: 0 }}
+        sx={{ zIndex: 1 }}
         onClick={onToggleTray}
       />
     </Fragment>

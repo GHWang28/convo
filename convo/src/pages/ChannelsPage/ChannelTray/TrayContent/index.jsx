@@ -90,7 +90,6 @@ export default function TrayContent ({ height }) {
             }}
             alt={userData?.handler}
             src={userData?.profilePic}
-            referrerPolicy='origin'
           />
         </Grid>
         <Grid item xs={7}>

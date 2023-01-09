@@ -23,6 +23,7 @@ export default function App() {
         bg: 'white',
         text: 'black'
       },
+      borderColor: 'whitesmoke',
       publicColor: 'rgb(150, 246, 246)',
       privateColor: 'rgb(185, 239, 164)',
       mainColorNormal: 'rgb(29, 32, 37)',
@@ -43,7 +44,7 @@ export default function App() {
         defaultProps: {
           disableRipple: true
         }
-      }
+      },
     }
   });
   const navigate = useNavigate();

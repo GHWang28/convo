@@ -1,5 +1,5 @@
+import React from 'react';
 import { Typography } from '@mui/material';
-import { useState } from 'react';
 import { convertEpochToDate } from '../../helpers';
 
 export default function DateDisplay ({ time, fontSize = 11, align, shorten }) {

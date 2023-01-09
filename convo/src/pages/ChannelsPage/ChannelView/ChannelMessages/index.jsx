@@ -1,22 +1,33 @@
-import { Box, Typography } from '@mui/material';
-import { collection, endBefore, getDoc, getDocs, limit, onSnapshot, orderBy, query, serverTimestamp, startAfter } from 'firebase/firestore';
-import { firebaseDatabase } from '../../../../firebase';
 import React, { useState } from 'react';
+import { Box } from '@mui/material';
+import { collection, endBefore, getDocs, limit, orderBy, query, startAfter } from 'firebase/firestore';
+import { firebaseDatabase } from '../../../../firebase';
 import MessageBubble from '../../../../components/MessageBubble';
 import { useEffect } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import MessageLoad from '../../../../components/MessageLoad';
+import config from '../../../../config.json';
+
+const handleNextQueryState = (oldMessages, setNextQuery, cid) => {
+  setNextQuery((oldMessages.docs.length < config.PAIGNATION_LENGTH) ? (
+    null
+  ) : (
+    query(
+      collection(firebaseDatabase, 'channels', cid, 'messages'),
+      orderBy('timestamp', 'desc'),
+      startAfter(oldMessages.docs[oldMessages.docs.length - 1]),
+      limit(config.PAIGNATION_LENGTH)
+    )
+  ));
+}
 
 export default function ChannelMessages ({ channelData }) {
   const [messages, setMessages] = useState([]);
   const [state] = useState(new Date());
-  const [nextQuery, setNextQuery] = useState(query(
-    collection(firebaseDatabase, 'channels', channelData?.cid, 'messages'),
-    orderBy('timestamp', 'desc'),
-    limit(20)
-  ));
-  const [incomingMessage] = useCollection(query(
+  const [nextQuery, setNextQuery] = useState(null);
+
+  const [incomingMessages] = useCollection(query(
     collection(firebaseDatabase, 'channels', channelData?.cid, 'messages'),
     orderBy('timestamp', 'desc'),
     endBefore(state)
@@ -25,27 +36,28 @@ export default function ChannelMessages ({ channelData }) {
   const onLoadMore = () => {
     if (!nextQuery) return;
     getDocs(nextQuery)
-      .then((newMessages) => {
-        return new Promise((resolve) => (setTimeout(() => { resolve(newMessages) }, 100)))
+      .then((oldMessages) => {
+        return new Promise((resolve) => (setTimeout(() => { resolve(oldMessages) }, 100)))
       })
-      .then((newMessages) => {
+      .then((oldMessages) => {
         setMessages([
           ...messages,
-          ...newMessages.docs
+          ...oldMessages.docs
         ]);
-        setNextQuery((newMessages.docs.length < 20) ? (
-          null
-        ) : (
-          query(
-            collection(firebaseDatabase, 'channels', channelData?.cid, 'messages'),
-            orderBy('timestamp', 'desc'),
-            startAfter(newMessages.docs[newMessages.docs.length - 1]),
-            limit(20)
-          )
-        ));
+        handleNextQueryState(oldMessages, setNextQuery, channelData?.cid);
       })
   }
-  useEffect(onLoadMore, []);
+
+  useEffect(() => {
+    getDocs(query(
+      collection(firebaseDatabase, 'channels', channelData?.cid, 'messages'),
+      orderBy('timestamp', 'desc'),
+      limit(config.PAIGNATION_LENGTH)
+    )).then((oldMessages) => {
+      setMessages([...oldMessages.docs]);
+      handleNextQueryState(oldMessages, setNextQuery, channelData?.cid);
+    })
+  }, [channelData?.cid]);
 
   return (
     <Box
@@ -55,11 +67,12 @@ export default function ChannelMessages ({ channelData }) {
         maxHeight: '100%',
         display: 'flex',
         flexDirection: 'column-reverse',
-        overflow: 'auto'
+        overflow: 'auto',
+        pb: 2
       }}
     >
       <InfiniteScroll
-        dataLength={(incomingMessage?.docs?.length || 0) + messages.length}
+        dataLength={(incomingMessages?.docs?.length || 0) + messages.length}
         style={{ display: 'flex', flexDirection: 'column-reverse' }}
         next={onLoadMore}
         hasMore={Boolean(nextQuery)}
@@ -68,10 +81,10 @@ export default function ChannelMessages ({ channelData }) {
         endMessage={<MessageLoad publicMode={channelData?.publicMode} />}
         inverse
       >
-        {incomingMessage && [...incomingMessage.docs].map((messageItem) => (
+        {incomingMessages && incomingMessages.docs.map((messageItem) => (
           <MessageBubble arrow key={messageItem.id} messageData={messageItem.data()} publicMode={channelData?.publicMode} />
         ))}
-        {[...messages].map((messageItem) => (
+        {messages && messages.map((messageItem) => (
           <MessageBubble arrow key={messageItem.id} messageData={messageItem.data()} publicMode={channelData?.publicMode} />
         ))}
       </InfiniteScroll>

@@ -30,13 +30,13 @@ export default function TrayContent ({ height }) {
     >
       {/* Header */}
       <Box
+        p={1}
         sx={{
           width: '100%',
           boxShadow: '0 0 30px rgba(0,0,0,0.5)',
           clipPath: 'inset(0px 0px -30px 0px)',
-          p: 1,
           bgcolor: 'mainColorLight',
-          boxSizing: 'border-box'
+          boxSizing: 'border-box',
         }}
       >
         <TextField
@@ -50,10 +50,14 @@ export default function TrayContent ({ height }) {
           }}
           onClick={() => { dispatch(setShowChannelSearchModal(true)) }}
         />
-
-        <Typography align='center' variant='h6'>
-          {'Your Channels'}
-        </Typography>
+        <Box sx={{ position: 'relative' }}>
+          <Typography align='center' variant='h6'>
+            {'Your Channels'}
+          </Typography>
+          <Box sx={{ position: 'absolute', right: 0, top: -5 }}>
+            <ButtonCreateChannel />
+          </Box>
+        </Box>
       </Box>
 
       {/* Contains all channel items */}
@@ -66,7 +70,6 @@ export default function TrayContent ({ height }) {
           p: 2
         }}
       >
-        <ButtonCreateChannel />
         {channels.map((data) => (
           <ListItemChannel key={data?.cid} channelData={data} showPressed />
         ))}

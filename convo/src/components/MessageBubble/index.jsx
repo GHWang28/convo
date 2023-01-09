@@ -1,5 +1,6 @@
 import { Avatar, Box, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { getUser } from '../../firebase/database';
 import DateDisplay from '../DateDisplay';
 import TypographyTruncate from '../TypographyTruncate';
@@ -7,6 +8,7 @@ import TypographyTruncate from '../TypographyTruncate';
 export default function MessageBubble ({ messageData, publicMode, arrow }) {
   const [sender, setSender] = useState(null);
   const [hover, setHover] = useState(false);
+  const viewerIsSender = (useSelector(state => state.loggedInUserData)?.uid === sender?.uid);
 
   useEffect(() => {
     getUser(messageData?.uid)
@@ -18,9 +20,11 @@ export default function MessageBubble ({ messageData, publicMode, arrow }) {
   return (
     <Box
       sx={{
-        px: 2,
+        pl: (viewerIsSender) ? 9 : 2,
+        pr: (viewerIsSender) ? 2 : 9,
         py: 0.5,
         display: 'flex',
+        flexDirection: (viewerIsSender) ? 'row-reverse' : 'row',
         boxSizing: 'border-box',
         width: '100%'
       }}
@@ -37,12 +41,13 @@ export default function MessageBubble ({ messageData, publicMode, arrow }) {
           bgcolor: 'mainColorDark',
           borderRadius: '5px',
           position: 'relative',
-          ml: 2,
+          ml: (!viewerIsSender) && 2,
+          mr: (viewerIsSender) && 2,
           p: 1,
           pl: 2
         }}
       >
-        {(arrow) && <MessageTail publicMode={publicMode} />}
+        {(arrow) && <MessageTail publicMode={publicMode} right={viewerIsSender} />}
         <TypographyTruncate
           width='50%'
           text={sender?.handler}
@@ -59,9 +64,10 @@ export default function MessageBubble ({ messageData, publicMode, arrow }) {
   )
 }
 
-function MessageTail ({ publicMode }) {
+function MessageTail ({ publicMode, right }) {
   return (
     <Box
+      component='span'
       sx={{
         width: '15px',
         height: '15px',
@@ -70,9 +76,10 @@ function MessageTail ({ publicMode }) {
         borderStyle: 'solid',
         borderWidth: '0px 0px 1px 1px',
         borderColor: (publicMode) ? 'publicColor' : 'privateColor',
-        rotate: '45deg',
+        rotate: (right) ? '-135deg' : '45deg',
         top: 12,
-        left: -8
+        left: (!right) && -8,
+        right: (right) && -8
       }}
     />
   )

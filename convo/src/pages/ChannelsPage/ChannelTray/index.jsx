@@ -29,14 +29,17 @@ export default function ChannelTray () {
             sx={{
               height,
               width: '25px',
-              bgcolor: 'mainColorDark',
+              bgcolor: 'mainColorLight',
               '&:hover': {
-                filter: 'brightness(110%)'
+                filter: 'brightness(105%)'
               },
               cursor: 'pointer',
               display: 'flex',
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
+              boxShadow: '0 0 30px rgba(0,0,0,1)',
+              clipPath: 'inset(0px -30px 0px 0px)',
+              zIndex: 2
             }}
             onClick={onToggleTray}
           >

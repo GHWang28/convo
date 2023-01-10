@@ -1,16 +1,33 @@
-import React from 'react';
-import { Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Typography } from '@mui/material';
 import { convertEpochToDate } from '../../helpers';
+import { animated, useTransition } from 'react-spring';
 
-export default function DateDisplay ({ time, fontSize = 11, align, shorten }) {
+export default function DateDisplay ({ time, fontSize = 10, align }) {
+  const [shorten, setShorten] = useState(true);
+  const transitions = useTransition(shorten, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+  });
+  const AnimatedTypography = animated(Typography);
+
   return (
-    <Typography
-      color='secondary'
-      fontSize={fontSize}
-      align={align}
-      mb={1}
+    <Box
+      sx={{ position: 'relative', height: fontSize * 1.2 }}
     >
-      {convertEpochToDate(time, shorten)}
-    </Typography>
+      {transitions((style, toShorten) => (
+        <AnimatedTypography
+          style={style}
+          color='secondary'
+          fontSize={fontSize}
+          align={align}
+          onClick={() => { setShorten(!shorten) }}
+          sx={{ cursor: 'pointer', userSelect: 'none', width: 'fit-content', position: 'absolute', top: 0, right: 0 }}
+        >
+          {convertEpochToDate(time, toShorten)}
+        </AnimatedTypography>
+      ))}
+    </Box>
   )
 }

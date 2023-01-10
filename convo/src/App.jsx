@@ -28,7 +28,9 @@ export default function App() {
       publicColor: 'rgb(150, 246, 246)',
       privateColor: 'rgb(185, 239, 164)',
       mainColorNormal: 'rgb(29, 32, 37)',
+      mainColorSlightDark: 'rgb(26, 28, 33)',
       mainColorDark: 'rgb(21, 24, 27)',
+      mainColorSlightLight: 'rgb(38, 42, 49)',
       mainColorLight: 'rgb(54, 57, 63)',
       highlightColor: 'rgba(255, 255, 255, 0.1)',
       iconColor: 'whitesmoke',
@@ -68,7 +70,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <ImageZoomer />
-      <ToastContainer theme='dark' position='bottom-right'/>
+      <ToastContainer theme='dark' position='top-left'/>
       <LoadingCover display={isLoading} />
       <Routes>
         <Route path='/' element={<LoginRegisterPage />} />

@@ -1,16 +1,25 @@
-import { Avatar, Box, Typography } from '@mui/material';
+import { Avatar, Box, Collapse, Link, Typography, useMediaQuery } from '@mui/material';
+import Linkify from 'linkify-react';
 import React, { useEffect, useState } from 'react';
+import { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser, isUrlToImage } from '../../firebase/database';
 import { setImageZoom } from '../../redux/actions';
+import BootstrapTooltip from '../BootstrapTooltip';
 import DateDisplay from '../DateDisplay';
 import TypographyTruncate from '../TypographyTruncate';
 
-export default function MessageBubble ({ messageData, publicMode, arrow }) {
+function padding (smallMq, isStart) {
+  if (isStart) return 1;
+  return (smallMq) ? 6 : 5;
+}
+
+export default function MessageBubble ({ messageData, publicMode, arrow, isStart = true, isEnd = true }) {
+  const dispatch = useDispatch();
   const [sender, setSender] = useState(null);
   const [hover, setHover] = useState(false);
   const [isImg, setIsImg] = useState(false);
-  const dispatch = useDispatch();
+  const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm'));
   const viewerIsSender = (useSelector(state => state.loggedInUserData)?.uid === sender?.uid);
 
   useEffect(() => {
@@ -26,39 +35,55 @@ export default function MessageBubble ({ messageData, publicMode, arrow }) {
   return (
     <Box
       sx={{
-        pl: (viewerIsSender) ? 9 : 2,
-        pr: (viewerIsSender) ? 2 : 9,
-        py: 0.5,
+        pl: (viewerIsSender) ? ((smallMq) ? 8 : 1) : padding(smallMq, isStart),
+        pr: (viewerIsSender) ? padding(smallMq, isStart) : ((smallMq) ? 8 : 1),
+        pt: (isStart) && 2,
         display: 'flex',
         flexDirection: (viewerIsSender) ? 'row-reverse' : 'row',
         boxSizing: 'border-box',
         width: '100%'
       }}
-      onMouseEnter={() => { setHover(true) }}
-      onMouseLeave={() => { setHover(false) }}
     >
-      <Avatar alt={sender?.handler} src={sender?.profilePic} />
+      {(isStart) && (
+        <Avatar
+          alt={sender?.handler}
+          src={sender?.profilePic}
+          sx={{
+            width: (smallMq) ? 40 : 32, height: (smallMq) ? 40 : 32, mt: (!smallMq) && 1
+          }}
+        />
+      )}
+
       {/* Message Box */}
       <Box
         sx={{
-          borderStyle: 'solid',
-          borderWidth: '1px',
-          borderColor: (publicMode) ? 'publicColor' : 'privateColor',
-          bgcolor: 'mainColorDark',
-          borderRadius: '5px',
+          bgcolor: (hover) ? 'mainColorSlightLight' : 'mainColorLight',
           position: 'relative',
+          width: '100%',
           ml: (!viewerIsSender) && 2,
           mr: (viewerIsSender) && 2,
-          pt: 1,
-          px: 2
+          pt: (isStart) && 1,
+          pb: (isEnd) && 1,
+          px: 2,
+          borderTopLeftRadius: (isStart) && '15px',
+          borderTopRightRadius: (isStart) && '15px',
+          borderBottomLeftRadius: (isEnd) && '15px',
+          borderBottomRightRadius: (isEnd) && '15px'
         }}
+        onMouseEnter={() => { setHover(true) }}
+        onMouseLeave={() => { setHover(false) }}
       >
-        {(arrow) && <MessageTail publicMode={publicMode} right={viewerIsSender} />}
-        <TypographyTruncate
-          width='50%'
-          text={sender?.handler}
-          sx={{ fontWeight: 'bold' }}
-        />
+        {(arrow && isStart) && <MessageTail hover={hover} right={viewerIsSender}/>}
+        {(isStart) && (
+          <Fragment>
+            <TypographyTruncate
+              width={'50%'}
+              text={sender?.handler}
+              sx={{ fontWeight: 'bold', fontSize: 12, color: 'secondary.main' }}
+            />
+            <Box component='hr' sx={{ opacity: 0.5 }} />
+          </Fragment>
+        )}
         {(isImg) ? (
           <Box
             component='img'
@@ -76,24 +101,33 @@ export default function MessageBubble ({ messageData, publicMode, arrow }) {
               maxWidth: '100%',
               cursor: 'pointer',
               transition: 'scale 0.25s ease-in-out',
-              '&:hover': {
-                scale: '1.02'
-              }
+              '&:hover': { scale: '1.02' }
             }}
           />
         ) : (
-          <Typography sx={{ wordBreak: 'break-word' }}>
-            {messageData?.text}
+          <Typography sx={{ wordBreak: 'break-word', width: 'fit-content', display: 'inline-block'}}>
+            <Linkify options={{ render: ({ attributes, content }) => {
+              const { href, ...props } = attributes;
+              return (
+                <BootstrapTooltip title={`Go to external page.`} placement='top'>
+                  <Link href={href} target='_blank' {...props}>{content}</Link>
+                </BootstrapTooltip>
+              )
+            }}}>
+              {messageData?.text}
+            </Linkify>
           </Typography>
         )}
-        <DateDisplay time={messageData?.timestamp?.seconds} align='right' shorten={!hover}/>
+        <Collapse in={hover}>
+          <DateDisplay time={messageData?.timestamp?.seconds} align='right'/>
+        </Collapse>
       </Box>
     </Box>
 
   )
 }
 
-function MessageTail ({ publicMode, right }) {
+function MessageTail ({ right, hover }) {
   return (
     <Box
       component='span'
@@ -101,14 +135,11 @@ function MessageTail ({ publicMode, right }) {
         width: '15px',
         height: '15px',
         position: 'absolute',
-        bgcolor: 'mainColorDark',
-        borderStyle: 'solid',
-        borderWidth: '0px 0px 1px 1px',
-        borderColor: (publicMode) ? 'publicColor' : 'privateColor',
+        bgcolor: (hover) ? 'mainColorSlightLight' : 'mainColorLight',
         rotate: (right) ? '-135deg' : '45deg',
-        top: 12,
-        left: (!right) && -8,
-        right: (right) && -8
+        top: 14,
+        left: (!right) && -6,
+        right: (right) && -6
       }}
     />
   )

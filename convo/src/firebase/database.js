@@ -154,13 +154,15 @@ export function searchChannel (searchTerm) {
 }
 
 export function postMessage (cid, uid, text) {
+  const newDoc = doc(collection(firebaseDatabase, 'channels', cid, 'messages'));
   const messagePackage = {
     text, 
-    timestamp: serverTimestamp(),
-    uid
+    timestamp: new Date(),
+    uid,
+    mid: newDoc.id
   }
-
-  return setDoc(doc(collection(firebaseDatabase, 'channels', cid, 'messages')), messagePackage);
+  console.log()
+  return setDoc(newDoc, messagePackage);
 }
 
 export function isUrlToImage (url) {

@@ -70,12 +70,11 @@ export default function ChannelHeader ({ channelData }) {
       </Box>
 
       <Box
-        px={1}
         sx={{
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          width: 'fit-content',
+          width: '40px',
           boxSizing: 'border-box',
           height: '100%'
         }}

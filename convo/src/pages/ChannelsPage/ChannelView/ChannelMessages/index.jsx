@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Box } from '@mui/material';
 import { collection, endBefore, getDocs, limit, orderBy, query, startAfter } from 'firebase/firestore';
 import { firebaseDatabase } from '../../../../firebase';
 import MessageBubble from '../../../../components/MessageBubble';
 import { useEffect } from 'react';
-import { useCollection } from 'react-firebase-hooks/firestore';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import MessageLoad from '../../../../components/MessageLoad';
 import config from '../../../../config.json';
@@ -25,39 +25,46 @@ const handleNextQueryState = (oldMessages, setNextQuery, cid) => {
 export default function ChannelMessages ({ channelData }) {
   const [messages, setMessages] = useState([]);
   const [state] = useState(new Date());
-  const [nextQuery, setNextQuery] = useState(null);
+  const [nextQuery, setNextQuery] = useState(query(
+    collection(firebaseDatabase, 'channels', channelData?.cid, 'messages'),
+    orderBy('timestamp', 'desc'),
+    limit(config.PAIGNATION_LENGTH)
+  ));
 
-  const [incomingMessages] = useCollection(query(
+  const [incomingMessages] = useCollectionData(query(
     collection(firebaseDatabase, 'channels', channelData?.cid, 'messages'),
     orderBy('timestamp', 'desc'),
     endBefore(state)
   ));
 
-  const onLoadMore = () => {
+  const onLoadMore = useCallback(() => {
     if (!nextQuery) return;
     getDocs(nextQuery)
       .then((oldMessages) => {
-        return new Promise((resolve) => (setTimeout(() => { resolve(oldMessages) }, 100)))
+        return new Promise((resolve) => (setTimeout(() => { resolve(oldMessages) }, 200)))
       })
       .then((oldMessages) => {
         setMessages([
           ...messages,
-          ...oldMessages.docs
+          ...oldMessages.docs.map((item) => ({ ...item.data() }))
         ]);
         handleNextQueryState(oldMessages, setNextQuery, channelData?.cid);
       })
-  }
+  }, [messages, channelData?.cid, nextQuery])
 
+  // Attempt to load more if the page is empty
   useEffect(() => {
-    getDocs(query(
-      collection(firebaseDatabase, 'channels', channelData?.cid, 'messages'),
-      orderBy('timestamp', 'desc'),
-      limit(config.PAIGNATION_LENGTH)
-    )).then((oldMessages) => {
-      setMessages([...oldMessages.docs]);
-      handleNextQueryState(oldMessages, setNextQuery, channelData?.cid);
-    })
-  }, [channelData?.cid]);
+    const messageContainer = document.getElementById('message-container');
+    if (Boolean(nextQuery) && messageContainer.scrollHeight <= messageContainer.clientHeight) {
+      onLoadMore();
+    }
+  }, [nextQuery, onLoadMore]);
+
+  const combined = (incomingMessages) ? (
+    [...incomingMessages, ...messages]
+  ) : (
+    [...messages]
+  )
 
   return (
     <Box
@@ -67,12 +74,12 @@ export default function ChannelMessages ({ channelData }) {
         maxHeight: '100%',
         display: 'flex',
         flexDirection: 'column-reverse',
-        overflow: 'auto',
+        overflowY: 'scroll',
         pb: 2
       }}
     >
       <InfiniteScroll
-        dataLength={(incomingMessages?.docs?.length || 0) + messages.length}
+        dataLength={combined.length}
         style={{ display: 'flex', flexDirection: 'column-reverse' }}
         next={onLoadMore}
         hasMore={Boolean(nextQuery)}
@@ -81,13 +88,22 @@ export default function ChannelMessages ({ channelData }) {
         endMessage={<MessageLoad publicMode={channelData?.publicMode} />}
         inverse
       >
-        {incomingMessages && incomingMessages.docs.map((messageItem) => (
-          <MessageBubble arrow key={messageItem.id} messageData={messageItem.data()} publicMode={channelData?.publicMode} />
-        ))}
-        {messages && messages.map((messageItem) => (
-          <MessageBubble arrow key={messageItem.id} messageData={messageItem.data()} publicMode={channelData?.publicMode} />
+        {combined.map((messageItem, index) => (
+          <MessageBubble
+            arrow
+            key={messageItem.mid}
+            messageData={messageItem}
+            publicMode={channelData?.publicMode}
+            isStart={(combined.at(index + 1)?.uid !== messageItem.uid) || separateByTimestamp(combined.at(index + 1)?.timestamp, messageItem?.timestamp)}
+            isEnd={(index === 0) || (combined.at(index - 1)?.uid !== messageItem.uid) || separateByTimestamp(combined.at(index - 1)?.timestamp, messageItem?.timestamp)}
+          />
         ))}
       </InfiniteScroll>
     </Box>
   )
+}
+
+function separateByTimestamp (timestampA, timestampB) {
+  if (!timestampA || !timestampB) return true;
+  return Math.abs(timestampA.seconds - timestampB.seconds) > config.MESSAGE_BUFFER_TIMESTAMP_SECONDS
 }

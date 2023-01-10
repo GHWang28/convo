@@ -46,7 +46,6 @@ export default function ChannelSender ({ cid }) {
     >
       <Box sx={{ display: 'flex' }}>
         <TextField
-          autoFocus
           sx={{ flexGrow: 1 }}
           InputProps={{ sx: { bgcolor: 'mainColorDark' } }}
           size='small'

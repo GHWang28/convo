@@ -1,28 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Avatar, Box, Grid, TextField, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { subscribeToChannelList } from "../../../../firebase/database";
+import { getUserChannelQuery } from "../../../../firebase/database";
 import SearchIcon from '@mui/icons-material/Search';
 import ButtonCreateChannel from "../../../../components/ButtonCreateChannel";
 import ButtonLogOut from "../../../../components/ButtonLogOut";
 import ListItemChannel from "../../../../components/ListItemChannel";
-import { setShowChannelSearchModal } from "../../../../redux/actions";
+import { setFetching, setShowChannelSearchModal } from "../../../../redux/actions";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 export default function TrayContent ({ height }) {
   const userData = useSelector(state => state.loggedInUserData);
   const dispatch = useDispatch();
-  const [ channels, setChannels ] = useState([]);
-
+  const [channelIdList, loading] = useCollectionData(getUserChannelQuery(userData?.uid));
   useEffect(() => {
-    // Listens to the channel list
-    return subscribeToChannelList(userData?.uid, setChannels, dispatch);
-  }, [userData, dispatch]);
+    dispatch(setFetching(loading));
+  }, [loading, dispatch]);
 
   return (
     <Box
       sx={{
         height,
-        width: 'min(250px, calc(100vw - 60px))',
+        width: 'min(250px, calc(100vw - 40px))',
         bgcolor: 'mainColorNormal',
         display: 'flex',
         flexDirection: 'column',
@@ -70,8 +69,8 @@ export default function TrayContent ({ height }) {
           p: 2
         }}
       >
-        {channels.map((data) => (
-          <ListItemChannel key={data?.cid} channelData={data} showPressed />
+        {channelIdList && channelIdList.map((data) => (
+          <ListItemChannel key={data?.cid} cid={data?.cid} showPressed />
         ))}
       </Box>
       {/* Footer */}

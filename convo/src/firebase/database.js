@@ -1,7 +1,7 @@
-import { collection, doc, getDoc, getDocs, query, setDoc, where, serverTimestamp, onSnapshot } from "firebase/firestore";
-import { toast } from "react-toastify";
-import { firebaseDatabase } from ".";
-import { setFetching } from "../redux/actions";
+import { collection, doc, getDoc, getDocs, query, setDoc, where, serverTimestamp, startAt, endAt, orderBy } from 'firebase/firestore';
+import { toast } from 'react-toastify';
+import { firebaseDatabase } from '.';
+import config from '../config.json';
 
 export function recordNewUser (user) {
   const docRef = doc(firebaseDatabase, 'users', user.uid);
@@ -11,7 +11,8 @@ export function recordNewUser (user) {
         const newData = {
           handler: user.displayName,
           bio: '',
-          profilePic: user.photoURL
+          profilePic: user.photoURL,
+          uid: user.uid
         }
         return setDoc(
           docRef,
@@ -42,35 +43,8 @@ export function joinUserToChannel (uid, cid, showToast = true) {
  * @param {String} uid 
  * @returns 
  */
-export function getUserChannel (uid) {
-  return getDocs(query(collection(firebaseDatabase, 'channelUserRelationship'), where('uid', '==', uid)))
-    .then((querySnapshot) => {
-      return querySnapshot.docs.map((doc) => doc.data().cid);
-    }).then((channelIds) => {
-      return Promise.all(
-        channelIds.map((cid) => (
-          getDoc(doc(firebaseDatabase, 'channels', cid))
-            .then((channelData) => (
-              {...channelData.data(), cid}
-            ))
-        ))
-      )
-    })
-}
-
-export function subscribeToChannelList (uid, setChannels, dispatch) {
-  if (!uid) return;
-
-  return onSnapshot(query(collection(firebaseDatabase, 'channelUserRelationship'), where('uid', '==', uid)), () => {
-    dispatch(setFetching(true));
-    getUserChannel(uid)
-      .then((allChannelData) => {
-        setChannels(allChannelData);
-      })
-      .finally(() => {
-        dispatch(setFetching(false));
-      })
-  })
+export function getUserChannelQuery (uid) {
+  return query(collection(firebaseDatabase, 'channelUserRelationship'), where('uid', '==', uid || '0'));
 }
 
 export function getChannelUser (cid) {
@@ -82,20 +56,15 @@ export function getChannelUser (cid) {
         userIds.map((uid) => (
           getDoc(doc(firebaseDatabase, 'users', uid))
             .then((userData) => (
-              {...userData.data(), uid}
+              {...userData.data()}
             ))
         ))
       )
     })
 }
 
-export function getChannel (cid) {
-  const docRef = doc(firebaseDatabase, 'channels', cid);
-  return getDoc(docRef)
-    .then((channelData) => {
-      if (!channelData.exists()) return null;
-      return { ...channelData.data(), cid: channelData.id }
-    })
+export function getChannelDocRef (cid) {
+  return doc(firebaseDatabase, 'channels', cid || '0');
 }
 
 const userCache = {};
@@ -108,13 +77,13 @@ export function getUser (uid) {
   return getDoc(doc(firebaseDatabase, 'users', uid))
     .then((userData) => {
       if (!userData.exists()) return null;
-      const newData = {...userData.data(), uid};
+      const newData = {...userData.data()};
       userCache[uid] = newData;
       return newData;
     })
 }
 
-export function postNewChannel (name, description, publicMode, uid) {
+export function postNewChannel (name, description, theme, publicMode, uid) {
   const docRef = doc(collection(firebaseDatabase, 'channels'));
   const channelId = docRef.id;
 
@@ -124,6 +93,9 @@ export function postNewChannel (name, description, publicMode, uid) {
       name,
       description,
       publicMode,
+      theme,
+      iconIndex: Number(!publicMode),
+      cid: channelId,
       dateCreated: serverTimestamp()
     }
   ).then(() => {
@@ -134,10 +106,20 @@ export function postNewChannel (name, description, publicMode, uid) {
   })
 }
 
+export function editChannel (newInfo, cid, uid) {
+  return setDoc(doc(firebaseDatabase, 'channels', cid), newInfo)
+    .then(() => {
+      return postMessageNotification(cid, uid, config.CHANNEL_EDIT_NID)
+    }).then(() => {
+      toast.success('Channel edited successfully.')
+    })
+}
+
 /**
- * 
+ * Searches for channels with similar name to the given search term and returns
+ * a promise for all data of similar channel
  * @param {String} searchTerm 
- * @returns 
+ * @returns {Promise<QuerySnapshot<DocumentData>>}
  */
 export function searchChannel (searchTerm) {
   const upperCaseTerm = searchTerm.toUpperCase();
@@ -145,11 +127,12 @@ export function searchChannel (searchTerm) {
 
   return getDocs(query(
     collection(firebaseDatabase, 'channels'),
-    where('name', '>=', upperCaseTerm),
-    where('name', '<=', lowerCaseTerm),
+    orderBy('name'),
+    startAt(upperCaseTerm),
+    endAt(lowerCaseTerm + '\uf8ff'),
     where('publicMode', '==', true)
   )).then((querySnapshot) => {
-    return querySnapshot.docs.map((doc) => ({...doc.data(), cid: doc.id}));
+    return querySnapshot.docs.map((doc) => (doc.data()));
   })
 }
 
@@ -161,8 +144,18 @@ export function postMessage (cid, uid, text) {
     uid,
     mid: newDoc.id
   }
-  console.log()
   return setDoc(newDoc, messagePackage);
+}
+
+export function postMessageNotification (cid, uid, nid) {
+  const newDoc = doc(collection(firebaseDatabase, 'channels', cid, 'messages'));
+  const notificationPackage = {
+    timestamp: new Date(),
+    uid,
+    nid,
+    mid: newDoc.id
+  }
+  return setDoc(newDoc, notificationPackage);
 }
 
 export function isUrlToImage (url) {

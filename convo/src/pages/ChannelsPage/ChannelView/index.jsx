@@ -1,28 +1,15 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment } from 'react';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import { getChannel } from '../../../firebase/database';
+import { getChannelDocRef } from '../../../firebase/database';
 import ChannelHeader from './ChannelHeader';
 import ChannelMessages from './ChannelMessages';
 import ChannelSender from './ChannelSender';
+import { useDocumentData } from 'react-firebase-hooks/firestore';
 
 export default function ChannelView () {
   const cid = useParams().cid;
-  const [fetching, setFetching] = useState(true);
-  const [channelData, setChannelData] = useState(null);
-
-  useEffect(() => {
-    if (!cid) {
-      setFetching(false);
-      return;
-    }
-    setFetching(true);
-    getChannel(cid)
-      .then((channelData) => {
-        setChannelData(channelData);
-        setFetching(false);
-      });
-  }, [cid]);
+  const [channelData, fetching] = useDocumentData(getChannelDocRef(cid));
 
   // Display error or info message if fetching or channelId not given or channelData does not exist
   if (fetching || !cid || !channelData ) return (

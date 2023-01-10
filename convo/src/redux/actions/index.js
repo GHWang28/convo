@@ -32,7 +32,22 @@ export function setShowChannelSearchModal (boolean) {
   }
 }
 
-export function setShowChannelInfoModal (boolean, channelName, channelDescription, channelId) {
+export function setShowChannelEditModal (channelData) {
+  if (!channelData) return {
+    type: 'CHANNEL_EDIT_MODAL',
+    value: null
+  }
+  // Delete non-serialisable data
+  const channelDataCopy = {...channelData};
+  delete channelDataCopy.dateCreated;
+
+  return {
+    type: 'CHANNEL_EDIT_MODAL',
+    value: channelDataCopy
+  }
+}
+
+export function setShowChannelInfoModal (boolean, channelData = {}) {
   if (!boolean) {
     return {
       type: 'CHANNEL_INFO_MODAL_HIDE',
@@ -42,11 +57,7 @@ export function setShowChannelInfoModal (boolean, channelName, channelDescriptio
   
   return {
     type: 'CHANNEL_INFO_MODAL_SHOW',
-    value: {
-      channelName,
-      channelDescription,
-      channelId
-    }
+    value: {...channelData}
   }
 }
 

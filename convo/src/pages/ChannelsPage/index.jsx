@@ -6,6 +6,7 @@ import ChannelTray from './ChannelTray';
 import ChannelView from './ChannelView';
 import ChannelSearchModal from '../../components/Modal/ChannelSearchModal';
 import ChannelInfoModal from '../../components/Modal/ChannelInfoModal';
+import ChannelEditModal from '../../components/Modal/ChannelEditModal';
 
 export default function ChannelsPage () {
 
@@ -15,6 +16,7 @@ export default function ChannelsPage () {
       <ChannelCreateModal />
       <ChannelSearchModal />
       <ChannelInfoModal />
+      <ChannelEditModal />
       <Box
         sx={{
           width: '100vw',

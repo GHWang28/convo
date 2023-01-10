@@ -46,7 +46,9 @@ export default function ChannelSender ({ cid }) {
     >
       <Box sx={{ display: 'flex' }}>
         <TextField
-          sx={{ flexGrow: 1, bgcolor: 'mainColorDark' }}
+          autoFocus
+          sx={{ flexGrow: 1 }}
+          InputProps={{ sx: { bgcolor: 'mainColorDark' } }}
           size='small'
           onChange={(event) => { setMessage(event.target.value) }}
           placeholder='Send message'

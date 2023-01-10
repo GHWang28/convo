@@ -8,6 +8,7 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import MessageLoad from '../../../../components/MessageLoad';
 import config from '../../../../config.json';
+import NotificationBubble from '../../../../components/NotificationBubble';
 
 const handleNextQueryState = (oldMessages, setNextQuery, cid) => {
   setNextQuery((oldMessages.docs.length < config.PAIGNATION_LENGTH) ? (
@@ -84,19 +85,23 @@ export default function ChannelMessages ({ channelData }) {
         next={onLoadMore}
         hasMore={Boolean(nextQuery)}
         scrollableTarget='message-container'
-        loader={<MessageLoad publicMode={channelData?.publicMode} loading/>}
-        endMessage={<MessageLoad publicMode={channelData?.publicMode} />}
+        loader={<MessageLoad color={channelData?.theme} loading/>}
+        endMessage={<MessageLoad color={channelData?.theme} />}
         inverse
       >
         {combined.map((messageItem, index) => (
-          <MessageBubble
-            arrow
-            key={messageItem.mid}
-            messageData={messageItem}
-            publicMode={channelData?.publicMode}
-            isStart={(combined.at(index + 1)?.uid !== messageItem.uid) || separateByTimestamp(combined.at(index + 1)?.timestamp, messageItem?.timestamp)}
-            isEnd={(index === 0) || (combined.at(index - 1)?.uid !== messageItem.uid) || separateByTimestamp(combined.at(index - 1)?.timestamp, messageItem?.timestamp)}
-          />
+          (messageItem?.nid !== null) ? (
+            <NotificationBubble key={messageItem.mid} color={channelData?.theme} notificationData={messageItem} />
+          ) : (
+            <MessageBubble
+              arrow
+              key={messageItem.mid}
+              messageData={messageItem}
+              color={channelData?.theme}
+              isStart={(combined.at(index + 1)?.uid !== messageItem.uid) || separateByTimestamp(combined.at(index + 1)?.timestamp, messageItem?.timestamp)}
+              isEnd={(index === 0) || (combined.at(index - 1)?.uid !== messageItem.uid) || separateByTimestamp(combined.at(index - 1)?.timestamp, messageItem?.timestamp)}
+            />
+          )
         ))}
       </InfiniteScroll>
     </Box>

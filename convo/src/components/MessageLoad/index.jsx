@@ -1,8 +1,7 @@
 import { Box, LinearProgress, Typography } from '@mui/material';
 import { Fragment } from 'react';
 
-export default function MessageLoad ({ loading, publicMode }) {
-  const color = (publicMode) ? 'publicColor' : 'privateColor';
+export default function MessageLoad ({ loading, color }) {
   const divider = <Box component='hr' sx={{ borderColor: color, width: '90%' }}/>;
 
   return (

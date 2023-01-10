@@ -1,13 +1,12 @@
 import React from 'react';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { getPublicPrivateSvgIcon } from '../../../../helpers';
+import { Box, Typography, useMediaQuery } from '@mui/material';
+import { getChannelIcon } from '../../../../helpers';
 import { useDispatch } from 'react-redux';
 import { setShowChannelInfoModal } from '../../../../redux/actions';
 import Settings from './Settings';
 import TypographyTruncate from '../../../../components/TypographyTruncate';
 
 export default function ChannelHeader ({ channelData }) {
-  const theme = useTheme();
   const dispatch = useDispatch();
   const mediumMq = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
@@ -15,7 +14,7 @@ export default function ChannelHeader ({ channelData }) {
     <Box
       sx={{
         display: 'flex',
-        height: '110px',
+        minHeight: '110px',
         boxSizing: 'border-box',
         bgcolor: 'mainColorLight',
         boxShadow: '0 0 30px rgba(0,0,0,0.5)',
@@ -26,7 +25,7 @@ export default function ChannelHeader ({ channelData }) {
       <Box
         p={1.5}
         pt={0.5}
-        onClick={() => { dispatch(setShowChannelInfoModal(true, channelData.name, channelData.description, channelData.cid)) }}
+        onClick={() => { dispatch(setShowChannelInfoModal(true, channelData)) }}
         sx={{
           flexGrow: 1,
           height: '100%',
@@ -47,9 +46,9 @@ export default function ChannelHeader ({ channelData }) {
             height: '45%',
             boxSizing: 'border-box',
             borderBottomWidth: '1px',
-            borderBottomColor: (channelData.publicMode) ? 'publicColor' : 'privateColor',
+            borderBottomColor: channelData?.theme,
             borderBottomStyle: 'solid',
-            backgroundImage: getPublicPrivateSvgIcon(channelData.publicMode, theme, 0.25),
+            backgroundImage: getChannelIcon(channelData?.iconIndex, channelData?.theme, 0.5),
             backgroundPosition: 'right top',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'auto 100%',
@@ -58,7 +57,7 @@ export default function ChannelHeader ({ channelData }) {
           <TypographyTruncate
             width='100%'
             text={channelData.name}
-            sx={{ fontWeight: 'bold', fontSize: 20 }}
+            sx={{ fontWeight: 'bold', fontSize: 20, color: channelData.theme }}
           />
         </Box>
         {/* Channel Description */}
@@ -79,7 +78,7 @@ export default function ChannelHeader ({ channelData }) {
           height: '100%'
         }}
       >
-        <Settings/>
+        <Settings channelData={channelData}/>
       </Box>
     </Box>
   )

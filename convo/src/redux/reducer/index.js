@@ -1,5 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import channelCreateModalReducer from './channelCreateModalReducer';
+import channelEditModalReducer from './channelEditModalReducer';
 import channelInfoModalReducer from './channelInfoModalReducer';
 import channelSearchModalReducer from './channelSearchModalReducer';
 import fetchingReducer from './fetchingReducer';
@@ -16,6 +17,7 @@ const combinedReducer = combineReducers({
   channelCreateModal: channelCreateModalReducer,
   channelSearchModal: channelSearchModalReducer,
   channelInfoModal: channelInfoModalReducer,
+  channelEditModal: channelEditModalReducer,
   imgZoom: setImageZoomReducer,
   fetching: fetchingReducer
 })

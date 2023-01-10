@@ -31,7 +31,7 @@ export default function ButtonMenu ({ icon, menuItems, id }) {
         }}
       >
         {menuItems && menuItems.map((item, index) => (
-          <MenuItem key={`menu-item-${index}`}>
+          <MenuItem key={`menu-item-${index}`} onClick={item.onClick}>
             {(item?.icon) && (
               <ListItemIcon>
                 {item.icon}

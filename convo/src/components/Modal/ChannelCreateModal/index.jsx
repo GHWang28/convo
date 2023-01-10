@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '..';
 import { setFetching, setShowChannelCreateModal } from '../../../redux/actions';
-import { FormControlLabel, Grid, TextField, Switch, Alert } from '@mui/material';
+import { FormControlLabel, Grid, TextField, Switch, Alert, useMediaQuery, useTheme } from '@mui/material';
 import { postNewChannel } from '../../../firebase/database';
 import { toast } from 'react-toastify';
 
@@ -14,6 +14,9 @@ export default function ChannelCreateModal () {
   const [nameError, setNameError] = useState(false);
   const [desc, setDesc] = useState('');
   const [publicMode, setPublicMode] = useState(false);
+  const theme = useTheme();
+  const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm')); 
+  const mediumMq = useMediaQuery((theme) => theme.breakpoints.up('md')); 
 
   const onConfirm = () => {
     if (!name) {
@@ -21,8 +24,11 @@ export default function ChannelCreateModal () {
       setNameError(true);
       return;
     }
+
+    const themeScheme = (publicMode) ? theme.palette.publicColor : theme.palette.privateColor;
+
     dispatch(setFetching(true));
-    postNewChannel(name, desc, publicMode, userData?.uid)
+    postNewChannel(name, desc, themeScheme, publicMode, userData?.uid)
       .then(() => {
         onClose();
       })
@@ -47,26 +53,26 @@ export default function ChannelCreateModal () {
       handleClose={onClose}
       confirmColor='success'
       fullWidth
+      fullScreen={!smallMq}
     >
-      <Grid container sx={{ alignItems: 'center' }}>
-        <Grid item xs={9}>
-          <TextField
-            sx={{ bgcolor: 'mainColorNormal' }}
-            label='Channel Name *'
-            variant='outlined'
-            fullWidth
-            value={name}
-            error={nameError && !name}
-            onChange={(event) => { setName(event.target.value) }}
-            onClick={() => { setNameError(false) }}
-          />
-        </Grid>
-        <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'end' }}>
+      <Grid container sx={{ alignItems: 'center', flexDirection: (mediumMq) && 'row-reverse' }}>
+        <Grid item xs={12} md={3} sx={{ display: 'flex', justifyContent: (mediumMq) ? 'end' : 'center' }}>
           <FormControlLabel
             control={
               <Switch checked={publicMode} onChange={(event) => { setPublicMode(event.target.checked) }} />
             }
             label={(publicMode) ? 'Public' : 'Private'}
+          />
+        </Grid>
+        <Grid item xs={12} md={9}>
+          <TextField
+            sx={{ bgcolor: 'mainColorNormal', width: '100%' }}
+            label='Channel Name *'
+            variant='outlined'
+            value={name}
+            error={nameError && !name}
+            onChange={(event) => { setName(event.target.value) }}
+            onClick={() => { setNameError(false) }}
           />
         </Grid>
       </Grid>

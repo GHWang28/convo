@@ -3,9 +3,13 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import DoorBackIcon from '@mui/icons-material/DoorBack';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import EditIcon from '@mui/icons-material/Edit';
 import ButtonMenu from '../../../../../components/ButtonMenu';
+import { useDispatch } from 'react-redux';
+import { setShowChannelEditModal } from '../../../../../redux/actions';
 
-export default function Settings () {
+export default function Settings ({ channelData }) {
+  const dispatch = useDispatch();
 
   const options = [
     {
@@ -15,6 +19,13 @@ export default function Settings () {
     {
       text: 'Invite',
       icon: <PersonAddIcon />
+    },
+    {
+      text: 'Edit Channel',
+      icon: <EditIcon />,
+      onClick: () => {
+        dispatch(setShowChannelEditModal(channelData))
+      }
     },
     {
       text: 'Leave Channel',

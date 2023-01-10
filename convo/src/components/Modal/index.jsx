@@ -15,6 +15,7 @@ export default function Modal ({
   title,
   subtitle,
   fullWidth = false,
+  fullScreen = false,
   children
 }) {
   const fetching = useSelector(state => state.fetching);
@@ -25,6 +26,7 @@ export default function Modal ({
       TransitionComponent={Transition}
       onClose={handleClose}
       fullWidth={fullWidth}
+      fullScreen={fullScreen}
       aria-labelledby='dialog-title'
       PaperProps={{
         sx: {

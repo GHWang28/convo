@@ -52,6 +52,12 @@ export default function ChannelSearchModal () {
             </IconButton>
           )
         }}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            onSearch();
+          }
+        }}
         onChange={(event) => { setSearchTerm(event.target.value) }}
       />
       <Typography my={1}>
@@ -74,8 +80,8 @@ export default function ChannelSearchModal () {
             }
           </Typography>
         )}
-        {channels.map((channelData) => (
-          <ListItemChannel key={channelData?.cid} channelData={channelData} closeSearchModal showDesc/>
+        {channels.map((data) => (
+          <ListItemChannel key={data?.cid} cid={data?.cid} closeSearchModal showDesc/>
         ))}
       </Box>
     </Modal>

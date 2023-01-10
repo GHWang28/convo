@@ -14,7 +14,7 @@ function padding (smallMq, isStart) {
   return (smallMq) ? 6 : 5;
 }
 
-export default function MessageBubble ({ messageData, publicMode, arrow, isStart = true, isEnd = true }) {
+export default function MessageBubble ({ messageData, color, arrow, isStart = true, isEnd = true }) {
   const dispatch = useDispatch();
   const [sender, setSender] = useState(null);
   const [hover, setHover] = useState(false);
@@ -81,22 +81,19 @@ export default function MessageBubble ({ messageData, publicMode, arrow, isStart
               text={sender?.handler}
               sx={{ fontWeight: 'bold', fontSize: 12, color: 'secondary.main' }}
             />
-            <Box component='hr' sx={{ opacity: 0.5 }} />
+            <Box component='hr' sx={{ opacity: 0.5, borderColor: color }} />
           </Fragment>
         )}
+        {/* Show as image or text */}
         {(isImg) ? (
           <Box
             component='img'
             mt={2}
             src={messageData?.text}
-            onClick={() => {
-              dispatch(setImageZoom(messageData?.text))
-            }}
+            onClick={() => { dispatch(setImageZoom(messageData?.text)) }}
             sx={{
-              borderStyle: 'solid',
-              borderWidth: '1px',
-              borderRadius: '5px',
-              borderColor: (publicMode) ? 'publicColor' : 'privateColor',
+              border: `1px solid ${color}`,
+              borderRadius: '15px',
               maxHeight: '500px',
               maxWidth: '100%',
               cursor: 'pointer',
@@ -107,6 +104,7 @@ export default function MessageBubble ({ messageData, publicMode, arrow, isStart
         ) : (
           <Typography sx={{ wordBreak: 'break-word', width: 'fit-content', display: 'inline-block'}}>
             <Linkify options={{ render: ({ attributes, content }) => {
+              // Adds links to text that are potentially links
               const { href, ...props } = attributes;
               return (
                 <BootstrapTooltip title={`Go to external page.`} placement='top'>
@@ -118,6 +116,7 @@ export default function MessageBubble ({ messageData, publicMode, arrow, isStart
             </Linkify>
           </Typography>
         )}
+        {/* Date display */}
         <Collapse in={hover}>
           <DateDisplay time={messageData?.timestamp?.seconds} align='right'/>
         </Collapse>

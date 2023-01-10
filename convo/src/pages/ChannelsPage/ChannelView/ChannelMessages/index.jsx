@@ -90,7 +90,7 @@ export default function ChannelMessages ({ channelData }) {
         inverse
       >
         {combined.map((messageItem, index) => (
-          (messageItem?.nid !== null) ? (
+          (messageItem?.nid !== undefined) ? (
             <NotificationBubble key={messageItem.mid} color={channelData?.theme} notificationData={messageItem} />
           ) : (
             <MessageBubble

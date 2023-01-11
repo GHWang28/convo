@@ -1,4 +1,16 @@
-import { collection, doc, getDoc, getDocs, query, setDoc, where, serverTimestamp, startAt, endAt, orderBy } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+  serverTimestamp,
+  startAt,
+  endAt,
+  orderBy
+} from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { firebaseDatabase } from '.';
 import config from '../config.json';
@@ -12,6 +24,7 @@ export function recordNewUser (user) {
           handler: user.displayName,
           bio: '',
           profilePic: user.photoURL,
+          uidToCid: {},
           uid: user.uid
         }
         return setDoc(
@@ -28,38 +41,21 @@ export function recordNewUser (user) {
 }
 
 export function joinUserToChannel (uid, cid, showToast = true) {
-  const docRef = doc(collection(firebaseDatabase, 'channelUserRelationship'));
-  return setDoc(docRef, { uid, cid })
-    .then(() => {
+  const docRefUID = doc(firebaseDatabase, 'users', uid);
+  const docRefCID = doc(firebaseDatabase, 'channels', cid);
+
+  const newEntryCID = {}, newEntryUID = {};
+  newEntryCID[cid] = true;
+  newEntryUID[uid] = true;
+
+  return Promise.all([
+    setDoc(docRefUID, { uidToCid: newEntryCID }, { merge: true }),
+    setDoc(docRefCID, { cidToUid: newEntryUID }, { merge: true })
+  ]).then(() => {
       if (showToast) toast.success('Channel joined.')
     })
     .catch(() => {
       toast.error('An error occurred when joining this channel.')
-    })
-}
-
-/**
- * Returns a promise with channel data of all channels the current uid is in
- * @param {String} uid 
- * @returns 
- */
-export function getUserChannelQuery (uid) {
-  return query(collection(firebaseDatabase, 'channelUserRelationship'), where('uid', '==', uid || '0'));
-}
-
-export function getChannelUser (cid) {
-  return getDocs(query(collection(firebaseDatabase, 'channelUserRelationship'), where('cid', '==', cid)))
-    .then((querySnapshot) => {
-      return querySnapshot.docs.map((doc) => doc.data().uid);
-    }).then((userIds) => {
-      return Promise.all(
-        userIds.map((uid) => (
-          getDoc(doc(firebaseDatabase, 'users', uid))
-            .then((userData) => (
-              {...userData.data()}
-            ))
-        ))
-      )
     })
 }
 

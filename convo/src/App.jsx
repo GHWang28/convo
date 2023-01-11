@@ -10,9 +10,11 @@ import LoadingCover from './components/LoadingCover';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useDispatch } from 'react-redux';
 import { setLogUserIn } from './redux/actions';
-import { auth } from './firebase';
+import { auth, firebaseDatabase } from './firebase';
 import { recordNewUser } from './firebase/database';
 import ImageZoomer from './components/ImageZoomer';
+import { useEffect } from 'react';
+import { doc, onSnapshot } from 'firebase/firestore';
 
 export default function App() {
   const theme = createTheme({
@@ -53,20 +55,26 @@ export default function App() {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isLoading = useAuthState(
+  const [user, isLoading] = useAuthState(
     auth,
     {onUserChanged: (user) => {
       if (!user) {
         navigate('/');
       } else {
-        recordNewUser(user)
-          .then((data) => {
-            navigate('/channels');
-            dispatch(setLogUserIn({...data, uid: user.uid}));
-          });
+        recordNewUser(user).then(() => {
+          navigate('/channels')
+        })
       }
     }}
-  )[1];
+  );
+
+  useEffect(() => {
+    if (!user) return;
+  
+    return onSnapshot(doc(firebaseDatabase, 'users', user?.uid), (userDoc) => {
+      dispatch(setLogUserIn({...userDoc.data()}))
+    })
+  }, [user, dispatch])
 
   return (
     <ThemeProvider theme={theme}>

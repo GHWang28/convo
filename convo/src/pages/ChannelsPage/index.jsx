@@ -1,5 +1,6 @@
-import { Box } from '@mui/material';
 import React, { Fragment } from 'react';
+import { Box } from '@mui/material';
+import Header from '../../components/Header';
 import ChannelCreateModal from '../../components/Modal/ChannelCreateModal';
 import LogOutModal from '../../components/Modal/LogOutModal';
 import ChannelTray from './ChannelTray';
@@ -12,6 +13,7 @@ export default function ChannelsPage () {
 
   return (
     <Fragment>
+      <Header />
       <LogOutModal />
       <ChannelCreateModal />
       <ChannelSearchModal />
@@ -20,7 +22,7 @@ export default function ChannelsPage () {
       <Box
         sx={{
           width: '100vw',
-          height: '100vh',
+          height: '98vh',
           display: 'flex'
         }}
       >

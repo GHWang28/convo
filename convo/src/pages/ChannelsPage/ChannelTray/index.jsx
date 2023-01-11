@@ -12,7 +12,7 @@ export default function ChannelTray () {
     setShowChannelTray(!showChannelTray);
   }
 
-  const height = '100vh';
+  const height = '100%';
 
   return (
     <Fragment>

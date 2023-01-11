@@ -1,21 +1,17 @@
-import React, { useEffect } from "react";
-import { Avatar, Box, Grid, TextField, Typography } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { getUserChannelQuery } from "../../../../firebase/database";
+import React from 'react';
+import { Avatar, Box, Grid, TextField, Typography } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import SearchIcon from '@mui/icons-material/Search';
-import ButtonCreateChannel from "../../../../components/ButtonCreateChannel";
-import ButtonLogOut from "../../../../components/ButtonLogOut";
-import ListItemChannel from "../../../../components/ListItemChannel";
-import { setFetching, setShowChannelSearchModal } from "../../../../redux/actions";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import ButtonCreateChannel from '../../../../components/ButtonCreateChannel';
+import ButtonLogOut from '../../../../components/ButtonLogOut';
+import ListItemChannel from '../../../../components/ListItemChannel';
+import { setShowChannelSearchModal } from '../../../../redux/actions';
 
 export default function TrayContent ({ height }) {
   const userData = useSelector(state => state.loggedInUserData);
   const dispatch = useDispatch();
-  const [channelIdList, loading] = useCollectionData(getUserChannelQuery(userData?.uid));
-  useEffect(() => {
-    dispatch(setFetching(loading));
-  }, [loading, dispatch]);
+
+  const channelIdList = Object.keys(userData?.uidToCid || {});
 
   return (
     <Box
@@ -69,8 +65,8 @@ export default function TrayContent ({ height }) {
           p: 2
         }}
       >
-        {channelIdList && channelIdList.map((data) => (
-          <ListItemChannel key={data?.cid} cid={data?.cid} showPressed />
+        {channelIdList.length && channelIdList.map((cid) => (
+          <ListItemChannel key={cid} cid={cid} showPressed />
         ))}
       </Box>
       {/* Footer */}

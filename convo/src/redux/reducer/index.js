@@ -2,6 +2,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 import channelCreateModalReducer from './channelCreateModalReducer';
 import channelEditModalReducer from './channelEditModalReducer';
 import channelInfoModalReducer from './channelInfoModalReducer';
+import channelJoinModalReducer from './channelJoinModalReducer';
 import channelSearchModalReducer from './channelSearchModalReducer';
 import fetchingReducer from './fetchingReducer';
 import loggedInUserDataReducer from './loggedInUserDataReducer';
@@ -14,6 +15,7 @@ import setImageZoomReducer from './setImageZoomReducer';
 const combinedReducer = combineReducers({
   loggedInUserData: loggedInUserDataReducer,
   logOutModal: logOutModalReducer,
+  channelJoinModal: channelJoinModalReducer,
   channelCreateModal: channelCreateModalReducer,
   channelSearchModal: channelSearchModalReducer,
   channelInfoModal: channelInfoModalReducer,

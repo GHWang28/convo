@@ -16,7 +16,7 @@ export default function LogOutModal () {
       handleConfirm={() => { auth.signOut(); dispatch(setLogUserOut()); dispatch(setShowLogOutModal(false)) }}
       confirmColor='error'
     >
-      <Typography>
+      <Typography fontSize={20}>
         {'Are you sure you want to log out?'}
       </Typography>
     </Modal>

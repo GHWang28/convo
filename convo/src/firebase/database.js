@@ -59,6 +59,19 @@ export function joinUserToChannel (uid, cid, showToast = true) {
     })
 }
 
+export function getIsUserInChannel (uid, cid) {
+  const docRefUID = doc(firebaseDatabase, 'users', uid);
+  const docRefCID = doc(firebaseDatabase, 'channels', cid);
+
+  return Promise.all([
+    getDoc(docRefUID),
+    getDoc(docRefCID)
+  ]).then(([userDoc, channelDoc]) => {
+    if (!userDoc.data().uidToCid || !channelDoc.data().cidToUid) return false;
+    return userDoc.data().uidToCid[cid] && channelDoc.data().cidToUid[uid]
+  })
+}
+
 export function getChannelDocRef (cid) {
   return doc(firebaseDatabase, 'channels', cid || '0');
 }

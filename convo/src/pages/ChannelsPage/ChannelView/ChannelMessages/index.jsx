@@ -25,6 +25,7 @@ const handleNextQueryState = (oldMessages, setNextQuery, cid) => {
 
 export default function ChannelMessages ({ channelData }) {
   const [messages, setMessages] = useState([]);
+
   const [state] = useState(new Date());
   const [nextQuery, setNextQuery] = useState(query(
     collection(firebaseDatabase, 'channels', channelData?.cid, 'messages'),
@@ -32,7 +33,7 @@ export default function ChannelMessages ({ channelData }) {
     limit(config.PAIGNATION_LENGTH)
   ));
 
-  const [incomingMessages] = useCollectionData(query(
+  const [incomingMessages, fetching] = useCollectionData(query(
     collection(firebaseDatabase, 'channels', channelData?.cid, 'messages'),
     orderBy('timestamp', 'desc'),
     endBefore(state)
@@ -56,10 +57,10 @@ export default function ChannelMessages ({ channelData }) {
   // Attempt to load more if the page is empty
   useEffect(() => {
     const messageContainer = document.getElementById('message-container');
-    if (Boolean(nextQuery) && messageContainer.scrollHeight <= messageContainer.clientHeight) {
+    if (!fetching && Boolean(nextQuery) && messageContainer.scrollHeight <= messageContainer.clientHeight) {
       onLoadMore();
     }
-  }, [nextQuery, onLoadMore]);
+  }, [nextQuery, onLoadMore, fetching]);
 
   const combined = (incomingMessages) ? (
     [...incomingMessages, ...messages]

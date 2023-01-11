@@ -47,6 +47,21 @@ export function setShowChannelEditModal (channelData) {
   }
 }
 
+export function setShowChannelJoinModal (channelData) {
+  if (!channelData) return {
+    type: 'CHANNEL_JOIN_MODAL',
+    value: null
+  }
+  // Delete non-serialisable data
+  const channelDataCopy = {...channelData};
+  delete channelDataCopy.dateCreated;
+
+  return {
+    type: 'CHANNEL_JOIN_MODAL',
+    value: channelDataCopy
+  }
+}
+
 export function setShowChannelInfoModal (boolean, channelData = {}) {
   if (!boolean) {
     return {

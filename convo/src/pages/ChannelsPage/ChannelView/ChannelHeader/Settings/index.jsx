@@ -13,11 +13,11 @@ export default function Settings ({ channelData }) {
 
   const options = [
     {
-      text: 'View Channel Members',
+      text: 'View Channel Members (WIP)',
       icon: <PeopleAltIcon />
     },
     {
-      text: 'Invite',
+      text: 'Invite (WIP)',
       icon: <PersonAddIcon />
     },
     {

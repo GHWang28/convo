@@ -37,7 +37,8 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
       sx={{
         pl: (viewerIsSender) ? ((smallMq) ? 8 : 1) : padding(smallMq, isStart),
         pr: (viewerIsSender) ? padding(smallMq, isStart) : ((smallMq) ? 8 : 1),
-        pt: (isStart) && 2,
+        pt: (isStart) && 1,
+        pb: (isEnd) && 1,
         display: 'flex',
         flexDirection: (viewerIsSender) ? 'row-reverse' : 'row',
         boxSizing: 'border-box',

@@ -12,11 +12,11 @@ export default function ChannelTray () {
     setShowChannelTray(!showChannelTray);
   }
 
-  const height = '100%';
+  const height = (mediumMq) ? '100%' : '100vh';
 
   return (
     <Fragment>
-      <Box sx={{ position: (mediumMq) ? 'static' : 'absolute', display: 'flex' }}>
+      <Box sx={{ position: (mediumMq) ? 'static' : 'absolute', display: 'flex', top: 0 }}>
         {/* Info with tray content */}
         <Collapse in={showChannelTray} orientation='horizontal' sx={{ zIndex: 2 }}>
           <TrayContent height={height} />
@@ -54,6 +54,7 @@ export default function ChannelTray () {
           </Box>
         ) : (
           <Box
+            mt='20px'
             sx={{
               height: '40px',
               width: '40px',

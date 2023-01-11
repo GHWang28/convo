@@ -99,8 +99,8 @@ export default function ChannelMessages ({ channelData }) {
               key={messageItem.mid}
               messageData={messageItem}
               color={channelData?.theme}
-              isStart={(combined.at(index + 1)?.uid !== messageItem.uid) || separateByTimestamp(combined.at(index + 1)?.timestamp, messageItem?.timestamp)}
-              isEnd={(index === 0) || (combined.at(index - 1)?.uid !== messageItem.uid) || separateByTimestamp(combined.at(index - 1)?.timestamp, messageItem?.timestamp)}
+              isStart={(combined.at(index + 1)?.uid !== messageItem.uid) || (combined.at(index + 1)?.nid !== undefined) || separateByTimestamp(combined.at(index + 1)?.timestamp, messageItem?.timestamp)}
+              isEnd={(index === 0) || (combined.at(index - 1)?.nid !== undefined) || (combined.at(index - 1)?.uid !== messageItem.uid) || separateByTimestamp(combined.at(index - 1)?.timestamp, messageItem?.timestamp)}
             />
           )
         ))}

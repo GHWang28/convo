@@ -9,7 +9,8 @@ import {
   serverTimestamp,
   startAt,
   endAt,
-  orderBy
+  orderBy,
+  deleteField
 } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { firebaseDatabase } from '.';
@@ -56,6 +57,25 @@ export function joinUserToChannel (uid, cid, showToast = true) {
     })
     .catch(() => {
       toast.error('An error occurred when joining this channel.')
+    })
+}
+
+export function leaveUserToChannel (uid, cid, showToast = true) {
+  const docRefUID = doc(firebaseDatabase, 'users', uid);
+  const docRefCID = doc(firebaseDatabase, 'channels', cid);
+
+  const newEntryCID = {}, newEntryUID = {};
+  newEntryCID[cid] = deleteField();
+  newEntryUID[uid] = deleteField();
+
+  return Promise.all([
+    setDoc(docRefUID, { uidToCid: newEntryCID }, { merge: true }),
+    setDoc(docRefCID, { cidToUid: newEntryUID }, { merge: true })
+  ]).then(() => {
+      if (showToast) toast.success('Channel left.')
+    })
+    .catch(() => {
+      toast.error('An error occurred when leaving this channel.')
     })
 }
 

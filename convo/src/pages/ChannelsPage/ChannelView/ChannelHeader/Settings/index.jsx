@@ -6,7 +6,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import EditIcon from '@mui/icons-material/Edit';
 import ButtonMenu from '../../../../../components/ButtonMenu';
 import { useDispatch } from 'react-redux';
-import { setShowChannelEditModal } from '../../../../../redux/actions';
+import { setShowChannelEditModal, setShowChannelLeaveModal } from '../../../../../redux/actions';
 
 export default function Settings ({ channelData }) {
   const dispatch = useDispatch();
@@ -29,7 +29,10 @@ export default function Settings ({ channelData }) {
     },
     {
       text: 'Leave Channel',
-      icon: <DoorBackIcon />
+      icon: <DoorBackIcon />,
+      onClick: () => {
+        dispatch(setShowChannelLeaveModal(channelData))
+      }
     }
   ]
 

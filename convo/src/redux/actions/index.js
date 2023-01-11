@@ -62,6 +62,21 @@ export function setShowChannelJoinModal (channelData) {
   }
 }
 
+export function setShowChannelLeaveModal (channelData) {
+  if (!channelData) return {
+    type: 'CHANNEL_LEAVE_MODAL',
+    value: null
+  }
+  // Delete non-serialisable data
+  const channelDataCopy = {...channelData};
+  delete channelDataCopy.dateCreated;
+
+  return {
+    type: 'CHANNEL_LEAVE_MODAL',
+    value: channelDataCopy
+  }
+}
+
 export function setShowChannelInfoModal (boolean, channelData = {}) {
   if (!boolean) {
     return {
@@ -75,6 +90,7 @@ export function setShowChannelInfoModal (boolean, channelData = {}) {
     value: {...channelData}
   }
 }
+
 
 export function setFetching (boolean) {
   return {

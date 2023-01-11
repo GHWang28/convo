@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '..';
 import { setFetching, setShowChannelEditModal } from '../../../redux/actions';
-import { Box, Grid, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Divider, Grid, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { toast } from 'react-toastify';
 import { RgbStringColorPicker } from 'react-colorful';
 import TextInputRGB from '../../TextInputRGB';
@@ -92,26 +92,34 @@ export default function ChannelEditModal () {
       
       <Grid container mt={1}>
         {/* Color Picker */}
-        <Grid item xs={6} pr={1}>
+        <Grid item xs={12} sm={6} pr={1}>
           <Typography fontWeight='bold' ml={1} my={1}>
             {'Channel Theme'}
           </Typography>
           <TextInputRGB color={color} setColor={setColor} />
           <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
             <RgbStringColorPicker color={color} onChange={setColor} />
-            <Box
-              bgcolor={color}
-              height='50px'
-              width='50px'
-              borderRadius='50%'
-            />
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Typography align='center' mb={0.5}>
+                {'Preview'}
+              </Typography>
+              <Box
+                bgcolor={color}
+                height='50px'
+                width='50px'
+                borderRadius='50%'
+              />
+            </Box>
           </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'space-around', pt: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', pt: 2, alignItems: 'center' }}>
             <Box
               role='button'
               onClick={() => { setColor(theme.palette.publicColor) }}
               sx={{ cursor: 'pointer', '&:hover': { scale: '1.1' }, transition: 'scale 0.25s ease-in-out', borderRadius: '25%', bgcolor: theme.palette.publicColor, width: '50px', height: '50px' }}
             />
+            <Typography mx={2}>
+              {'🡄 Presets 🡆'}
+            </Typography>
             <Box
               role='button'
               onClick={() => { setColor(theme.palette.privateColor) }}
@@ -119,8 +127,13 @@ export default function ChannelEditModal () {
             />
           </Box>
         </Grid>
+        {(smallMq) ? (
+          <Divider orientation={'vertical'} flexItem sx={{ mr: '-1px', borderColor: 'whitesmoke' }} />
+        ) : (
+          <Box component='hr' sx={{ width: '100%', my: 2 }} />
+        )}
         {/* Channel Icon */}
-        <Grid item xs={6} pl={1} sx={{ borderLeft: '1px solid whitesmoke' }}>
+        <Grid item xs={12} sm={6} pl={1}>
           <Typography fontWeight='bold' ml={1} my={1}>
             {'Channel Icon'}
           </Typography>
@@ -131,11 +144,11 @@ export default function ChannelEditModal () {
                 role='button'
                 onClick={() => { setIcon(index) }}
                 sx={{
-                  border: `1px solid ${color}`,
-                  borderRadius: '3px',
+                  border: `1px solid ${theme.palette.contrastColor}`,
+                  borderRadius: '10px',
                   width: '32px',
                   height: '32px',
-                  backgroundImage: getChannelIcon(index, color, 1),
+                  backgroundImage: getChannelIcon(index, theme.palette.contrastColor, 1),
                   backgroundPosition: 'center center',
                   backgroundRepeat: 'no-repeat',
                   backgroundSize: 'auto 80%',

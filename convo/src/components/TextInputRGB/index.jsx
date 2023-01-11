@@ -1,12 +1,13 @@
 import React from 'react';
-import { Box, TextField } from '@mui/material'
+import { Box, TextField, useMediaQuery } from '@mui/material'
 import { parseRGB } from '../../helpers';
 
 export default function TextInputRGB ({ color, setColor }) {
   const [r, g, b] = parseRGB(color);
+  const mediumMq = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
   return (
-    <Box sx={{ display: 'flex', gap: 3}}>
+    <Box sx={{ display: 'flex', gap: (mediumMq) ? 3 : 1}}>
       <TextField
         sx={{ my: 1 }}
         InputProps={{ sx: { bgcolor: 'mainColorNormal' }, inputProps: { min: 0, max: 255 }}}

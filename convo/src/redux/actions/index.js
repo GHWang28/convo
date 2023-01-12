@@ -77,6 +77,13 @@ export function setShowChannelLeaveModal (channelData) {
   }
 }
 
+export function setShowChannelMemberModal (userArray) {
+  return {
+    type: 'CHANNEL_MEMBER_MODAL',
+    value: userArray
+  }
+}
+
 export function setShowChannelInfoModal (boolean, channelData = {}) {
   if (!boolean) {
     return {

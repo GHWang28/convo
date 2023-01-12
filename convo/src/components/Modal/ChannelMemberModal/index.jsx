@@ -2,52 +2,43 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '..';
 import SearchIcon from '@mui/icons-material/Search';
-import { setFetching, setShowChannelSearchModal } from '../../../redux/actions';
+import { setShowChannelMemberModal } from '../../../redux/actions';
 import { Box, IconButton, TextField, Typography, useMediaQuery } from '@mui/material';
-import { searchChannel } from '../../../firebase/database';
-import ListItemChannel from '../../ListItemChannel';
+import ListItemUser from '../../ListItemUser';
 
-export default function ChannelSearchModal () {
+export default function ChannelMemberModal () {
   const dispatch = useDispatch();
-  const [channels, setChannels] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [searched, setSearched] = useState('');
+  const [prevSearch, setPrevSearch] = useState('');
+  const userArray = useSelector(state => state.channelMemberModal);
+  const [displayedUser, setDisplayedUser] = useState([...userArray]);
   const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm'));
 
   const onSearch = () => {
-    dispatch(setFetching(true));
-    searchChannel(searchTerm)
-      .then((result) => {
-        setSearched(searchTerm);
-        setChannels(result);
-      }).finally(() => {
-        dispatch(setFetching(false));
-      })
+    setDisplayedUser(userArray.filter((userData) => (
+      userData?.handler.toLowerCase().startsWith(searchTerm.toLowerCase())
+    )))
+    setPrevSearch(searchTerm);
   }
 
   const onClose = () => {
-    setChannels([]);
-    setSearchTerm('');
-    setSearched('');
-    dispatch(setShowChannelSearchModal(false));
+    dispatch(setShowChannelMemberModal([]))
   }
-  
+
   return (
     <Modal
-      open={useSelector(state => state.channelSearchModal)}
-      title='Channel Search'
+      open={Boolean(userArray?.length)}
+      title='Channel Members'
       handleClose={onClose}
       fullWidth
       fullScreen={!smallMq}
     >
       <TextField
         fullWidth
-        label='Search Public Channels'
+        label='Search Members in Channel'
         value={searchTerm}
         InputProps={{
-          sx: {
-            bgcolor: 'mainColorNormal'
-          },
+          sx: { bgcolor: 'mainColorNormal' },
           endAdornment: (
             <IconButton onClick={onSearch}>
               <SearchIcon />
@@ -62,10 +53,8 @@ export default function ChannelSearchModal () {
         }}
         onChange={(event) => { setSearchTerm(event.target.value) }}
       />
-      <Typography my={1}>
-        {`Total Results: ${channels.length}`}
-      </Typography>
       <Box
+        mt={2}
         sx={{
           maxHeight: '500px',
           overflowY: 'auto',
@@ -74,16 +63,17 @@ export default function ChannelSearchModal () {
           p: 1,
         }}
       >
-        {(channels.length === 0) && (
+        {(displayedUser?.length === 0) && (
           <Typography my={1} align='center'>
-            {(searched)
-              ? `No channels have a name similar to "${searched}".`
-              : 'Search for channels with similar names by entering keywords.'
-            }
+            {(prevSearch) ? (
+              `No members have a handler beginning with "${prevSearch}".`
+            ) : (
+              'No members were found.'
+            )}
           </Typography>
         )}
-        {channels.map((data) => (
-          <ListItemChannel key={data?.cid} cid={data?.cid} closeSearchModal showDesc/>
+        {displayedUser.map((userData) => (
+          <ListItemUser key={userData?.uid} userData={userData}/>
         ))}
       </Box>
     </Modal>

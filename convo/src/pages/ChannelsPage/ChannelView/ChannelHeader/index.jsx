@@ -56,7 +56,7 @@ export default function ChannelHeader ({ channelData }) {
         >
           <TypographyTruncate
             width='100%'
-            text={channelData.name}
+            text={channelData?.name}
             sx={{ fontWeight: 'bold', fontSize: 20, color: channelData.theme }}
           />
         </Box>

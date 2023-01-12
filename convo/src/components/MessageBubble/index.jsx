@@ -20,16 +20,14 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
   const [hover, setHover] = useState(false);
   const [isImg, setIsImg] = useState(false);
   const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm'));
-  const viewerIsSender = (useSelector(state => state.loggedInUserData)?.uid === sender?.uid);
+  const viewerIsSender = useSelector(state => state.loggedInUserData)?.uid === sender?.uid;
 
   useEffect(() => {
     getUser(messageData?.uid)
       .then((userData) => {
         setSender(userData);
         return isUrlToImage(messageData?.text);
-      }).then((status) => {
-        setIsImg(status);
-      })
+      }).then(setIsImg)
   }, [messageData?.uid, messageData?.text]);
 
   return (

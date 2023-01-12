@@ -79,6 +79,12 @@ export function leaveUserToChannel (uid, cid, showToast = true) {
     })
 }
 
+export function getArrayOfUserData (uidArray) {
+  return Promise.all(uidArray.map((uid) => (
+      getUser(uid)
+  )))
+}
+
 export function getIsUserInChannel (uid, cid) {
   const docRefUID = doc(firebaseDatabase, 'users', uid);
   const docRefCID = doc(firebaseDatabase, 'channels', cid);

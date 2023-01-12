@@ -4,6 +4,7 @@ import channelEditModalReducer from './channelEditModalReducer';
 import channelInfoModalReducer from './channelInfoModalReducer';
 import channelJoinModalReducer from './channelJoinModalReducer';
 import channelLeaveModalReducer from './channelLeaveModalReducer';
+import channelMemberReducerModal from './channelMemberModalReducer';
 import channelSearchModalReducer from './channelSearchModalReducer';
 import fetchingReducer from './fetchingReducer';
 import loggedInUserDataReducer from './loggedInUserDataReducer';
@@ -17,6 +18,7 @@ const combinedReducer = combineReducers({
   loggedInUserData: loggedInUserDataReducer,
   logOutModal: logOutModalReducer,
   channelLeaveModal: channelLeaveModalReducer,
+  channelMemberModal: channelMemberReducerModal,
   channelJoinModal: channelJoinModalReducer,
   channelCreateModal: channelCreateModalReducer,
   channelSearchModal: channelSearchModalReducer,

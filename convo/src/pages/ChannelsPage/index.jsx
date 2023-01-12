@@ -10,6 +10,7 @@ import ChannelInfoModal from '../../components/Modal/ChannelInfoModal';
 import ChannelEditModal from '../../components/Modal/ChannelEditModal';
 import ChannelJoinModal from '../../components/Modal/ChannelJoinModal';
 import ChannelLeaveModal from '../../components/Modal/ChannelLeaveModal';
+import ChannelMemberModal from '../../components/Modal/ChannelMemberModal';
 
 export default function ChannelsPage () {
 
@@ -17,6 +18,7 @@ export default function ChannelsPage () {
     <Fragment>
       <Header />
       <LogOutModal />
+      <ChannelMemberModal />
       <ChannelLeaveModal />
       <ChannelJoinModal />
       <ChannelCreateModal />

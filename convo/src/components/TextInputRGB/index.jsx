@@ -16,7 +16,7 @@ export default function TextInputRGB ({ color, setColor }) {
         variant='outlined'
         fullWidth
         type='number'
-        value={r}
+        value={r || 0}
         onChange={(event) => { setColor(`rgb(${Math.min(255, Math.max(0, event.target.value || 0))},${g},${b})`) }}
       />
       <TextField
@@ -27,7 +27,7 @@ export default function TextInputRGB ({ color, setColor }) {
         variant='outlined'
         fullWidth
         type='number'
-        value={g}
+        value={g || 0}
         onChange={(event) => { setColor(`rgb(${r},${Math.min(255, Math.max(0, event.target.value || 0))},${b})`) }}
       />
       <TextField
@@ -38,7 +38,7 @@ export default function TextInputRGB ({ color, setColor }) {
         variant='outlined'
         fullWidth
         type='number'
-        value={b}
+        value={b || 0}
         onChange={(event) => { setColor(`rgb(${r},${g},${Math.min(255, Math.max(0, event.target.value || 0))})`) }}
       />
     </Box>

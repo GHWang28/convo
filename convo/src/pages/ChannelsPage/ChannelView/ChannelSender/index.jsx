@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, LinearProgress, TextField, Typography } from '@mui/material';
+import { Box, Button, Collapse, IconButton, LinearProgress, TextField, Typography } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { postMessage } from '../../../../firebase/database';
 import { useSelector } from 'react-redux';
@@ -40,7 +40,7 @@ export default function ChannelSender ({ cid }) {
         p: 1,
         boxSizing: 'border-box',
         bgcolor: 'mainColorLight',
-        boxShadow: '0 0 30px rgba(0,0,0,0.5)',
+        boxShadow: '0 0 30px rgba(0,0,0,1)',
         clipPath: 'inset(-30px 0px 0px 0px)'
       }}
     >
@@ -61,18 +61,20 @@ export default function ChannelSender ({ cid }) {
             }
           }}
         />
-        <Button variant='outlined' color='secondary' onClick={onSend}>
-          <SendIcon />
-        </Button>
+        <Collapse in={message.length} orientation='horizontal'>
+          <IconButton color='secondary' onClick={onSend} sx={{ borderWidth: '1px', borderRadius: 0, borderStyle: 'solid', borderColor: 'secondary' }}>
+            <SendIcon />
+          </IconButton>
+        </Collapse>
       </Box>
-      <Box sx={{ height: '8px', width: '100%', color: 'white', position: 'relative' }}>
+      <Box sx={{ height: '7px', width: '100%', color: 'white', position: 'relative' }}>
         <LinearProgress
           color={(messagePercentage >= 100) ? 'error' : 'inherit'}
-          sx={{ height: '8px' }}
+          sx={{ height: '7px' }}
           variant={(sending) ? 'indeterminate' : 'determinate'}
           value={Math.min(100, messagePercentage)}
         />
-        <Typography fontSize={8} fontWeight='bold' sx={{ color: 'black', position: 'absolute', left: 5, top: -2 }}>
+        <Typography fontSize={8} fontWeight='bold' sx={{ color: 'black', position: 'absolute', left: 5, top: -2.5 }}>
           {`${message.length} / ${config.MAX_CHAR} characters`}
         </Typography>
       </Box>

@@ -54,7 +54,7 @@ export default function ChannelTray () {
           </Box>
         ) : (
           <Box
-            mt='20px'
+            mt='2vh'
             sx={{
               height: '40px',
               width: '40px',

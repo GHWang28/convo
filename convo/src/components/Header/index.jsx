@@ -16,6 +16,7 @@ export default function Header () {
         align='center'
         fontWeight='bold'
         fontFamily='Sofia Sans'
+        fontSize='1.4vh'
         onClick={onClick}
         sx={{ cursor: 'pointer' }}
       >

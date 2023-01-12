@@ -5,6 +5,7 @@ body {
   margin: 0;
   width: 100vw;
   height: 100vh;
+  overflow: 'clip';
   background-color: rgb(32,32,32);
 }
 
@@ -14,8 +15,8 @@ body {
 
 ::-webkit-scrollbar {
   opacity: 0.5;
-  width: 14px;
-  height: 14px;
+  width: 10px;
+  height: 10px;
 }
 
 /* Track of scrollbar. Where the thumb can move to */

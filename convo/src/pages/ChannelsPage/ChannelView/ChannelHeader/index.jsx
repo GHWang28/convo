@@ -17,7 +17,7 @@ export default function ChannelHeader ({ channelData }) {
         minHeight: '110px',
         boxSizing: 'border-box',
         bgcolor: 'mainColorLight',
-        boxShadow: '0 0 30px rgba(0,0,0,0.5)',
+        boxShadow: '0 0 30px rgba(0,0,0,1)',
         clipPath: 'inset(0px 0px -30px 0px)',
         pl: (!mediumMq) && '40px'
       }}

@@ -40,6 +40,7 @@ export default function ChannelView () {
         alignItems: 'center'
       }}
     >
+      <ChannelHeader channelData={channelData} />
       {(fetching || !verifiedAccess) ? (
         (!fetching) ? (
           <NoPermChannel />

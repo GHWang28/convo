@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Collapse, IconButton, LinearProgress, TextField, Typography } from '@mui/material';
+import { Box, Collapse, IconButton, LinearProgress, TextField, Typography } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { postMessage } from '../../../../firebase/database';
 import { useSelector } from 'react-redux';
@@ -61,7 +61,7 @@ export default function ChannelSender ({ cid }) {
             }
           }}
         />
-        <Collapse in={message.length} orientation='horizontal'>
+        <Collapse in={Boolean(message.length)} orientation='horizontal'>
           <IconButton color='secondary' onClick={onSend} sx={{ borderWidth: '1px', borderRadius: 0, borderStyle: 'solid', borderColor: 'secondary' }}>
             <SendIcon />
           </IconButton>

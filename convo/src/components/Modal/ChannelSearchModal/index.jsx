@@ -66,12 +66,12 @@ export default function ChannelSearchModal () {
         {`Total Results: ${channels.length}`}
       </Typography>
       <Box
+        p={1}
         sx={{
           maxHeight: '500px',
           overflowY: 'auto',
           bgcolor: 'mainColorNormal',
-          borderRadius: '5px',
-          p: 1,
+          borderRadius: '5px'
         }}
       >
         {(channels.length === 0) && (

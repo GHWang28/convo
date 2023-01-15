@@ -11,19 +11,19 @@ export default function ChannelMemberModal () {
   const [searchTerm, setSearchTerm] = useState('');
   const [prevSearch, setPrevSearch] = useState('');
   const userArray = useSelector(state => state.channelMemberModal);
-  const [displayedUser, setDisplayedUser] = useState([...userArray]);
   const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm'));
 
   const onSearch = () => {
-    setDisplayedUser(userArray.filter((userData) => (
-      userData?.handler.toLowerCase().startsWith(searchTerm.toLowerCase())
-    )))
     setPrevSearch(searchTerm);
   }
 
   const onClose = () => {
     dispatch(setShowChannelMemberModal([]))
   }
+
+  const displayedUser = userArray.filter((userData) => (
+    userData?.handler.toLowerCase().startsWith(prevSearch.toLowerCase())
+  ));
 
   return (
     <Modal

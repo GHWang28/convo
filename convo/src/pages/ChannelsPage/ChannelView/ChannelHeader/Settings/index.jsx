@@ -19,7 +19,6 @@ export default function Settings ({ channelData }) {
       onClick: () => {
         getArrayOfUserData(Object.keys(channelData?.cidToUid))
           .then((result) => {
-            console.log(result)
             dispatch(setShowChannelMemberModal(result));
           })
       }

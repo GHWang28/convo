@@ -8,6 +8,7 @@ import { setImageZoom } from '../../redux/actions';
 import BootstrapTooltip from '../BootstrapTooltip';
 import DateDisplay from '../DateDisplay';
 import TypographyTruncate from '../TypographyTruncate';
+import MessageOptions from './MessageOptions';
 
 function padding (smallMq, isStart) {
   if (isStart) return 1;
@@ -72,15 +73,30 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
         onMouseLeave={() => { setHover(false) }}
       >
         {(arrow && isStart) && <MessageTail hover={hover} right={viewerIsSender}/>}
+        {(hover) && (
+          <MessageOptions
+            isSender={viewerIsSender}
+            position={{ top: -20, right: 0 }}
+            messageData={messageData}
+            color={color}
+          />
+        )}
         {(isStart) && (
           <Fragment>
             <TypographyTruncate
               width={'50%'}
               text={sender?.handler}
-              sx={{ fontWeight: 'bold', fontSize: 12, color: 'secondary.main' }}
+              sx={{ fontWeight: 'bold', fontSize: 14, color: 'secondary.main' }}
             />
+            <DateDisplay time={messageData?.timestamp?.seconds} align='left'/>
             <Box component='hr' sx={{ opacity: 0.5, borderColor: color }} />
           </Fragment>
+        )}
+        {/* Date display */}
+        {(!isStart) && (
+          <Collapse in={hover}>
+            <DateDisplay time={messageData?.timestamp?.seconds} align='left'/>
+          </Collapse>
         )}
         {/* Show as image or text */}
         {(isImg) ? (
@@ -111,10 +127,6 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
             color={color}
           />
         )}
-        {/* Date display */}
-        <Collapse in={hover}>
-          <DateDisplay time={messageData?.timestamp?.seconds} align='right'/>
-        </Collapse>
       </Box>
     </Box>
 
@@ -151,8 +163,8 @@ function BubbleImage ({ onClick, src, color }) {
       sx={{
         border: `1px solid ${color}`,
         borderRadius: '15px',
-        maxHeight: '500px',
-        maxWidth: '100%',
+        maxHeight: 'min(350px, 50vh)',
+        maxWidth: 'min(350px, 50vw)',
         cursor: 'pointer',
         transition: 'scale 0.25s ease-in-out',
         '&:hover': { scale: '1.02' }

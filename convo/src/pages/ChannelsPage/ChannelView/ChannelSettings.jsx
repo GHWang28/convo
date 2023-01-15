@@ -4,10 +4,10 @@ import DoorBackIcon from '@mui/icons-material/DoorBack';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import EditIcon from '@mui/icons-material/Edit';
-import ButtonMenu from '../../../../../components/ButtonMenu';
+import ButtonMenu from '../../../components/ButtonMenu';
 import { useDispatch } from 'react-redux';
-import { setShowChannelEditModal, setShowChannelLeaveModal, setShowChannelMemberModal } from '../../../../../redux/actions';
-import { getArrayOfUserData } from '../../../../../firebase/database';
+import { setShowChannelEditModal, setShowChannelLeaveModal, setShowChannelMemberModal } from '../../../redux/actions';
+import { getArrayOfUserData } from '../../../firebase/database';
 
 export default function Settings ({ channelData }) {
   const dispatch = useDispatch();

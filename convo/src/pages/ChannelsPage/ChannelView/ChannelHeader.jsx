@@ -1,10 +1,10 @@
 import React from 'react';
 import { Box, Typography, useMediaQuery } from '@mui/material';
-import { getChannelIcon } from '../../../../helpers';
+import { getChannelIcon } from '../../../helpers';
 import { useDispatch } from 'react-redux';
-import { setShowChannelInfoModal } from '../../../../redux/actions';
-import Settings from './Settings';
-import TypographyTruncate from '../../../../components/TypographyTruncate';
+import { setShowChannelInfoModal } from '../../../redux/actions';
+import Settings from './ChannelSettings';
+import TypographyTruncate from '../../../components/TypographyTruncate';
 
 export default function ChannelHeader ({ channelData }) {
   const dispatch = useDispatch();

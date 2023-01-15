@@ -18,6 +18,7 @@ export default function ChannelMemberModal () {
   }
 
   const onClose = () => {
+    setPrevSearch('');
     dispatch(setShowChannelMemberModal([]))
   }
 

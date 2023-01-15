@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Button, Checkbox, CircularProgress, FormControlLabel, FormGroup, Typography } from '@mui/material';
 import { browserLocalPersistence, browserSessionPersistence, signInWithPopup } from 'firebase/auth';
-import { auth, githubProvider, googleProvider } from '../../../firebase';
+import { auth, githubProvider, googleProvider } from '../../firebase';
 import { toast } from 'react-toastify';
 import GoogleIcon from '@mui/icons-material/Google';
 import GitHubIcon from '@mui/icons-material/GitHub';

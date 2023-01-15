@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react';
 import { Backdrop, Box, Collapse, useMediaQuery } from '@mui/material';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import MenuIcon from '@mui/icons-material/Menu';
-import TrayContent from './TrayContent';
+import ChannelTrayContent from './ChannelTrayContent';
 
 export default function ChannelTray () {
   const [showChannelTray, setShowChannelTray] = useState(true);
@@ -19,7 +19,7 @@ export default function ChannelTray () {
       <Box sx={{ position: (mediumMq) ? 'static' : 'absolute', display: 'flex', top: 0 }}>
         {/* Info with tray content */}
         <Collapse in={showChannelTray} orientation='horizontal' sx={{ zIndex: 2 }}>
-          <TrayContent height={height} />
+          <ChannelTrayContent height={height} />
         </Collapse>
 
         {/* Tab */}

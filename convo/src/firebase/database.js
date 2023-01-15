@@ -10,7 +10,8 @@ import {
   startAt,
   endAt,
   orderBy,
-  deleteField
+  deleteField,
+  deleteDoc
 } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { firebaseDatabase } from '.';
@@ -177,9 +178,14 @@ export function postMessage (cid, uid, message) {
     ...message, 
     timestamp: new Date(),
     uid,
+    cid,
     mid: newDoc.id
   }
   return setDoc(newDoc, messagePackage);
+}
+
+export function deleteMessage (cid, mid) {
+  return deleteDoc(doc(firebaseDatabase, 'channels', cid, 'messages', mid));
 }
 
 export function postMessageNotification (cid, uid, nid) {
@@ -188,6 +194,7 @@ export function postMessageNotification (cid, uid, nid) {
     timestamp: new Date(),
     uid,
     nid,
+    cid,
     mid: newDoc.id
   }
   return setDoc(newDoc, notificationPackage);

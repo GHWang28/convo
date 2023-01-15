@@ -19,10 +19,7 @@ export default function NotificationBubble ({ notificationData, color }) {
     <Box
       my={0.25}
       px={3}
-      sx={{
-        boxSizing: 'border-box',
-        width: '100%'
-      }}
+      sx={{ boxSizing: 'border-box', width: '100%' }}
     >
       <Divider sx={{ '&::before, &::after': { borderColor: color, opacity: 0.5 } }}>
         <Chip
@@ -30,7 +27,8 @@ export default function NotificationBubble ({ notificationData, color }) {
             fontWeight: 'bold',
             bgcolor: `rgba(${colorParse[0]},${colorParse[1]},${colorParse[2]},0.25)`,
             color: 'whitesmoke',
-            border: `1px solid ${color}`
+            border: `1px solid ${color}`,
+            fontSize: 'min(2vw, 13px)'
           }}
           label={generateNotificationMessage(notificationData.nid, sender?.handler)}
         />

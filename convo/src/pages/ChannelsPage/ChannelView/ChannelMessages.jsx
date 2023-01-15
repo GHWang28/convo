@@ -1,14 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import { Box } from '@mui/material';
 import { collection, endBefore, getDocs, limit, orderBy, query, startAfter } from 'firebase/firestore';
-import { firebaseDatabase } from '../../../../firebase';
-import MessageBubble from '../../../../components/MessageBubble';
+import { firebaseDatabase } from '../../../firebase';
+import MessageBubble from '../../../components/MessageBubble';
 import { useEffect } from 'react';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import MessageLoad from '../../../../components/MessageLoad';
-import config from '../../../../config.json';
-import NotificationBubble from '../../../../components/NotificationBubble';
+import MessageLoad from '../../../components/MessageLoad';
+import config from '../../../config.json';
+import NotificationBubble from '../../../components/NotificationBubble';
 
 const handleNextQueryState = (oldMessages, setNextQuery, cid) => {
   setNextQuery((oldMessages.docs.length < config.PAIGNATION_LENGTH) ? (

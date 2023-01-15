@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Box, Collapse, IconButton, LinearProgress, TextField, Typography } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import { postMessage } from '../../../../firebase/database';
+import { postMessage } from '../../../firebase/database';
 import { useSelector } from 'react-redux';
-import config from '../../../../config.json';
+import config from '../../../config.json';
 import { toast } from 'react-toastify';
-import ImageUploader from '../../../../components/ImageUploader';
+import ImageUploader from '../../../components/ImageUploader';
 
 export default function ChannelSender ({ cid }) {
   const [message, setMessage] = useState('');
@@ -22,6 +22,7 @@ export default function ChannelSender ({ cid }) {
     }
 
     setMessage('');
+    setImage([]);
     setSending(true);
     postMessage(cid, userData.uid, { text: message, image: image[0]?.dataURL || '' })
       .then(() => {
@@ -34,7 +35,6 @@ export default function ChannelSender ({ cid }) {
       })
       .finally(() => {
         setSending(false);
-        setImage([]);
       })
   }
 

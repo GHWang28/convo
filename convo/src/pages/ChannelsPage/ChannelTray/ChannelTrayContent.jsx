@@ -2,12 +2,12 @@ import React from 'react';
 import { Avatar, Box, Grid, TextField, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchIcon from '@mui/icons-material/Search';
-import ButtonCreateChannel from '../../../../components/ButtonCreateChannel';
-import ButtonLogOut from '../../../../components/ButtonLogOut';
-import ListItemChannel from '../../../../components/ListItemChannel';
-import { setShowChannelSearchModal } from '../../../../redux/actions';
+import ButtonCreateChannel from '../../../components/ButtonCreateChannel';
+import ButtonLogOut from '../../../components/ButtonLogOut';
+import ListItemChannel from '../../../components/ListItemChannel';
+import { setShowChannelSearchModal } from '../../../redux/actions';
 
-export default function TrayContent ({ height }) {
+export default function ChannelTrayContent ({ height }) {
   const userData = useSelector(state => state.loggedInUserData);
   const dispatch = useDispatch();
 

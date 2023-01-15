@@ -5,15 +5,17 @@ import { postMessage } from '../../../../firebase/database';
 import { useSelector } from 'react-redux';
 import config from '../../../../config.json';
 import { toast } from 'react-toastify';
+import ImageUploader from '../../../../components/ImageUploader';
 
 export default function ChannelSender ({ cid }) {
   const [message, setMessage] = useState('');
+  const [image, setImage] = useState([]);
   const [sending, setSending] = useState(false);
   const messagePercentage = 100 * message.length / config.MAX_CHAR;
   const userData = useSelector(state => state.loggedInUserData);
 
   const onSend = () => {
-    if (!message) return;
+    if (!(message || image.length)) return;
     if (messagePercentage >= 100) {
       toast.error('Message is too long to send.');
       return;
@@ -21,7 +23,7 @@ export default function ChannelSender ({ cid }) {
 
     setMessage('');
     setSending(true);
-    postMessage(cid, userData.uid, message)
+    postMessage(cid, userData.uid, { text: message, image: image[0]?.dataURL || '' })
       .then(() => {
         // Delay before scrolling down
         return new Promise((resolve) => (setTimeout(resolve, 5)))
@@ -29,8 +31,11 @@ export default function ChannelSender ({ cid }) {
       .then(() => {
         const msgContainer = document.getElementById('message-container');
         msgContainer.scrollTo({ top: msgContainer.scrollHeight, behavior: 'smooth' });
+      })
+      .finally(() => {
         setSending(false);
-      });
+        setImage([]);
+      })
   }
 
   return (
@@ -41,10 +46,11 @@ export default function ChannelSender ({ cid }) {
         boxSizing: 'border-box',
         bgcolor: 'mainColorLight',
         boxShadow: '0 0 30px rgba(0,0,0,1)',
-        clipPath: 'inset(-30px 0px 0px 0px)'
+        clipPath: 'inset(-100vh 0px 0px 0px)'
       }}
     >
       <Box sx={{ display: 'flex' }}>
+        <ImageUploader image={image} onChange={setImage} />
         <TextField
           sx={{ flexGrow: 1 }}
           InputProps={{ sx: { bgcolor: 'mainColorDark' } }}
@@ -61,7 +67,7 @@ export default function ChannelSender ({ cid }) {
             }
           }}
         />
-        <Collapse in={Boolean(message.length)} orientation='horizontal'>
+        <Collapse in={Boolean(message.length || image.length)} orientation='horizontal'>
           <IconButton color='secondary' onClick={onSend} sx={{ borderWidth: '1px', borderRadius: 0, borderStyle: 'solid', borderColor: 'secondary' }}>
             <SendIcon />
           </IconButton>

@@ -49,7 +49,7 @@ export default function ListItemChannel ({ cid, closeSearchModal, showDesc, show
         p={1}
         role='button'
         sx={{
-          border: `1px solid ${channelData.theme}`,
+          border: `1px solid ${channelData?.theme}`,
           borderRadius: '5px',
           display: 'flex',
           cursor: (!pressed) && 'pointer',
@@ -57,7 +57,7 @@ export default function ListItemChannel ({ cid, closeSearchModal, showDesc, show
           '&:hover': {
             bgcolor: (!pressed) && 'highlightColor'
           },
-          bgcolor: (pressed) && (channelData.theme)
+          bgcolor: (pressed) && (channelData?.theme)
         }}
         onClick={() => {
           if (pressed) return;

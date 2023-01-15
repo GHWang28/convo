@@ -171,10 +171,10 @@ export function searchChannel (searchTerm) {
   })
 }
 
-export function postMessage (cid, uid, text) {
+export function postMessage (cid, uid, message) {
   const newDoc = doc(collection(firebaseDatabase, 'channels', cid, 'messages'));
   const messagePackage = {
-    text, 
+    ...message, 
     timestamp: new Date(),
     uid,
     mid: newDoc.id

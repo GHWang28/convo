@@ -52,7 +52,6 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
           }}
         />
       )}
-
       {/* Message Box */}
       <Box
         sx={{
@@ -85,23 +84,13 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
         )}
         {/* Show as image or text */}
         {(isImg) ? (
-          <Box
-            component='img'
-            mt={2}
+          <BubbleImage
             src={messageData?.text}
             onClick={() => { dispatch(setImageZoom(messageData?.text)) }}
-            sx={{
-              border: `1px solid ${color}`,
-              borderRadius: '15px',
-              maxHeight: '500px',
-              maxWidth: '100%',
-              cursor: 'pointer',
-              transition: 'scale 0.25s ease-in-out',
-              '&:hover': { scale: '1.02' }
-            }}
+            color={color}
           />
         ) : (
-          <Typography sx={{ wordBreak: 'break-word', width: 'fit-content', display: 'inline-block'}}>
+          <Typography sx={{ wordBreak: 'break-word', width: 'fit-content' }}>
             <Linkify options={{ render: ({ attributes, content }) => {
               // Adds links to text that are potentially links
               const { href, ...props } = attributes;
@@ -114,6 +103,13 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
               {messageData?.text}
             </Linkify>
           </Typography>
+        )}
+        {(messageData?.image) && (
+          <BubbleImage
+            src={messageData?.image}
+            onClick={() => { dispatch(setImageZoom(messageData?.image)) }}
+            color={color}
+          />
         )}
         {/* Date display */}
         <Collapse in={hover}>
@@ -133,11 +129,33 @@ function MessageTail ({ right, hover }) {
         width: '15px',
         height: '15px',
         position: 'absolute',
+        display: '',
         bgcolor: (hover) ? 'mainColorSlightLight' : 'mainColorLight',
         rotate: (right) ? '-135deg' : '45deg',
         top: 14,
         left: (!right) && -6,
         right: (right) && -6
+      }}
+    />
+  )
+}
+
+function BubbleImage ({ onClick, src, color }) {
+  return (
+    <Box
+      component='img'
+      mt={2}
+      src={src}
+      onClick={onClick}
+      alt='Bubble Image'
+      sx={{
+        border: `1px solid ${color}`,
+        borderRadius: '15px',
+        maxHeight: '500px',
+        maxWidth: '100%',
+        cursor: 'pointer',
+        transition: 'scale 0.25s ease-in-out',
+        '&:hover': { scale: '1.02' }
       }}
     />
   )

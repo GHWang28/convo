@@ -1,4 +1,5 @@
 import moment from "moment/moment"
+import { toast } from "react-toastify";
 
 /**
  * Generates a random integer between min and max inclusively
@@ -36,6 +37,19 @@ export function getTextColor (bgRGBstring) {
   // Calculate luminosity to give text that contrasts with it the background
   const luminosity = (0.299 * Number(r) + 0.587 * Number(g) + 0.114 * Number(b));
   return (luminosity < (255 / 2)) ? 'whitesmoke' : 'black';
+}
+
+export function convertImgToURL (file) {
+  const reader = new FileReader();
+
+  const readerPromise = new Promise((resolve, reject) => {
+    reader.onloadend = () => resolve(reader.result.toString());
+    reader.onerror = (err) => { toast.error('Error uploading image'); reject(err); }
+  })
+
+  reader.readAsDataURL(file);
+
+  return readerPromise;
 }
 
 /**

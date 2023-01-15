@@ -43,6 +43,7 @@ export default function ChannelSearchModal () {
       <TextField
         fullWidth
         label='Search Public Channels'
+        title='Search Public Channels'
         value={searchTerm}
         InputProps={{
           sx: {

@@ -13,7 +13,12 @@ export default function LogOutModal () {
       open={useSelector(state => state.logOutModal)}
       handleClose={() => { dispatch(setShowLogOutModal(false)) }}
       title='Log out'
-      handleConfirm={() => { auth.signOut(); dispatch(setLogUserOut()); dispatch(setShowLogOutModal(false)) }}
+      handleConfirm={() => {
+        auth.signOut();
+        dispatch(setLogUserOut());
+        dispatch(setShowLogOutModal(false));
+        sessionStorage.removeItem('uniqueSess');
+      }}
       confirmColor='error'
     >
       <Typography fontSize={20}>

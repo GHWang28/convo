@@ -11,12 +11,14 @@ import ChannelEditModal from '../../components/Modal/ChannelEditModal';
 import ChannelJoinModal from '../../components/Modal/ChannelJoinModal';
 import ChannelLeaveModal from '../../components/Modal/ChannelLeaveModal';
 import ChannelMemberModal from '../../components/Modal/ChannelMemberModal';
+import MOTDModal from '../../components/Modal/MOTDModal';
 
 export default function ChannelsPage () {
 
   return (
     <Fragment>
       <Header />
+      <MOTDModal />
       <LogOutModal />
       <ChannelMemberModal />
       <ChannelLeaveModal />

@@ -3,5 +3,38 @@
     "MAX_CHAR": 2000,
     "MESSAGE_BUFFER_TIMESTAMP_SECONDS": 180,
     "TOTAL_CHANNEL_ICONS": 19,
-    "CHANNEL_EDIT_NID": 0
+    "CHANNEL_EDIT_NID": 0,
+    "MOTD": [
+        "🗿",
+        "If you've accidentally sent the wrong react to a message, you can click on your react under the message to 'unreact'.",
+        "You can enable or disable push notifications from your profile page.",
+        "-40°C is the exact same temperature as -40°F.",
+        "Nobody really knows how to center a div.",
+        "Gummy worms contain more bones than an actual worm. This is because gelatin, an ingredient used to make gummy worms, comes from animal bones.",
+        "England scientists were so confused about the Platypus that they thought it was a prank played by Australians.",
+        "The longest serving actor of Play School is Benita Collings. She was in 401 episodes of Play School throughout her 30-year Play School career.",
+        "A newborn blue whale gains about 200 pounds a day during its first year.",
+        "The 1967 Outer Space Treaty forbids any nation from trying to own the Moon.",
+        "A newborn giant panda is about the size of a stick of butter.",
+        "The smell of fresh cut grass comes from the chemicals plants release when in distress.",
+        "Australia is home to approximately 170 kinds of snakes.",
+        "Snakes account for two deaths per year in Australia.",
+        "'The Merge' was an Ethereum transition that occured on September 15th 2022 which reduced the world's electricity consumption by 0.2%.",
+        "In 1992, the first ever text message was sent. It read 'Merry Christmas'.",
+        "The average texter sends 53 messages per day.",
+        "'Convo' is a recreation of a University Assignment (To avoid plagiarism...).",
+        "Baby rabbits are called kits.",
+        "If you were to visit a beach a day, it will take you 32 years to visit all of Australia's beaches.",
+        "It's statistically proven that most people prefer their headphones to be tuned to a certain frequency response graph known as the Harman target.",
+        "The first YouTube channel to hit 20,000 subscribers was 'geriatric1927', which was ran by Peter Oakley, a 79 year old man."
+    ],
+    "DAY_NAMES": [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+    ]
 }

@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -9,6 +9,7 @@ import MessageBubble from '../../MessageBubble';
 
 export default function MessageDeleteModal () {
   const dispatch = useDispatch();
+  const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm'));
   const messageData = useSelector(state => state.messageDeleteModal);
 
   const onConfirm = () => {
@@ -36,6 +37,7 @@ export default function MessageDeleteModal () {
       handleClose={onClose}
       confirmColor='success'
       fullWidth
+      fullScreen={!smallMq}
     >
       <Typography fontSize={20}>
         {'Are you sure you want to delete this message?'}

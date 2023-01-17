@@ -9,6 +9,7 @@ import channelSearchModalReducer from './channelSearchModalReducer';
 import fetchingReducer from './fetchingReducer';
 import loggedInUserDataReducer from './loggedInUserDataReducer';
 import logOutModalReducer from './logOutModalReducer';
+import messageDeleteModalReducer from './messageDeleteModalReducer';
 import setImageZoomReducer from './setImageZoomReducer';
 
 /**
@@ -17,6 +18,7 @@ import setImageZoomReducer from './setImageZoomReducer';
 const combinedReducer = combineReducers({
   loggedInUserData: loggedInUserDataReducer,
   logOutModal: logOutModalReducer,
+  messageDeleteModal: messageDeleteModalReducer,
   channelLeaveModal: channelLeaveModalReducer,
   channelMemberModal: channelMemberReducerModal,
   channelJoinModal: channelJoinModalReducer,

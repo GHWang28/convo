@@ -15,7 +15,7 @@ function padding (smallMq, isStart) {
   return (smallMq) ? 6 : 5;
 }
 
-export default function MessageBubble ({ messageData, color, arrow, isStart = true, isEnd = true }) {
+export default function MessageBubble ({ messageData, color, arrow, isStart = true, isEnd = true, showOptions = false }) {
   const dispatch = useDispatch();
   const [sender, setSender] = useState(null);
   const [hover, setHover] = useState(false);
@@ -73,7 +73,7 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
         onMouseLeave={() => { setHover(false) }}
       >
         {(arrow && isStart) && <MessageTail hover={hover} right={viewerIsSender}/>}
-        {(hover) && (
+        {(showOptions && hover) && (
           <MessageOptions
             isSender={viewerIsSender}
             position={{ top: -20, right: 0 }}
@@ -88,14 +88,14 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
               text={sender?.handler}
               sx={{ fontWeight: 'bold', fontSize: 14, color: 'secondary.main' }}
             />
-            <DateDisplay time={messageData?.timestamp?.seconds} align='left'/>
+            <DateDisplay time={messageData?.timestamp?.seconds || messageData?.timestamp} align='left'/>
             <Box component='hr' sx={{ opacity: 0.5, borderColor: color }} />
           </Fragment>
         )}
         {/* Date display */}
         {(!isStart) && (
           <Collapse in={hover}>
-            <DateDisplay time={messageData?.timestamp?.seconds} align='left'/>
+            <DateDisplay time={messageData?.timestamp?.seconds || messageData?.timestamp} align='left'/>
           </Collapse>
         )}
         {/* Show as image or text */}

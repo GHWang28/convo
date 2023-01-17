@@ -4,11 +4,11 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Box, IconButton } from '@mui/material';
 import BootstrapTooltip from '../BootstrapTooltip';
-import { deleteMessage } from '../../firebase/database';
-import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { setShowMessageDeleteModal } from '../../redux/actions';
 
 export default function MessageOptions ({ position, isSender, color = 'whitesmoke', messageData }) {
-
+  const dispatch = useDispatch();
   let options = [
     {
       label: 'Add Reaction',
@@ -26,13 +26,7 @@ export default function MessageOptions ({ position, isSender, color = 'whitesmok
         label: 'Delete Message',
         icon: <DeleteOutlineOutlinedIcon />,
         onClick: () => {
-          deleteMessage(messageData?.cid, messageData?.mid)
-            .then(() => {
-              toast.success('Deleted message successfully.')
-            })
-            .catch(() => {
-              toast.error('Error in deleting message.')
-            })
+          dispatch(setShowMessageDeleteModal(messageData))
         }
       }
     ])

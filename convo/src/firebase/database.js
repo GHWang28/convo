@@ -121,7 +121,7 @@ export function getUser (uid) {
 
 export function postNewChannel (name, description, theme, publicMode, uid) {
   const docRef = doc(collection(firebaseDatabase, 'channels'));
-  const channelId = docRef.id;
+  const cid = docRef.id;
 
   return setDoc(
     docRef,
@@ -131,14 +131,16 @@ export function postNewChannel (name, description, theme, publicMode, uid) {
       publicMode,
       theme,
       iconIndex: Number(!publicMode),
-      cid: channelId,
+      cid,
       dateCreated: serverTimestamp()
     }
   ).then(() => {
-    return joinUserToChannel(uid, channelId, false);
-  })
-  .then(() => {
+    return joinUserToChannel(uid, cid, false);
+  }).then(() => {
     toast.success('Channel created successfully.')
+  })
+  .catch((error) => {
+    toast.error(`Failed to create Channel: ${error.message}`)
   })
 }
 

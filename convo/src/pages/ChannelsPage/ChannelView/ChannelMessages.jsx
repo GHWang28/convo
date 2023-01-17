@@ -1,43 +1,42 @@
-import React, { Fragment, useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { collection, getDocs, limit, orderBy, query, startAfter } from 'firebase/firestore';
+import { collection, limit, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { firebaseDatabase } from '../../../firebase';
 import { useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import MessageLoad from '../../../components/MessageLoad';
 import config from '../../../config.json';
-import ChannelMessagesCollection from './ChannelMessagesCollection';
+import NotificationBubble from '../../../components/NotificationBubble';
+import MessageBubble from '../../../components/MessageBubble';
 
 export default function ChannelMessages ({ channelData }) {
-  const [reachedEarliestMsg, setReachedEarliestMsg] = useState(false);
-  const [dateSeparations, setDateSeparations] = useState([new Date()]);
+  const [page, setPage] = useState(0);
+  const [messages, setMessages] = useState([]);
 
-  const onLoadMore = useCallback(() => {
-    getDocs(query(
+  // Load messages on page number ubdate
+  useEffect(() => {
+    if (page === 0) return;
+
+    return onSnapshot(query(
       collection(firebaseDatabase, 'channels', channelData?.cid, 'messages'),
       orderBy('timestamp', 'desc'),
-      startAfter(dateSeparations.at(dateSeparations.length - 1)),
-      limit(config.PAIGNATION_LENGTH)
-    ))
-      .then((oldMessages) => {
-        return new Promise((resolve) => (setTimeout(() => { resolve(oldMessages) }, 200)))
-      })
-      .then((oldMessages) => {
-        if (oldMessages.docs.length < config.PAIGNATION_LENGTH) {
-          setReachedEarliestMsg(true);
-          if (oldMessages.docs.length === 0) return;
-        }
-        setDateSeparations([...dateSeparations, oldMessages.docs[oldMessages.docs.length - 1]]);
-      })
-  }, [channelData?.cid, dateSeparations])
+      limit(page * config.PAIGNATION_LENGTH)
+    ), (querySnapshot) => {
+      let newMessages = [];
+      querySnapshot.forEach((doc) => {
+        newMessages.push(doc.data());
+      });
+      setMessages(newMessages);
+    })
+  }, [page, channelData?.cid])
 
   // Attempt to load more if the page is empty
   useEffect(() => {
     const messageContainer = document.getElementById('message-container');
-    if (!reachedEarliestMsg && messageContainer.scrollHeight <= messageContainer.clientHeight) {
-      onLoadMore();
+    if ((messages.length === page * config.PAIGNATION_LENGTH) && messageContainer.scrollHeight <= messageContainer.clientHeight) {
+      setPage(page + 1);
     }
-  }, [onLoadMore, reachedEarliestMsg]);
+  }, [messages, page]);
 
   return (
     <Box
@@ -52,24 +51,36 @@ export default function ChannelMessages ({ channelData }) {
       }}
     >
       <InfiniteScroll
-        dataLength={dateSeparations.length}
+        dataLength={messages.length}
         style={{ display: 'flex', flexDirection: 'column-reverse' }}
-        next={onLoadMore}
-        hasMore={!reachedEarliestMsg}
+        next={() => { setPage(page + 1) }}
+        hasMore={messages.length === page * config.PAIGNATION_LENGTH}
         scrollableTarget='message-container'
         loader={<MessageLoad color={channelData?.theme} loading/>}
         endMessage={<MessageLoad color={channelData?.theme} />}
         inverse
       >
-        {dateSeparations.map((date, index) => (
-          <Fragment key={`msg-group-${index}`}>
-            {(index === 0) && (
-              <ChannelMessagesCollection channelData={channelData} separationFront={date} end />
-            )}
-            <ChannelMessagesCollection channelData={channelData} separationFront={date} separationEnd={dateSeparations.at(dateSeparations.length + 1) || null} />
-          </Fragment>
+        {messages.map((messageItem, index) => (
+          ((messageItem?.nid !== undefined) ? (
+            <NotificationBubble key={messageItem.mid} color={channelData?.theme} notificationData={messageItem} />
+          ) : (
+            <MessageBubble
+              arrow
+              showOptions
+              key={messageItem.mid}
+              messageData={messageItem}
+              color={channelData?.theme}
+              isStart={(messages.at(index + 1)?.uid !== messageItem.uid) || (messages.at(index + 1)?.nid !== undefined) || separateByTimestamp(messages.at(index + 1)?.timestamp, messageItem?.timestamp)}
+              isEnd={(index === 0) || (messages.at(index - 1)?.nid !== undefined) || (messages.at(index - 1)?.uid !== messageItem.uid) || separateByTimestamp(messages.at(index - 1)?.timestamp, messageItem?.timestamp)}
+            />
+          ))
         ))}
       </InfiniteScroll>
     </Box>
   )
+}
+
+function separateByTimestamp (timestampA, timestampB) {
+  if (!timestampA || !timestampB) return true;
+  return Math.abs(timestampA.seconds - timestampB.seconds) > config.MESSAGE_BUFFER_TIMESTAMP_SECONDS
 }

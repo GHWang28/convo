@@ -98,6 +98,20 @@ export function setShowChannelInfoModal (boolean, channelData = {}) {
   }
 }
 
+export function setShowMessageDeleteModal (messageData = {}) {
+  if (!messageData) return {
+    type: 'MESSAGE_DELETE_MODAL',
+    value: null
+  }
+
+  return {
+    type: 'MESSAGE_DELETE_MODAL',
+    value: {
+      ...messageData,
+      timestamp: messageData?.timestamp?.seconds
+    }
+  }
+}
 
 export function setFetching (boolean) {
   return {

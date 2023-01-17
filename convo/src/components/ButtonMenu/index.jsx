@@ -1,7 +1,8 @@
 import { IconButton, ListItemIcon, Menu, MenuItem, Typography } from '@mui/material';
 import React, { Fragment, useState } from 'react';
+import BootstrapTooltip from '../BootstrapTooltip';
 
-export default function ButtonMenu ({ icon, menuItems, id }) {
+export default function ButtonMenu ({ icon, menuItems, id, sx, size, title }) {
   const [anchor, setAnchor] = useState(null);
   const onClick = (event) => {
     setAnchor(event.currentTarget);
@@ -10,11 +11,21 @@ export default function ButtonMenu ({ icon, menuItems, id }) {
     setAnchor(null);
   };
 
+  const button = (
+    <IconButton id={id} onClick={onClick} sx={sx} size={size}>
+      {icon}
+    </IconButton>
+  )
+
   return (
     <Fragment>
-      <IconButton id={id} onClick={onClick}>
-        {icon}
-      </IconButton>
+      {(title) ? (
+        <BootstrapTooltip title={title} placement='top'>
+          {button}
+        </BootstrapTooltip>
+      ) : (
+        button
+      )}
       <Menu
         anchorEl={anchor}
         open={Boolean(anchor)}

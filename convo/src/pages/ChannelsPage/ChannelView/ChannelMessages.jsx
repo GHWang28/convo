@@ -11,6 +11,7 @@ import MessageBubble from '../../../components/MessageBubble';
 
 export default function ChannelMessages ({ channelData }) {
   const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
   const [messages, setMessages] = useState([]);
 
   // Load messages on page number ubdate
@@ -27,13 +28,14 @@ export default function ChannelMessages ({ channelData }) {
         newMessages.push(doc.data());
       });
       setMessages(newMessages);
+      setHasMore(newMessages.length === page * config.PAIGNATION_LENGTH);
     })
   }, [page, channelData?.cid])
 
   // Attempt to load more if the page is empty
   useEffect(() => {
     const messageContainer = document.getElementById('message-container');
-    if ((messages.length === page * config.PAIGNATION_LENGTH) && messageContainer.scrollHeight <= messageContainer.clientHeight) {
+    if (messages.length === page * config.PAIGNATION_LENGTH && messageContainer.scrollHeight <= messageContainer.clientHeight) {
       setPage(page + 1);
     }
   }, [messages, page]);
@@ -54,8 +56,9 @@ export default function ChannelMessages ({ channelData }) {
         dataLength={messages.length}
         style={{ display: 'flex', flexDirection: 'column-reverse' }}
         next={() => { setPage(page + 1) }}
-        hasMore={messages.length === page * config.PAIGNATION_LENGTH}
+        hasMore={hasMore}
         scrollableTarget='message-container'
+        scrollThreshold='50px'
         loader={<MessageLoad color={channelData?.theme} loading/>}
         endMessage={<MessageLoad color={channelData?.theme} />}
         inverse

@@ -20,79 +20,81 @@ export default function EmojiTrain ({ messageData, viewerUID, color }) {
         justifyContent: 'left',
         alignItems: 'flex-start',
         gap: 0.4,
-        mt: 1,
-        p: 0.75
+        p: 0.4
       }}
     >
       {messageData?.reactionsOrder.map((rid) => (
-        <EmojiChip key={rid} rid={rid} messageData={messageData} viewerUID={viewerUID} color={color}/>
+        <EmojiChip
+          key={rid}
+          rid={rid}
+          reactionData={messageData?.reactions?.[rid]}
+          cid={messageData?.cid}
+          mid={messageData?.mid}
+          viewerUID={viewerUID}
+          color={color}
+        />
       ))}
     </Box>
   )
 }
 
-function EmojiChip ({ messageData, rid, viewerUID, color }) {
+function EmojiChip ({ reactionData, rid, cid, mid, viewerUID, color }) {
   const [r, g, b] = parseRGB(color);
   const [reactors, setReactors] = useState('');
-  const [hasReacted, setHasReacted] = useState(false);
 
   // Get reactor's handlers
   useEffect(() => {
-    setHasReacted(Boolean(messageData?.reactions?.[rid]?.[viewerUID]));
-    Promise.all(Object.keys(messageData?.reactions[rid]).map((uid) => (
+    Promise.all(Object.keys(reactionData).map((uid) => (
       getUser(uid).then((userData) => (userData?.handler))
-    )))
-    .then((allUsers) => {
+    ))).then((allUsers) => {
       allUsers.sort();
       setReactors(allUsers.join(', '));
     })
-  }, [messageData?.reactions, rid, viewerUID]);
+  }, [reactionData, rid, viewerUID]);
 
-  const transition = useTransition(Object.keys(messageData?.reactions[rid]).length, {
-    from: { opacity: 0, position: 'static' },
-    enter: { opacity: 1, position: 'static' },
-    leave: { opacity: 0, position: 'static' },
+  const transition = useTransition(Object.keys(reactionData).length, {
+    from: { rotateY: '90deg' },
+    enter: { rotateY: '0deg' },
+    leave: { rotateY: '-90deg' },
     config: {
-      duration: 200
+      duration: 100
     },
     exitBeforeEnter: true
   });
   const AnimatedChip = animated(Chip);
 
-  return (
-    <BootstrapTooltip title={reactors} placement='top'>
-      {transition((style, totalReacts) => (
-        (totalReacts === 0) ? (
-          null
-        ) : (
-          <AnimatedChip
-            style={style}
-            sx={{
-              pl: 1,
-              borderWidth: '1px',
-              borderStyle: 'solid',
-              borderColor: 'contrastColor',
-              color: getTextColor(color),
-              fontWeight: 'bold',
-              bgcolor: (hasReacted) ? `rgba(${r},${g},${b},0.5)` : `rgba(${r},${g},${b},0.1)`,
-              '&:hover': {
-                bgcolor: (hasReacted) ? `rgba(${r},${g},${b},0.7)` : `rgba(${r},${g},${b},0.3)`
-              }
-            }}
-            icon={<em-emoji id={rid} />}
-            label={totalReacts}
-            onClick={() => {
-              postDelMessageReact(
-                messageData?.cid,
-                messageData?.mid,
-                viewerUID,
-                rid,
-                Boolean(!messageData?.reactions?.[rid]?.[viewerUID])
-              );
-            }}
-          />
-        )
-      ))}
-    </BootstrapTooltip>
-  )
+  return transition((style, totalReacts) => (
+    (totalReacts === 0) ? (
+      null
+    ) : (
+      <BootstrapTooltip title={reactors} placement='top'>
+        <AnimatedChip
+          style={style}
+          sx={{
+            pl: 1,
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: 'contrastColor',
+            color: (reactionData?.[viewerUID]) ? getTextColor(color) : 'contrastColor',
+            fontWeight: 'bold',
+            bgcolor: (reactionData?.[viewerUID]) ? `rgba(${r},${g},${b},0.5)` : `rgba(${r},${g},${b},0.1)`,
+            '&:hover': {
+              bgcolor: (reactionData?.[viewerUID]) ? `rgba(${r},${g},${b},0.7)` : `rgba(${r},${g},${b},0.3)`
+            }
+          }}
+          icon={<em-emoji id={rid} />}
+          label={totalReacts}
+          onClick={() => {
+            postDelMessageReact(
+              cid,
+              mid,
+              viewerUID,
+              rid,
+              Boolean(!reactionData?.[viewerUID])
+            );
+          }}
+        />
+      </BootstrapTooltip>
+    )
+  ))
 }

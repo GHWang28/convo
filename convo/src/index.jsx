@@ -6,6 +6,10 @@ import { HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import combinedReducer from './redux/reducer';
+import data from '@emoji-mart/data'
+import { init } from 'emoji-mart'
+
+init({ data });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -1,4 +1,5 @@
-import { Box, Typography } from '@mui/material';
+import React from 'react';
+import { Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -20,15 +21,11 @@ export default function MOTDModal () {
       open={Boolean(userData) && show}
       handleClose={() => { setShow(false); sessionStorage.setItem('uniqueSess', false); }}
       title={`${generateGreetings()}, ${userData?.handler}!`}
+      subtitle={'Did you know?'}
       confirmColor='error'
       fullWidth
     >
       <Typography fontSize={20} align='center'>
-        <Box component='span' fontWeight='bold'>
-          {'Did you know? '}
-        </Box>
-        <br/>
-        <br/>
         {generatedMsg}
       </Typography>
     </Modal>

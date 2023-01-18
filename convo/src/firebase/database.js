@@ -11,7 +11,9 @@ import {
   endAt,
   orderBy,
   deleteField,
-  deleteDoc
+  deleteDoc,
+  arrayUnion,
+  arrayRemove
 } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { firebaseDatabase } from '.';
@@ -210,16 +212,18 @@ export function postDelMessageReact (cid, mid, uid, rid, post = true) {
   newEntryValue[uid] = (post) ? true : deleteField();
   newEntry[rid] = newEntryValue;
 
-  return setDoc(docRef, { reactions: newEntry }, { merge: true })
+  return setDoc(docRef, { reactions: newEntry, reactionsOrder: arrayUnion(rid) }, { merge: true })
     .then(() => {
       if (post) return null;
-      
+
       return getDoc(docRef)
       .then((doc) => {
-        if (Object.keys(doc.data()?.reactions[rid]).length === 0) {
+        const data = doc.data();
+        if (Object.keys(data?.reactions[rid]).length === 0) {
+          // Delete react from database if there isn't any other reactions
           const deleteEntry = {};
           deleteEntry[rid] = deleteField();
-          return setDoc(docRef, { reactions: deleteEntry }, { merge: true });
+          return setDoc(docRef, { reactions: deleteEntry, reactionsOrder: arrayRemove(rid) }, { merge: true });
         }
       });
     });

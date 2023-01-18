@@ -7,8 +7,10 @@ import { Box, IconButton } from '@mui/material';
 import BootstrapTooltip from '../BootstrapTooltip';
 import { useDispatch, useSelector } from 'react-redux';
 import { setShowMessageDeleteModal } from '../../redux/actions';
-import EmojiPicker from 'emoji-picker-react';
+import data from '@emoji-mart/data'
+import Picker from '@emoji-mart/react'
 import { postDelMessageReact } from '../../firebase/database';
+
 
 export default function MessageOptions ({ position, isSender, color = 'whitesmoke', messageData }) {
   const dispatch = useDispatch();
@@ -61,17 +63,15 @@ export default function MessageOptions ({ position, isSender, color = 'whitesmok
           }
         }}
       >
-        <EmojiPicker
-          lazyLoadEmojis
-          theme='dark'
-          emojiStyle='google'
-          onEmojiClick={(emojiData) => {
+        <Picker
+          data={data}
+          onEmojiSelect={(emojiData) => {
             postDelMessageReact(
               messageData?.cid,
               messageData?.mid,
               userData?.uid,
-              emojiData?.unified,
-              Boolean(!messageData?.reactions?.[emojiData?.unified]?.[userData?.uid])
+              emojiData?.id,
+              Boolean(!messageData?.reactions?.[emojiData?.id]?.[userData?.uid])
             );
           }}
         />
@@ -79,3 +79,14 @@ export default function MessageOptions ({ position, isSender, color = 'whitesmok
     </Box>
   )
 }
+
+/*
+<EmojiPicker
+  suggestedEmojisMode='recent'
+  lazyLoadEmojis={true}
+  autoFocusSearch={false}
+  theme='dark'
+  emojiStyle='native'
+  onEmojiClick={}
+/>
+*/

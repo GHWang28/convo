@@ -129,9 +129,7 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
             color={color}
           />
         )}
-        {(messageData?.reactions) && (
-          <EmojiTrain viewerUID={viewerUID} messageData={messageData} />
-        )}
+        <EmojiTrain viewerUID={viewerUID} messageData={messageData} color={color} />
       </Box>
     </Box>
 

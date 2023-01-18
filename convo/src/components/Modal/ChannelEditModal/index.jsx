@@ -128,7 +128,7 @@ export default function ChannelEditModal () {
           </Box>
         </Grid>
         {(smallMq) ? (
-          <Divider orientation={'vertical'} flexItem sx={{ mr: '-1px', borderColor: 'whitesmoke' }} />
+          <Divider orientation={'vertical'} flexItem sx={{ mr: '-2px', borderColor: 'whitesmoke' }} />
         ) : (
           <Box component='hr' sx={{ width: '100%', my: 2 }} />
         )}

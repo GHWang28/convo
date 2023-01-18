@@ -8,6 +8,7 @@ import { setImageZoom } from '../../redux/actions';
 import BootstrapTooltip from '../BootstrapTooltip';
 import DateDisplay from '../DateDisplay';
 import TypographyTruncate from '../TypographyTruncate';
+import EmojiTrain from './EmojiTrain';
 import MessageOptions from './MessageOptions';
 
 function padding (smallMq, isStart) {
@@ -21,7 +22,8 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
   const [hover, setHover] = useState(false);
   const [isImg, setIsImg] = useState(false);
   const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm'));
-  const viewerIsSender = useSelector(state => state.loggedInUserData)?.uid === sender?.uid;
+  const viewerUID = useSelector(state => state.loggedInUserData)?.uid;
+  const viewerIsSender = (viewerUID === sender?.uid);
 
   useEffect(() => {
     getUser(messageData?.uid)
@@ -127,6 +129,9 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
             color={color}
           />
         )}
+        {(messageData?.reactions) && (
+          <EmojiTrain viewerUID={viewerUID} messageData={messageData} />
+        )}
       </Box>
     </Box>
 
@@ -172,4 +177,3 @@ function BubbleImage ({ onClick, src, color }) {
     />
   )
 }
-

@@ -73,11 +73,11 @@ export function leaveUserToChannel (uid, cid, showToast = true) {
     setDoc(docRefUID, { uidToCid: newEntryCID }, { merge: true }),
     setDoc(docRefCID, { cidToUid: newEntryUID }, { merge: true })
   ]).then(() => {
-      if (showToast) toast.success('Channel left.')
-    })
-    .catch(() => {
-      toast.error('An error occurred when leaving this channel.')
-    })
+    if (showToast) toast.success('Channel left.')
+  })
+  .catch(() => {
+    toast.error('An error occurred when leaving this channel.')
+  })
 }
 
 export function getArrayOfUserData (uidArray) {
@@ -200,6 +200,29 @@ export function postMessageNotification (cid, uid, nid) {
     mid: newDoc.id
   }
   return setDoc(newDoc, notificationPackage);
+}
+
+export function postDelMessageReact (cid, mid, uid, rid, post = true) {
+  const docRef = doc(firebaseDatabase, 'channels', cid, 'messages', mid);
+
+  // Setting up data
+  const newEntry = {}, newEntryValue = {};
+  newEntryValue[uid] = (post) ? true : deleteField();
+  newEntry[rid] = newEntryValue;
+
+  return setDoc(docRef, { reactions: newEntry }, { merge: true })
+    .then(() => {
+      if (post) return null;
+      
+      return getDoc(docRef)
+      .then((doc) => {
+        if (Object.keys(doc.data()?.reactions[rid]).length === 0) {
+          const deleteEntry = {};
+          deleteEntry[rid] = deleteField();
+          return setDoc(docRef, { reactions: deleteEntry }, { merge: true });
+        }
+      });
+    });
 }
 
 export function isUrlToImage (url) {

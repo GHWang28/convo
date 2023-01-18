@@ -5,11 +5,14 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Box, IconButton } from '@mui/material';
 import BootstrapTooltip from '../BootstrapTooltip';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setShowMessageDeleteModal } from '../../redux/actions';
+import EmojiPicker from 'emoji-picker-react';
+import { postDelMessageReact } from '../../firebase/database';
 
 export default function MessageOptions ({ position, isSender, color = 'whitesmoke', messageData }) {
   const dispatch = useDispatch();
+  const userData = useSelector(state => state.loggedInUserData);
   let options = [
     {
       label: 'Edit Message',
@@ -58,7 +61,20 @@ export default function MessageOptions ({ position, isSender, color = 'whitesmok
           }
         }}
       >
-
+        <EmojiPicker
+          lazyLoadEmojis
+          theme='dark'
+          emojiStyle='google'
+          onEmojiClick={(emojiData) => {
+            postDelMessageReact(
+              messageData?.cid,
+              messageData?.mid,
+              userData?.uid,
+              emojiData?.unified,
+              Boolean(!messageData?.reactions?.[emojiData?.unified]?.[userData?.uid])
+            );
+          }}
+        />
       </ButtonMenu>
     </Box>
   )

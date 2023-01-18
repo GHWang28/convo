@@ -2,7 +2,7 @@ import { IconButton, ListItemIcon, Menu, MenuItem, Typography } from '@mui/mater
 import React, { Fragment, useState } from 'react';
 import BootstrapTooltip from '../BootstrapTooltip';
 
-export default function ButtonMenu ({ icon, menuItems, id, sx, size, title }) {
+export default function ButtonMenu ({ icon, menuItems, children, id, sx, size, title }) {
   const [anchor, setAnchor] = useState(null);
   const onClick = (event) => {
     setAnchor(event.currentTarget);
@@ -41,8 +41,9 @@ export default function ButtonMenu ({ icon, menuItems, id, sx, size, title }) {
           }
         }}
       >
+        {children}
         {menuItems && menuItems.map((item, index) => (
-          <MenuItem key={`menu-item-${index}`} onClick={item.onClick}>
+          <MenuItem key={`menu-item-${index}`} onClick={item?.onClick}>
             {(item?.icon) && (
               <ListItemIcon>
                 {item.icon}

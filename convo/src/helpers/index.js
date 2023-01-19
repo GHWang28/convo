@@ -18,8 +18,8 @@ export function rng (min, max) {
  * @returns {String}
  */
 export function convertEpochToDate (epoch, short = true) {
-  if (short) return moment.unix(epoch).format('DD/MM/yyyy h:mm a');
-  return moment.unix(epoch).format('dddd, MMMM Do, YYYY h:mm:ss a');
+  const epochFormat = (short) ? 'h:mmA DD/MM/YYYY' : 'h:mm:ssA dddd, MMMM Do, YYYY'
+  return moment.unix(epoch).format(epochFormat);
 }
 
 /**

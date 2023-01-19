@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 import { convertEpochToDate } from '../../helpers';
 import { animated, useTransition } from 'react-spring';
 
-export default function DateDisplay ({ time, fontSize = 10, align }) {
+export default function DateDisplay ({ time, fontSize = 9, align }) {
   const [shorten, setShorten] = useState(true);
   const transitions = useTransition(shorten, {
     from: { opacity: 0 },

@@ -36,6 +36,14 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
       }).then(setIsImg)
   }, [messageData?.uid, messageData?.text]);
 
+  const editedTimestamp = (messageData?.timestampEdit) ? (
+    <Typography component='span' fontSize={9} fontStyle='italic' color='secondary' mb={0.5}>
+      {` [Edited on ${convertEpochToDate(messageData?.timestampEdit?.seconds)}]`}
+    </Typography>
+  ) : (
+    null
+  )
+
   return (
     <Box
       sx={{
@@ -133,6 +141,10 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
                 >
                   {messageData?.text}
                 </Linkify>
+                {/* Timestamp */}
+                {(messageData?.text.length !== 0) && (
+                  editedTimestamp
+                )}
               </Typography>
             )}
           </Fragment>
@@ -144,10 +156,8 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
             color={color}
           />
         )}
-        {Boolean(messageData?.timestampEdit) && (
-          <Typography fontSize={10} fontStyle='italic' color='secondary' mb={0.5}>
-            {`[Edited on ${convertEpochToDate(messageData?.timestampEdit?.seconds)}]`}
-          </Typography>
+        {(messageData?.text.length === 0) && (
+          editedTimestamp
         )}
         <EmojiTrain viewerUID={viewerUID} messageData={messageData} color={color} interactable={showOptions}/>
       </Box>

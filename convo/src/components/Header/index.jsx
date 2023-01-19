@@ -10,18 +10,41 @@ export default function Header () {
   }
 
   return (
-    <Box sx={{ height: '2vh', bgcolor: 'mainColorDark', display: 'flex', justifyContent: 'center' }} >
+    <Box sx={{ height: '2vh', bgcolor: 'mainColorDark', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 0.5 }} >
+      <Box
+        component='img'
+        alt='Cup left'
+        src={process.env.PUBLIC_URL + '/images/logo/logo-string.png'}
+        sx={{
+          height: '1.5vh',
+          opacity: 0.75,
+          cursor: 'pointer'
+        }}
+        onClick={onClick}
+      />
       <Typography
         role='button'
         align='center'
         fontWeight='bold'
         fontFamily='Sofia Sans'
         fontSize='1.4vh'
-        onClick={onClick}
         sx={{ cursor: 'pointer' }}
+        onClick={onClick}
       >
         {'CONVO'}
       </Typography>
+      <Box
+        component='img'
+        alt='Cup right'
+        src={process.env.PUBLIC_URL + '/images/logo/logo-string.png'}
+        sx={{
+          height: '1.5vh',
+          opacity: 0.75,
+          transform: 'scaleX(-1)',
+          cursor: 'pointer'
+        }}
+        onClick={onClick}
+      />
     </Box>
   )
 }

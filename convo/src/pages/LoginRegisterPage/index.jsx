@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Grid } from '@mui/material';
 import LoginRegisterCard from './LoginRegisterCard';
+import Logo from '../../components/Logo';
 
 export default function LoginRegisterPage () {
   return (
@@ -15,7 +16,7 @@ export default function LoginRegisterPage () {
     >
       <Grid container sx={{ width: '85vw', height: '85vh' }}>
         <Grid item xs={12} lg={6}>
-
+          <Logo />
         </Grid>
         <Grid item xs={12} lg={6}>
           <LoginRegisterCard />

@@ -108,7 +108,8 @@ export function setShowMessageDeleteModal (messageData = {}) {
     type: 'MESSAGE_DELETE_MODAL',
     value: {
       ...messageData,
-      timestamp: messageData?.timestamp?.seconds
+      timestamp: messageData?.timestamp?.seconds,
+      timestampEdit: messageData?.timestampEdit?.seconds
     }
   }
 }

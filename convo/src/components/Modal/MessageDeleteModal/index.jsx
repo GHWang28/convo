@@ -44,7 +44,7 @@ export default function MessageDeleteModal () {
       </Typography>
       <Box sx={{ width: '100%', minHeight: '100px', bgcolor: 'rgb(0,0,0)', borderRadius: '15px' }}>
         {(messageData) && (
-          <MessageBubble isStart isEnd messageData={messageData} arrow/>
+          <MessageBubble isStart isEnd messageData={messageData} arrow color={messageData?.color}/>
         )}
       </Box>
     </Modal>

@@ -192,6 +192,14 @@ export function deleteMessage (cid, mid) {
   return deleteDoc(doc(firebaseDatabase, 'channels', cid, 'messages', mid));
 }
 
+export function editMessage (newText, cid, mid) {
+  return setDoc(
+    doc(firebaseDatabase, 'channels', cid, 'messages', mid),
+    { text: newText, timestampEdit: new Date() },
+    { merge: true }
+  )
+}
+
 export function postMessageNotification (cid, uid, nid) {
   const newDoc = doc(collection(firebaseDatabase, 'channels', cid, 'messages'));
   const notificationPackage = {

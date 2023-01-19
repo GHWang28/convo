@@ -11,19 +11,22 @@ import Picker from '@emoji-mart/react'
 import { postDelMessageReact } from '../../firebase/database';
 
 
-export default function MessageOptions ({ position, isSender, color = 'whitesmoke', messageData }) {
+export default function MessageOptions ({ position, isSender, color = 'whitesmoke', messageData, setEdit }) {
   const dispatch = useDispatch();
   const userData = useSelector(state => state.loggedInUserData);
   let options = [
     {
       label: 'Edit Message',
-      icon: <EditOutlinedIcon />
+      icon: <EditOutlinedIcon />,
+      onClick: () => {
+        setEdit(true);
+      }
     },
     {
       label: 'Delete Message',
       icon: <DeleteOutlineOutlinedIcon />,
       onClick: () => {
-        dispatch(setShowMessageDeleteModal(messageData))
+        dispatch(setShowMessageDeleteModal({ ...messageData, color }))
       }
     }
   ]

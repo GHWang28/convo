@@ -1,15 +1,17 @@
-import { Avatar, Box, Collapse, Link, Typography, useMediaQuery } from '@mui/material';
+import React, { Fragment, useEffect, useState } from 'react';
+import { Avatar, Box, Collapse, IconButton, Link, TextField, Typography, useMediaQuery } from '@mui/material';
 import Linkify from 'linkify-react';
-import React, { useEffect, useState } from 'react';
-import { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUser, isUrlToImage } from '../../firebase/database';
-import { setImageZoom } from '../../redux/actions';
+import { editMessage, getUser, isUrlToImage } from '../../firebase/database';
+import { setImageZoom, setShowMessageDeleteModal } from '../../redux/actions';
 import BootstrapTooltip from '../BootstrapTooltip';
 import DateDisplay from '../DateDisplay';
 import TypographyTruncate from '../TypographyTruncate';
 import EmojiTrain from './EmojiTrain';
 import MessageOptions from './MessageOptions';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import { convertEpochToDate } from '../../helpers';
 
 function padding (smallMq, isStart) {
   if (isStart) return 1;
@@ -19,6 +21,7 @@ function padding (smallMq, isStart) {
 export default function MessageBubble ({ messageData, color, arrow, isStart = true, isEnd = true, showOptions = false }) {
   const dispatch = useDispatch();
   const [sender, setSender] = useState(null);
+  const [edit, setEdit] = useState(false);
   const [hover, setHover] = useState(false);
   const [isImg, setIsImg] = useState(false);
   const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm'));
@@ -80,6 +83,7 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
             isSender={viewerIsSender}
             position={{ top: -20, right: 0 }}
             messageData={messageData}
+            setEdit={setEdit}
             color={color}
           />
         )}
@@ -101,26 +105,37 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
           </Collapse>
         )}
         {/* Show as image or text */}
-        {(isImg) ? (
-          <BubbleImage
-            src={messageData?.text}
-            onClick={() => { dispatch(setImageZoom(messageData?.text)) }}
-            color={color}
-          />
+        {(edit) ? (
+          <EditMode messageData={messageData} setEdit={setEdit} color={color} />
         ) : (
-          <Typography sx={{ wordBreak: 'break-word', width: 'fit-content' }}>
-            <Linkify options={{ render: ({ attributes, content }) => {
-              // Adds links to text that are potentially links
-              const { href, ...props } = attributes;
-              return (
-                <BootstrapTooltip title={`Go to external page.`} placement='top'>
-                  <Link href={href} target='_blank' {...props}>{content}</Link>
-                </BootstrapTooltip>
-              )
-            }}}>
-              {messageData?.text}
-            </Linkify>
-          </Typography>
+          <Fragment>
+            {(isImg) ? (
+              <BubbleImage
+                src={messageData?.text}
+                onClick={() => { dispatch(setImageZoom(messageData?.text)) }}
+                color={color}
+              />
+            ) : (
+              <Typography
+                fontStyle={(Boolean(messageData?.timestampEdit)) ? 'italic' : 'normal' }
+                sx={{ wordBreak: 'break-word' }}
+              >
+                <Linkify
+                  options={{ render: ({ attributes, content }) => {
+                    // Adds links to text that are potentially links
+                    const { href, ...props } = attributes;
+                    return (
+                      <BootstrapTooltip title={`Go to external page.`} placement='top'>
+                        <Link href={href} target='_blank' {...props}>{content}</Link>
+                      </BootstrapTooltip>
+                    )
+                  }}}
+                >
+                  {messageData?.text}
+                </Linkify>
+              </Typography>
+            )}
+          </Fragment>
         )}
         {(messageData?.image) && (
           <BubbleImage
@@ -129,7 +144,12 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
             color={color}
           />
         )}
-        <EmojiTrain viewerUID={viewerUID} messageData={messageData} color={color} />
+        {Boolean(messageData?.timestampEdit) && (
+          <Typography fontSize={10} fontStyle='italic' color='secondary' mb={0.5}>
+            {`[Edited on ${convertEpochToDate(messageData?.timestampEdit?.seconds)}]`}
+          </Typography>
+        )}
+        <EmojiTrain viewerUID={viewerUID} messageData={messageData} color={color} interactable={showOptions}/>
       </Box>
     </Box>
 
@@ -172,6 +192,74 @@ function BubbleImage ({ onClick, src, color }) {
         transition: 'scale 0.25s ease-in-out',
         '&:hover': { scale: '1.02' }
       }}
+    />
+  )
+}
+
+function EditMode ({ messageData, setEdit, color }) {
+  const dispatch = useDispatch();
+  const [message, setMessage] = useState(messageData?.text);
+
+  const onChange = (event) => {
+    setMessage(event.target.value)
+  }
+  const onKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      onConfirm(event);
+    }
+  }
+  const onConfirm = () => {
+    if (message === messageData?.text) {
+      onCancel();
+      return;
+    };
+    if (message.length === 0) dispatch(setShowMessageDeleteModal({ ...messageData, color }));
+    editMessage(message, messageData?.cid, messageData?.mid).then(onCancel);
+  }
+  const onCancel = () => {
+    setEdit(false)
+  }
+  const onFocus = (event) => {
+    const msgLength = event.target.value.length;
+    event.target.setSelectionRange(msgLength, msgLength);
+  }
+  const onMouseDown = (event) => {
+    event.preventDefault();
+  }
+
+  return (
+    <TextField
+      sx={{ my: 1 }}
+      InputProps={{
+        sx: { bgcolor: 'mainColorDark' },
+        endAdornment: (
+          <Box sx={{ display: 'flex' }}>
+            <BootstrapTooltip title='Confirm Edit'>
+              <IconButton size='small' color='success' onClick={onConfirm} onMouseDown={onMouseDown}>
+                <CheckIcon />
+              </IconButton>
+            </BootstrapTooltip>
+            <BootstrapTooltip title='Cancel Edit'>
+              <IconButton size='small' color='error' onClick={onCancel} onMouseDown={onMouseDown}>
+                <CloseIcon />
+              </IconButton>
+            </BootstrapTooltip>
+          </Box>
+        )
+      }}
+      size='small'
+      onFocus={onFocus}
+      onChange={onChange}
+      onKeyDown={onKeyDown}
+      onBlur={onCancel}
+      autoFocus
+      label='Editing Message'
+      placeholder='Keep empty to delete message'
+      fullWidth
+      value={message}
+      multiline
+      maxRows={5}
     />
   )
 }

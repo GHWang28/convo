@@ -4,8 +4,9 @@ import BootstrapTooltip from '../BootstrapTooltip';
 import { getUser, postDelMessageReact } from '../../firebase/database';
 import { animated, useTransition } from 'react-spring';
 import { getTextColor, parseRGB } from '../../helpers';
+import config from '../../config.json';
 
-export default function EmojiTrain ({ messageData, viewerUID, color }) {
+export default function EmojiTrain ({ messageData, viewerUID, color, interactable = false }) {
   if (!(messageData?.reactions && Object.keys(messageData?.reactions).length !== 0)) return null;
   
   return (
@@ -23,28 +24,39 @@ export default function EmojiTrain ({ messageData, viewerUID, color }) {
         p: 0.4
       }}
     >
-      {messageData?.reactionsOrder.map((rid) => (
-        <EmojiChip
-          key={rid}
-          rid={rid}
-          reactionData={messageData?.reactions?.[rid]}
-          cid={messageData?.cid}
-          mid={messageData?.mid}
-          viewerUID={viewerUID}
-          color={color}
-        />
-      ))}
+      {messageData?.reactionsOrder.map((rid) => {
+        if (!messageData?.reactions?.[rid]) return null;
+        return (
+          <EmojiChip
+            key={rid}
+            rid={rid}
+            reactionData={messageData?.reactions?.[rid]}
+            cid={messageData?.cid}
+            mid={messageData?.mid}
+            viewerUID={viewerUID}
+            color={color}
+            interactable={interactable}
+          />
+        )
+      })}
     </Box>
   )
 }
 
-function EmojiChip ({ reactionData, rid, cid, mid, viewerUID, color }) {
+function EmojiChip ({ reactionData, rid, cid, mid, viewerUID, color, interactable }) {
   const [r, g, b] = parseRGB(color);
   const [reactors, setReactors] = useState('');
 
   // Get reactor's handlers
   useEffect(() => {
-    Promise.all(Object.keys(reactionData).map((uid) => (
+    const allUIDs = Object.keys(reactionData);
+
+    // Don't do anything if the length exceeds 10 users
+    if (allUIDs.length > config.MAX_REACTORS) {
+      setReactors(`${config.MAX_REACTORS}+ reactors`);
+      return;
+    }
+    Promise.all(allUIDs.map((uid) => (
       getUser(uid).then((userData) => (userData?.handler))
     ))).then((allUsers) => {
       allUsers.sort();
@@ -62,6 +74,17 @@ function EmojiChip ({ reactionData, rid, cid, mid, viewerUID, color }) {
     exitBeforeEnter: true
   });
   const AnimatedChip = animated(Chip);
+
+  const onClick = () => {
+    if (!interactable) return;
+    postDelMessageReact(
+      cid,
+      mid,
+      viewerUID,
+      rid,
+      Boolean(!reactionData?.[viewerUID])
+    );
+  }
 
   return transition((style, totalReacts) => (
     (totalReacts === 0) ? (
@@ -84,15 +107,7 @@ function EmojiChip ({ reactionData, rid, cid, mid, viewerUID, color }) {
           }}
           icon={<em-emoji id={rid} />}
           label={totalReacts}
-          onClick={() => {
-            postDelMessageReact(
-              cid,
-              mid,
-              viewerUID,
-              rid,
-              Boolean(!reactionData?.[viewerUID])
-            );
-          }}
+          onClick={onClick}
         />
       </BootstrapTooltip>
     )

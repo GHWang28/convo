@@ -3,7 +3,7 @@ import { Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '..';
 import { auth } from '../../../firebase';
-import { setLogUserOut, setShowLogOutModal } from '../../../redux/actions';
+import { setShowLogOutModal } from '../../../redux/actions';
 
 export default function LogOutModal () {
   const dispatch = useDispatch();
@@ -15,7 +15,6 @@ export default function LogOutModal () {
       title='Log out'
       handleConfirm={() => {
         auth.signOut();
-        dispatch(setLogUserOut());
         dispatch(setShowLogOutModal(false));
         sessionStorage.removeItem('uniqueSess');
       }}

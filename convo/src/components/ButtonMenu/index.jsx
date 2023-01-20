@@ -32,12 +32,13 @@ export default function ButtonMenu ({ icon, menuItems, children, id, sx, size, t
         onClose={onClose}
         MenuListProps={{
           'aria-labelledby': id,
+          disablePadding: Boolean(children)
         }}
         PaperProps={{
           sx: {
             borderStyle: 'solid',
             borderWidth: '1px',
-            borderColor: 'borderColor'
+            borderColor: 'borderColor',
           }
         }}
       >

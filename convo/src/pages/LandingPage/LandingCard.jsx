@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import GoogleIcon from '@mui/icons-material/Google';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
-export default function LoginRegisterCard () {
+export default function LandingCard () {
   const [fetching, setFetching] = useState(false);
   const [persist, setPersist] = useState(false);
 
@@ -42,20 +42,18 @@ export default function LoginRegisterCard () {
         border: '2px solid whitesmoke',
         borderRadius: '20px',
         height: '100%',
+        width: '100%',
         position: 'relative',
         color: 'black',
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
+        maxWidth: '800px'
       }}
       p={5}
     >
       {(fetching) && (
         <CircularProgress
           color='inherit'
-          sx={{
-            position: 'absolute',
-            bottom: '20px',
-            left: '20px'
-          }}
+          sx={{ position: 'absolute', bottom: '20px', left: '20px' }}
         />
       )}
       <Box
@@ -72,7 +70,7 @@ export default function LoginRegisterCard () {
         <Button
           startIcon={<GoogleIcon />}
           variant='contained'
-          sx={{ mt: 'auto', mb: 1, width: 'min(500px, 50vw)' }}
+          sx={{ mt: 'auto', mb: 1, width: '80%' }}
           onClick={() => { signIn(googleProvider) }}
         >
           {'Continue with Google'}
@@ -80,12 +78,12 @@ export default function LoginRegisterCard () {
         <Button
           startIcon={<GitHubIcon />}
           variant='contained'
-          sx={{ mt: 1, width: 'min(500px, 50vw)' }}
+          sx={{ mt: 1, width: '80%' }}
           onClick={() => { signIn(githubProvider) }}
         >
           {'Continue with GitHub'}
         </Button>
-        <FormGroup sx={{ mb: 'auto' }}>
+        <FormGroup sx={{ mb: 'auto', mt: 3 }}>
           <FormControlLabel
             control={
               <Checkbox

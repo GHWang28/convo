@@ -47,7 +47,7 @@ function EmojiChip ({ reactionData, rid, cid, mid, viewerUID, color, interactabl
   const [r, g, b] = parseRGB(color);
   const [reactors, setReactors] = useState('');
 
-  // Get reactor's handlers
+  // Get reactor's handles
   useEffect(() => {
     const allUIDs = Object.keys(reactionData);
 
@@ -57,7 +57,7 @@ function EmojiChip ({ reactionData, rid, cid, mid, viewerUID, color, interactabl
       return;
     }
     Promise.all(allUIDs.map((uid) => (
-      getUser(uid).then((userData) => (userData?.handler))
+      getUser(uid).then((userData) => (userData?.handle))
     ))).then((allUsers) => {
       allUsers.sort();
       setReactors(allUsers.join(', '));

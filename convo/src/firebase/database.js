@@ -19,29 +19,8 @@ import { toast } from 'react-toastify';
 import { firebaseDatabase } from '.';
 import config from '../config.json';
 
-export function recordNewUser (user) {
-  const docRef = doc(firebaseDatabase, 'users', user.uid);
-  return getDoc(docRef)
-    .then((doc) => {
-      if (!doc.exists()) {
-        const newData = {
-          handler: user.displayName,
-          bio: '',
-          profilePic: user.photoURL,
-          uidToCid: {},
-          uid: user.uid
-        }
-        return setDoc(
-          docRef,
-          newData
-        ).then(() => {
-          return newData;
-        })
-
-      } else {
-        return doc.data();
-      }
-    })
+export function recordNewUser (newUserData) {
+  return setDoc(doc(firebaseDatabase, 'users', newUserData.uid), newUserData);
 }
 
 export function joinUserToChannel (uid, cid, showToast = true) {
@@ -56,11 +35,11 @@ export function joinUserToChannel (uid, cid, showToast = true) {
     setDoc(docRefUID, { uidToCid: newEntryCID }, { merge: true }),
     setDoc(docRefCID, { cidToUid: newEntryUID }, { merge: true })
   ]).then(() => {
-      if (showToast) toast.success('Channel joined.')
-    })
-    .catch(() => {
-      toast.error('An error occurred when joining this channel.')
-    })
+    if (showToast) toast.success('Channel joined.');
+  })
+  .catch(() => {
+    toast.error('An error occurred when joining this channel.');
+  })
 }
 
 export function leaveUserToChannel (uid, cid, showToast = true) {
@@ -107,8 +86,8 @@ export function getChannelDocRef (cid) {
 
 const userCache = {};
 
-export function getUser (uid) {
-  if (userCache[uid]) {
+export function getUser (uid, fetchFromDatabase = false) {
+  if (!fetchFromDatabase && userCache[uid]) {
     return Promise.resolve(userCache[uid]);
   }
 

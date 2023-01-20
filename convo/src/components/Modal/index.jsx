@@ -9,7 +9,9 @@ const Transition = forwardRef((props, ref) => (
 export default function Modal ({
   open = false,
   confirmTitle = 'Confirm',
+  closeTitle = 'Close',
   confirmColor = 'primary',
+  closeColor = 'secondary',
   handleConfirm,
   handleClose,
   title,
@@ -28,13 +30,7 @@ export default function Modal ({
       fullWidth={fullWidth}
       fullScreen={fullScreen}
       aria-labelledby='dialog-title'
-      PaperProps={{
-        sx: {
-          p: 2,
-          borderRadius: '15px',
-          border: '1px solid whitesmoke'
-        }
-      }}
+      PaperProps={{ sx: [{ p: 2 }, (!fullScreen) && { borderRadius: '15px', border: '1px solid whitesmoke' }] }}
       sx={{
         backdropFilter: 'blur(3px)',
       }}
@@ -46,8 +42,10 @@ export default function Modal ({
         </Typography> 
       )}
       <Box component='hr' sx={{ width: '90%' }} />
-      <DialogContent>
-        {children}
+      <DialogContent sx={[{ overflowY: 'auto' }, (fullScreen) && { display: 'flex', flexDirection: 'column' }]}>
+        <Box sx={{ my: 'auto' }} >
+          {children}
+        </Box>
       </DialogContent>
       <DialogActions>
         {(handleConfirm) && (
@@ -55,9 +53,11 @@ export default function Modal ({
             {confirmTitle}
           </Button>
         )}
-        <Button onClick={handleClose} variant='contained' color='secondary'>
-          {'Close'}
-        </Button>
+        {(handleClose) && (
+          <Button onClick={handleClose} variant='contained' color={closeColor}>
+            {closeTitle}
+          </Button>
+        )}
         {(fetching) && (
           <CircularProgress
             sx={{

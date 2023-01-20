@@ -1,7 +1,5 @@
-import React from 'react';
+import React, {useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import { useEffect } from 'react';
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Modal from '..';
 import config from '../../../config.json';
@@ -14,13 +12,13 @@ export default function MOTDModal () {
 
   useEffect(() => {
     setGeneratedMsg(generateMOTD());
-  }, [])
+  }, []);
   
   return (
     <Modal
       open={Boolean(userData) && show}
       handleClose={() => { setShow(false); sessionStorage.setItem('uniqueSess', false); }}
-      title={`${generateGreetings()}, ${userData?.handler}!`}
+      title={`${generateGreetings()}, ${userData?.handle}!`}
       subtitle={'Did you know?'}
       confirmColor='error'
       fullWidth

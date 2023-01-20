@@ -33,7 +33,7 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
       .then((userData) => {
         setSender(userData);
         return isUrlToImage(messageData?.text);
-      }).then(setIsImg)
+      }).then(setIsImg);
   }, [messageData?.uid, messageData?.text]);
 
   const editedTimestamp = (messageData?.timestampEdit) ? (
@@ -60,10 +60,8 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
       {(isStart) && (
         <Avatar
           alt={sender?.handler}
-          src={sender?.profilePic}
-          sx={{
-            width: (smallMq) ? 40 : 32, height: (smallMq) ? 40 : 32, mt: (!smallMq) && 1
-          }}
+          src={sender?.profilePic || `${process.env.PUBLIC_URL}/images/default-dp-white.svg`}
+          sx={{ width: (smallMq) ? 40 : 32, height: (smallMq) ? 40 : 32, mt: (!smallMq) && 1 }}
         />
       )}
       {/* Message Box */}
@@ -99,8 +97,8 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
           <Fragment>
             <TypographyTruncate
               width={'50%'}
-              text={sender?.handler}
-              sx={{ fontWeight: 'bold', fontSize: 14, color: 'secondary.main' }}
+              text={sender?.handle}
+              sx={{ fontWeight: 'bold', fontSize: 16, color: 'secondary.main' }}
             />
             <DateDisplay time={messageData?.timestamp?.seconds || messageData?.timestamp} align='left'/>
             <Box component='hr' sx={{ opacity: 0.5, borderColor: color }} />
@@ -108,7 +106,7 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
         )}
         {/* Date display */}
         {(!isStart) && (
-          <Collapse in={hover}>
+          <Collapse in={hover} sx={{ mt: 0.5 }}>
             <DateDisplay time={messageData?.timestamp?.seconds || messageData?.timestamp} align='left'/>
           </Collapse>
         )}
@@ -189,7 +187,7 @@ function BubbleImage ({ onClick, src, color }) {
   return (
     <Box
       component='img'
-      mt={2}
+      my={1}
       src={src}
       onClick={onClick}
       alt='Bubble Image'
@@ -197,7 +195,7 @@ function BubbleImage ({ onClick, src, color }) {
         border: `1px solid ${color}`,
         borderRadius: '15px',
         maxHeight: 'min(350px, 50vh)',
-        maxWidth: 'min(350px, 50vw)',
+        maxWidth: 'min(350px, 100%)',
         cursor: 'pointer',
         transition: 'scale 0.25s ease-in-out',
         '&:hover': { scale: '1.02' }

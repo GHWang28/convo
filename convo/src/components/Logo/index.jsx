@@ -10,18 +10,17 @@ export default function Logo () {
         component='img'
         alt='Convo Logo Cups'
         src={process.env.PUBLIC_URL + '/images/logo/logo.png'}
-        sx={{
-          height: 'min(20vw,10vh)'
-        }}
+        sx={{ height: 'min(20vw,15vh)' }}
       />
       <Box sx={{ display: 'flex', alignItems: 'left', flexDirection: 'column', position: 'relative' }}>
-        <Typography fontFamily={'Sofia Sans'} fontSize={'min(20vw,10vh)'} lineHeight={1} fontWeight='bold'>
+        <Typography fontFamily={'Sofia Sans'} fontSize={'min(20vw,15vh)'} lineHeight={1} fontWeight='bold'>
           {'CONVO'}
         </Typography>
         <TypeAnimation
           sequence={[
             2000, 'Connect with your friends.',
             2000, 'Connect with your peers.',
+            2000, 'Connect with your hermits.',
             2000, 'Connect with your family.',
             2000, 'Connect with your lover.',
             2000, 'Connect with your co-workers.',
@@ -33,7 +32,7 @@ export default function Logo () {
           repeat={Infinity}
           style={{
             fontFamily: 'Sofia Sans',
-            fontSize: 'min(3.5vw,1.75vh)',
+            fontSize: 'min(3.73333333333vw,2.8vh)',
             marginLeft: '8px',
             bottom: 0
           }}

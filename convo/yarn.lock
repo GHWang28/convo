@@ -5516,6 +5516,11 @@ gh-pages@^4.0.0:
     fs-extra "^8.1.0"
     globby "^6.1.0"
 
+gif-picker-react@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/gif-picker-react/-/gif-picker-react-1.1.0.tgz#2787bda6b8cab4d2e44baacd3b1bee2880d17f35"
+  integrity sha512-NMHvo+AvyjKnta4h7mpopJ94r8zB2TB+596twM8AVl7kaiz89ozzkfb70Y1zDfNvem02W6qG7LmrkiXD32zv5Q==
+
 glob-parent@^5.1.2, glob-parent@~5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-5.1.2.tgz#869832c58034fe68a4093c17dc15e8340d8401c4"

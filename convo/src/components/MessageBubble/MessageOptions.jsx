@@ -60,7 +60,7 @@ export default function MessageOptions ({ position, isSender, color = 'whitesmok
           borderRadius: '5px',
           color,
           bgcolor: 'mainColorSlightLight',
-          "&:hover, &.Mui-focusVisible": {
+          '&:hover, &.Mui-focusVisible': {
             bgcolor: 'mainColorLight'
           }
         }}

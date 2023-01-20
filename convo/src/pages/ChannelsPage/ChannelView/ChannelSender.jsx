@@ -5,7 +5,11 @@ import { postMessage } from '../../../firebase/database';
 import { useSelector } from 'react-redux';
 import config from '../../../config.json';
 import { toast } from 'react-toastify';
+import GifPicker from 'gif-picker-react';
+import GifIcon from '@mui/icons-material/Gif';
 import ImageUploader from '../../../components/ImageUploader';
+import BootstrapTooltip from '../../../components/BootstrapTooltip';
+import ButtonMenu from '../../../components/ButtonMenu';
 
 export default function ChannelSender ({ cid }) {
   const [message, setMessage] = useState('');
@@ -24,7 +28,15 @@ export default function ChannelSender ({ cid }) {
     setMessage('');
     setImage([]);
     setSending(true);
-    postMessage(cid, userData.uid, { text: message, image: image[0]?.dataURL || '' })
+    sendMessageToDatabase(message);
+  }
+
+  const onGifClick = (tenorImageObj) => {
+    sendMessageToDatabase(tenorImageObj.url);
+  }
+
+  const sendMessageToDatabase = (inputMessage) => {
+    postMessage(cid, userData.uid, { text: inputMessage, image: image[0]?.dataURL || '' })
       .then(() => {
         // Delay before scrolling down
         return new Promise((resolve) => (setTimeout(resolve, 5)))
@@ -49,11 +61,28 @@ export default function ChannelSender ({ cid }) {
         clipPath: 'inset(-100vh 0px 0px 0px)'
       }}
     >
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', alignItems: 'end' }}>
         <ImageUploader image={image} onChange={setImage} />
         <TextField
           sx={{ flexGrow: 1 }}
-          InputProps={{ sx: { bgcolor: 'mainColorDark' } }}
+          InputProps={{
+            sx: { bgcolor: 'mainColorDark', height: '100%', borderRadius: 0 },
+            endAdornment: (
+              <ButtonMenu
+                icon={<GifIcon />}
+                title='Add Reaction'
+                size='small'
+                sx={{
+                  bgcolor: 'mainColorSlightLight',
+                  "&:hover, &.Mui-focusVisible": {
+                    bgcolor: 'mainColorLight'
+                  }
+                }}
+              >
+                <GifPicker theme='dark' tenorApiKey='AIzaSyA1416HVoCuhmF86AeK6nI2fAS3V8lD0Z0' onGifClick={onGifClick}/>
+              </ButtonMenu>
+            )
+          }}
           size='small'
           onChange={(event) => { setMessage(event.target.value) }}
           placeholder='Send message'
@@ -67,10 +96,13 @@ export default function ChannelSender ({ cid }) {
             }
           }}
         />
+        {/* Send Button that collapses in if there isn't anything to send */}
         <Collapse in={Boolean(message.length || image.length)} orientation='horizontal'>
-          <IconButton color='secondary' onClick={onSend} sx={{ borderWidth: '1px', borderRadius: 0, borderStyle: 'solid', borderColor: 'secondary' }}>
-            <SendIcon />
-          </IconButton>
+          <BootstrapTooltip title='Send Message' placement='top'>
+            <IconButton color='secondary' onClick={onSend} sx={{ borderRadius: 0, bgcolor: 'mainColorSlightLight', width: '51px', height: '51px' }}>
+              <SendIcon />
+            </IconButton>
+          </BootstrapTooltip>
         </Collapse>
       </Box>
       <Box sx={{ height: '7px', width: '100%', color: 'white', position: 'relative' }}>

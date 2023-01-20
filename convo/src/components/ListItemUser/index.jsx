@@ -7,7 +7,7 @@ export default function ListItemUser ({ userData }) {
   const theme = useTheme();
 
   return (
-    <BootstrapTooltip title={userData?.handler} placement='left'>
+    <BootstrapTooltip title={userData?.handle} placement='left'>
       <Box
         mt={1}
         p={1}
@@ -28,9 +28,9 @@ export default function ListItemUser ({ userData }) {
             gap: 2
           }}
         >
-          <Avatar alt={userData?.handler} src={userData?.profilePic} />
+          <Avatar alt={userData?.handle} src={userData?.profilePic || `${process.env.PUBLIC_URL}/images/default-dp-white.svg`} />
           <Box>
-            <TypographyTruncate text={userData?.handler} width='100%'/>
+            <TypographyTruncate text={userData?.handle} width='100%'/>
             <TypographyTruncate text={'\xa0\xa0' + (userData?.bio || 'No Bio')} width='100%' sx={{ color: 'secondary.main' }}/>
           </Box>
         </Box>

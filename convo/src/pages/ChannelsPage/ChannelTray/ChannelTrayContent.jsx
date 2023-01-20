@@ -37,9 +37,10 @@ export default function ChannelTrayContent ({ height }) {
         <TextField
           sx={{ mb: 1 }}
           fullWidth
-          defaultValue='Search Public Channels'
+          title='Search Public Channels'
+          placeholder='Search Public Channels'
           InputProps={{
-            sx: { bgcolor: 'mainColorNormal', height: '35px', color: 'secondary.main' },
+            sx: { bgcolor: 'mainColorNormal', height: '35px' },
             readOnly: true,
             endAdornment: <SearchIcon />
           }}
@@ -86,13 +87,13 @@ export default function ChannelTrayContent ({ height }) {
             sx={{
               ml: 2
             }}
-            alt={userData?.handler}
-            src={userData?.profilePic}
+            alt={userData?.handle}
+            src={userData?.profilePic || `${process.env.PUBLIC_URL}/images/default-dp-white.svg`}
           />
         </Grid>
         <Grid item xs={7}>
           <Typography fontWeight='bold'>
-            {userData?.handler}
+            {userData?.handle}
           </Typography>
         </Grid>
         <Grid item xs={2}>

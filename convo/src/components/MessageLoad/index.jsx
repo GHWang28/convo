@@ -2,8 +2,7 @@ import { Box, LinearProgress, Typography } from '@mui/material';
 import { Fragment } from 'react';
 
 export default function MessageLoad ({ loading, color }) {
-  const divider = <Box component='hr' sx={{ borderColor: color, width: '90%' }}/>;
-
+  const hrSx = { borderColor: color, width: '90%' };
   return (
     <Box
       sx={{
@@ -17,11 +16,11 @@ export default function MessageLoad ({ loading, color }) {
         <LinearProgress color='inherit' sx={{ height: '20px', mx: 2, my: 3 }} />
       ) : (
         <Fragment>
-          {divider}
+          <Box component='hr' mt={5} sx={hrSx}/>
           <Typography color='inherit' align='center' fontWeight='bold' my={3}>
             {'The Humble Beginnings of this Channel.'}
           </Typography>
-          {divider}
+          <Box component='hr' mb={3} sx={hrSx}/>
         </Fragment>
       )}
     </Box>

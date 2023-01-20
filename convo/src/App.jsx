@@ -1,20 +1,19 @@
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { Route, Routes, useNavigate } from 'react-router';
-import { ToastContainer } from 'react-toastify';
-import ChannelsPage from './pages/ChannelsPage';
-import LoginRegisterPage from './pages/LoginRegisterPage';
-import LoadingCover from './components/LoadingCover';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useDispatch } from 'react-redux';
-import { setLogUserIn } from './redux/actions';
+import { setLogUserIn, setShowNewUserModal } from './redux/actions';
 import { auth, firebaseDatabase } from './firebase';
-import { recordNewUser } from './firebase/database';
-import ImageZoomer from './components/ImageZoomer';
-import { useEffect } from 'react';
+import { getUser } from './firebase/database';
 import { doc, onSnapshot } from 'firebase/firestore';
+import { ToastContainer } from 'react-toastify';
+import ChannelsPage from './pages/ChannelsPage';
+import LandingPage from './pages/LandingPage';
+import LoadingCover from './components/LoadingCover';
+import ImageZoomer from './components/ImageZoomer';
 
 export default function App() {
   const theme = createTheme({
@@ -51,25 +50,32 @@ export default function App() {
           disableRipple: true
         }
       },
+      MuiFormHelperText: {
+        defaultProps: {
+          sx: { color: 'secondary.main' }
+        }
+      }
     }
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [user, isLoading] = useAuthState(
-    auth,
-    {onUserChanged: (user) => {
-      if (!user) {
-        navigate('/');
-      } else {
-        recordNewUser(user).then(() => {
-          navigate('/channels')
-        })
-      }
-    }}
-  );
 
+  const [user, isLoading] = useAuthState(auth, {onUserChanged: (user) => {
+    if (!user) {
+      navigate('/');
+    } else {
+      getUser(user.uid, true).then((userData) => {
+        (userData) ? navigate('/channels') : dispatch(setShowNewUserModal({ uid: user.uid, displayName: user.displayName, photoURL: user.photoURL }));
+      })
+    }
+  }});
+
+  // Record new user data
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      dispatch(setLogUserIn(null));
+      return;
+    };
   
     return onSnapshot(doc(firebaseDatabase, 'users', user?.uid), (userDoc) => {
       dispatch(setLogUserIn({...userDoc.data()}))
@@ -82,7 +88,7 @@ export default function App() {
       <ToastContainer theme='dark' position='top-left'/>
       <LoadingCover display={isLoading} />
       <Routes>
-        <Route path='/' element={<LoginRegisterPage />} />
+        <Route path='/' element={<LandingPage />} />
         <Route path='/channels/' element={<ChannelsPage />} />
         <Route path='/channels/:cid' element={<ChannelsPage />} />
       </Routes>

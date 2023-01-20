@@ -30,7 +30,7 @@ export default function NotificationBubble ({ notificationData, color }) {
             border: `1px solid ${color}`,
             fontSize: 'min(2vw, 13px)'
           }}
-          label={generateNotificationMessage(notificationData.nid, sender?.handler)}
+          label={generateNotificationMessage(notificationData.nid, sender?.handle)}
         />
       </Divider>
     </Box>

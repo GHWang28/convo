@@ -23,7 +23,7 @@ export default function ChannelMemberModal () {
   }
 
   const displayedUser = userArray.filter((userData) => (
-    userData?.handler.toLowerCase().startsWith(prevSearch.toLowerCase())
+    userData?.handle.toLowerCase().startsWith(prevSearch.toLowerCase())
   ));
 
   return (
@@ -67,7 +67,7 @@ export default function ChannelMemberModal () {
         {(displayedUser?.length === 0) && (
           <Typography my={1} align='center'>
             {(prevSearch) ? (
-              `No members have a handler beginning with "${prevSearch}".`
+              `No members have a handle beginning with "${prevSearch}".`
             ) : (
               'No members were found.'
             )}

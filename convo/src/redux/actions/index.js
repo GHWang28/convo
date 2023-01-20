@@ -5,12 +5,6 @@ export function setLogUserIn (userData) {
   }
 }
 
-export function setLogUserOut () {
-  return {
-    type: 'LOG_USER_OUT'
-  }
-}
-
 export function setShowLogOutModal (boolean) {
   return {
     type: 'LOG_OUT_MODAL',
@@ -111,6 +105,18 @@ export function setShowMessageDeleteModal (messageData = {}) {
       timestamp: messageData?.timestamp?.seconds,
       timestampEdit: messageData?.timestampEdit?.seconds
     }
+  }
+}
+
+export function setShowNewUserModal (newUser = {}) {
+  if (!newUser) return {
+    type: 'NEW_USER_MODAL',
+    value: null
+  }
+
+  return {
+    type: 'NEW_USER_MODAL',
+    value: { ...newUser }
   }
 }
 

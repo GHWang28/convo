@@ -25,9 +25,7 @@ export default function ImageUploader ({ image, onChange }) {
       value={image}
       onChange={onChange}
       onError={(errors) => {
-        if (errors.acceptType) {
-          toast.error('File type not accepted. Must be jpg, png or gif.')
-        }
+        if (errors.acceptType) toast.error('File type not accepted. Must be jpg, png or gif.');
       }}
       acceptType={['jpg', 'gif', 'png']}
     >
@@ -45,12 +43,10 @@ export default function ImageUploader ({ image, onChange }) {
               color='secondary'
               onClick={onImageUpload}
               sx={{
-                borderWidth: '1px',
                 borderRadius: 0,
-                borderStyle: 'solid',
-                borderColor: 'secondary',
-                height: '42px',
-                width: '42px',
+                height: '51px',
+                width: '51px',
+                bgcolor: 'mainColorSlightLight'
               }}
             >
               <AddPhotoAlternateIcon

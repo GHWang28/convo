@@ -65,18 +65,22 @@ export default function MessageOptions ({ position, isSender, color = 'whitesmok
           }
         }}
       >
-        <Picker
-          theme='dark'
-          onEmojiSelect={(emojiData) => {
-            postDelMessageReact(
-              messageData?.cid,
-              messageData?.mid,
-              userData?.uid,
-              emojiData?.id,
-              Boolean(!messageData?.reactions?.[emojiData?.id]?.[userData?.uid])
-            );
-          }}
-        />
+        {({ onClose }) => (
+          <Picker
+            theme='dark'
+            onEmojiSelect={(emojiData) => {
+              postDelMessageReact(
+                messageData?.cid,
+                messageData?.mid,
+                userData?.uid,
+                emojiData?.id,
+                Boolean(!messageData?.reactions?.[emojiData?.id]?.[userData?.uid])
+              );
+              onClose();
+            }}
+          />
+        )}
+        
       </ButtonMenu>
     </Box>
   )

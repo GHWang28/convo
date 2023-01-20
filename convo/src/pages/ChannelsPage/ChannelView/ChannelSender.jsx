@@ -28,15 +28,15 @@ export default function ChannelSender ({ cid }) {
     setMessage('');
     setImage([]);
     setSending(true);
-    sendMessageToDatabase(message);
+    sendMessageToDatabase(message, image?.at(0)?.dataURL);
   }
 
   const onGifClick = (tenorImageObj) => {
-    sendMessageToDatabase(tenorImageObj.url);
+    sendMessageToDatabase('', tenorImageObj?.url);
   }
 
-  const sendMessageToDatabase = (inputMessage) => {
-    postMessage(cid, userData.uid, { text: inputMessage, image: image[0]?.dataURL || '' })
+  const sendMessageToDatabase = (inputMessage, imageURL) => {
+    postMessage(cid, userData.uid, { text: inputMessage, image: imageURL || '' })
       .then(() => {
         // Delay before scrolling down
         return new Promise((resolve) => (setTimeout(resolve, 5)))
@@ -79,7 +79,13 @@ export default function ChannelSender ({ cid }) {
                   }
                 }}
               >
-                <GifPicker theme='dark' tenorApiKey='AIzaSyA1416HVoCuhmF86AeK6nI2fAS3V8lD0Z0' onGifClick={onGifClick}/>
+                {({ onClose }) => (
+                  <GifPicker
+                    theme='dark'
+                    tenorApiKey='AIzaSyA1416HVoCuhmF86AeK6nI2fAS3V8lD0Z0'
+                    onGifClick={(tenorImageObj) => { onGifClick(tenorImageObj); onClose(); }}
+                  />
+                )}
               </ButtonMenu>
             )
           }}

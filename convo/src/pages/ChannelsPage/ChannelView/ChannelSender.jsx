@@ -52,9 +52,9 @@ export default function ChannelSender ({ cid }) {
 
   return (
     <Box
+      p={1}
       sx={{
         width: '100%',
-        p: 1,
         boxSizing: 'border-box',
         bgcolor: 'mainColorLight',
         boxShadow: '0 0 30px rgba(0,0,0,1)',
@@ -82,6 +82,7 @@ export default function ChannelSender ({ cid }) {
                 {({ onClose }) => (
                   <GifPicker
                     theme='dark'
+                    autoFocusSearch={false}
                     tenorApiKey='AIzaSyA1416HVoCuhmF86AeK6nI2fAS3V8lD0Z0'
                     onGifClick={(tenorImageObj) => { onGifClick(tenorImageObj); onClose(); }}
                   />

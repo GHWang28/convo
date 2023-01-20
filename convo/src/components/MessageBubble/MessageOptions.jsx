@@ -64,6 +64,14 @@ export default function MessageOptions ({ position, isSender, color = 'whitesmok
             bgcolor: 'mainColorLight'
           }
         }}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
       >
         {({ onClose }) => (
           <Picker

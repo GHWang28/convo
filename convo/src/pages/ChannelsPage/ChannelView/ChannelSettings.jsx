@@ -48,6 +48,14 @@ export default function Settings ({ channelData }) {
       id='settings'
       icon={<SettingsIcon/>}
       menuItems={options}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'left',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
     />
   )
 }

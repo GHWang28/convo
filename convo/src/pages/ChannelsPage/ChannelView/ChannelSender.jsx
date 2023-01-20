@@ -69,7 +69,7 @@ export default function ChannelSender ({ cid }) {
             sx: { bgcolor: 'mainColorDark', height: '100%', borderRadius: 0 },
             endAdornment: (
               <ButtonMenu
-                icon={<GifIcon />}
+                icon={<GifIcon sx={{ scale: '1.6' }}/>}
                 title='Add Reaction'
                 size='small'
                 sx={{
@@ -77,6 +77,14 @@ export default function ChannelSender ({ cid }) {
                   "&:hover, &.Mui-focusVisible": {
                     bgcolor: 'mainColorLight'
                   }
+                }}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
                 }}
               >
                 {({ onClose }) => (

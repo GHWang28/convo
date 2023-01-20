@@ -2,7 +2,7 @@ import { IconButton, ListItemIcon, Menu, MenuItem, Typography } from '@mui/mater
 import React, { Fragment, useState } from 'react';
 import BootstrapTooltip from '../BootstrapTooltip';
 
-export default function ButtonMenu ({ icon, menuItems, children, id, sx, size, title }) {
+export default function ButtonMenu ({ icon, menuItems, children, id, sx, size, title, anchorOrigin, transformOrigin }) {
   const [anchor, setAnchor] = useState(null);
   const onClick = (event) => {
     setAnchor(event.currentTarget);
@@ -41,6 +41,8 @@ export default function ButtonMenu ({ icon, menuItems, children, id, sx, size, t
             borderColor: 'borderColor',
           }
         }}
+        anchorOrigin={anchorOrigin}
+        transformOrigin={transformOrigin}
       >
         {children ? (
           children({ onClose })

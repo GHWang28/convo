@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Avatar, Box, Collapse, IconButton, Link, TextField, Typography, useMediaQuery } from '@mui/material';
+import { Avatar, Box, CircularProgress, Collapse, IconButton, Link, TextField, Typography, useMediaQuery } from '@mui/material';
 import Linkify from 'linkify-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { editMessage, getUser, isUrlToImage } from '../../firebase/database';
@@ -184,23 +184,40 @@ function MessageTail ({ right, hover }) {
 }
 
 function BubbleImage ({ onClick, src, color }) {
+  const [loaded, setLoaded] = useState(false);
+
+  const onLoad = () => {
+    setLoaded(true);
+  }
+
   return (
-    <Box
-      component='img'
-      my={1}
-      src={src}
-      onClick={onClick}
-      alt='Bubble Image'
-      sx={{
-        border: `1px solid ${color}`,
-        borderRadius: '15px',
-        maxHeight: 'min(350px, 50vh)',
-        maxWidth: 'min(350px, 100%)',
-        cursor: 'pointer',
-        transition: 'scale 0.25s ease-in-out',
-        '&:hover': { scale: '1.02' }
-      }}
-    />
+    <Fragment>
+      {(!loaded) && (
+        <Box p={5} sx={{ color, borderRadius: '15px', width: 'fit-content', height: 'fit-content', bgcolor: 'mainColorDark' }}>
+          <CircularProgress color='inherit' />
+        </Box>
+      )}
+      <Box
+        component='img'
+        my={1}
+        src={src}
+        onLoad={onLoad}
+        onClick={onClick}
+        alt='Bubble Image'
+        sx={[
+          (!loaded) && { display: 'none' },
+          {
+            border: `1px solid ${color}`,
+            borderRadius: '15px',
+            maxHeight: 'min(350px, 50vh)',
+            maxWidth: 'min(350px, 100%)',
+            cursor: 'pointer',
+            transition: 'scale 0.25s ease-in-out',
+            '&:hover': { scale: '1.02' }
+          }
+        ]}
+      />
+    </Fragment>
   )
 }
 

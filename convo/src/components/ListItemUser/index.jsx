@@ -28,7 +28,7 @@ export default function ListItemUser ({ userData }) {
             gap: 2
           }}
         >
-          <Avatar alt={userData?.handle} src={userData?.profilePic || `${process.env.PUBLIC_URL}/images/default-dp-white.svg`} />
+          <Avatar alt={userData?.handle} title={userData?.handle} src={userData?.profilePic || `${process.env.PUBLIC_URL}/images/default-dp-white.svg`} />
           <Box>
             <TypographyTruncate text={userData?.handle} width='100%'/>
             <TypographyTruncate text={'\xa0\xa0' + (userData?.bio || 'No Bio')} width='100%' sx={{ color: 'secondary.main' }}/>

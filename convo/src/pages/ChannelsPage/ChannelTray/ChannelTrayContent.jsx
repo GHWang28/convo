@@ -88,6 +88,7 @@ export default function ChannelTrayContent ({ height }) {
               ml: 2
             }}
             alt={userData?.handle}
+            title={userData?.handle}
             src={userData?.profilePic || `${process.env.PUBLIC_URL}/images/default-dp-white.svg`}
           />
         </Grid>

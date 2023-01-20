@@ -132,6 +132,7 @@ export default function NewUserModal () {
                 <Avatar
                   {...dragProps}
                   alt={handle || 'You'}
+                  title={handle || 'You'}
                   src={imageList?.at(0)?.dataURL || `${process.env.PUBLIC_URL}/images/default-dp-white.svg`}
                   sx={{ ...imageSize, bgcolor: 'mainColorNormal' }}
                 />

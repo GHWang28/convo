@@ -59,7 +59,8 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
     >
       {(isStart) && (
         <Avatar
-          alt={sender?.handler}
+          alt={sender?.handle}
+          title={sender?.handle}
           src={sender?.profilePic || `${process.env.PUBLIC_URL}/images/default-dp-white.svg`}
           sx={{ width: (smallMq) ? 40 : 32, height: (smallMq) ? 40 : 32, mt: (!smallMq) && 1 }}
         />
@@ -203,7 +204,7 @@ function BubbleImage ({ onClick, src, color }) {
         src={src}
         onLoad={onLoad}
         onClick={onClick}
-        alt='Bubble Image'
+        alt='Attached file'
         sx={[
           (!loaded) && { display: 'none' },
           {

@@ -56,7 +56,7 @@ export default function ImageUploader ({ image, onChange }) {
           {(imageList.length !== 0) && imageList.map((imageItem, index) => (
             <IconButton key={`uploaded-img-${index}`} onClick={() => { onImageRemove(index) }} sx={{ borderRadius: 0, height: '42px', width: '42px' }}>
               <Box
-                alt={`uploaded-img-${index}`}
+                alt={`Uploaded-${index}`}
                 component='img'
                 src={imageItem.dataURL} 
                 sx={{ maxHeight: '100%', maxWidth: '100%' }}

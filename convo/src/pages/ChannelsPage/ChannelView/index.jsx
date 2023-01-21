@@ -69,13 +69,13 @@ export default function ChannelView () {
 function NoChannelSelected () {
   return (
     <Fragment>
-      <Typography variant='h2' align='center'>
-        {'¯\\_(ツ)_/¯'}
+      <Typography variant='h1' align='center'>
+        {'🤷‍♀️'}
       </Typography>
-      <Typography variant='h4' align='center'>
+      <Typography variant='h4' align='center' my={2}>
         {'Feels pretty empty in here.'}
       </Typography>
-      <Typography variant='h5' align='center'>
+      <Typography variant='h5' align='center' color='secondary'>
         {'You can make it less empty by selecting or creating a channel on the left.'}
       </Typography>
     </Fragment>

@@ -49,21 +49,14 @@ export default function ChannelCreateModal () {
     <Modal
       open={useSelector(state => state.channelCreateModal)}
       title='Channel Create'
+      subtitle='The beginning of a new conversation'
       handleConfirm={onConfirm}
       handleClose={onClose}
       confirmColor='success'
       fullWidth
       fullScreen={!smallMq}
     >
-      <Grid container sx={{ alignItems: 'center', flexDirection: (mediumMq) && 'row-reverse' }}>
-        <Grid item xs={12} md={3} sx={{ display: 'flex', justifyContent: (mediumMq) ? 'end' : 'center' }}>
-          <FormControlLabel
-            control={
-              <Switch checked={publicMode} onChange={(event) => { setPublicMode(event.target.checked) }} />
-            }
-            label={(publicMode) ? 'Public' : 'Private'}
-          />
-        </Grid>
+      <Grid container sx={{ alignItems: 'center' }}>
         <Grid item xs={12} md={9}>
           <TextField
             sx={{ bgcolor: 'mainColorNormal', width: '100%' }}
@@ -75,9 +68,15 @@ export default function ChannelCreateModal () {
             onClick={() => { setNameError(false) }}
           />
         </Grid>
+        <Grid item xs={12} md={3} sx={{ display: 'flex', justifyContent: (mediumMq) ? 'end' : 'center' }}>
+          <FormControlLabel
+            control={ <Switch checked={publicMode} onChange={(event) => { setPublicMode(event.target.checked) }}/> }
+            label={(publicMode) ? 'Public' : 'Private'}
+          />
+        </Grid>
       </Grid>
       <TextField
-        sx={{ mt: 2, bgcolor: 'mainColorNormal' }}
+        sx={[(mediumMq) && { mt: 2 }, { bgcolor: 'mainColorNormal' }]}
         label='Channel Description'
         variant='outlined'
         fullWidth

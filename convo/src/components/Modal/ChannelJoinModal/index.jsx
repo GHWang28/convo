@@ -24,6 +24,7 @@ export default function ChannelJoinModal () {
     <Modal
       open={Boolean(channelData)}
       title={(channelData?.publicMode) ? `Join "${channelData?.name}"` : 'Private Channel'}
+      subtitle='Meeting new people'
       handleClose={onClose}
       handleConfirm={(channelData?.publicMode) && onConfirm}
       confirmColor='success'

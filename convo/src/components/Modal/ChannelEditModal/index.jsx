@@ -62,6 +62,7 @@ export default function ChannelEditModal () {
     <Modal
       open={Boolean(channelData)}
       title='Channel Edit'
+      subtitle='Pouring over a fresh coat of paint'
       handleConfirm={onConfirm}
       handleClose={onClose}
       confirmColor='success'

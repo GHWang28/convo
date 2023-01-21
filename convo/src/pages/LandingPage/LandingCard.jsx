@@ -52,6 +52,7 @@ export default function LandingCard () {
     >
       {(fetching) && (
         <CircularProgress
+          title='Loading'
           color='inherit'
           sx={{ position: 'absolute', bottom: '20px', left: '20px' }}
         />

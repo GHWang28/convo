@@ -133,3 +133,10 @@ export const setImageZoom = (src) => {
     value: src
   };
 }
+
+export function setShowChannelNotifications (boolean) {
+  return {
+    type: 'CHANNEL_NOTIFICTION',
+    value: boolean
+  }
+}

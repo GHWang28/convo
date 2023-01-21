@@ -37,13 +37,13 @@ export function joinUserToChannel (uid, cid, showToast = true) {
     setDoc(docRefCID, { cidToUid: newEntryUID }, { merge: true })
   ]).then(() => {
     if (showToast) toast.success('Channel joined.');
-  })
-  .catch(() => {
-    toast.error('An error occurred when joining this channel.');
+    return postMessageNotification(cid, uid, config.CHANNEL_JOIN_NID);
+  }).catch((err) => {
+    toast.error(`An error occurred when joining this channel: ${err.message}`);
   })
 }
 
-export function leaveUserToChannel (uid, cid, showToast = true) {
+export function leaveUserFromChannel (uid, cid, showToast = true) {
   const docRefUID = doc(firebaseDatabase, 'users', uid);
   const docRefCID = doc(firebaseDatabase, 'channels', cid);
 
@@ -51,15 +51,17 @@ export function leaveUserToChannel (uid, cid, showToast = true) {
   newEntryCID[cid] = deleteField();
   newEntryUID[uid] = deleteField();
 
-  return Promise.all([
-    setDoc(docRefUID, { uidToCid: newEntryCID }, { merge: true }),
-    setDoc(docRefCID, { cidToUid: newEntryUID }, { merge: true })
-  ]).then(() => {
-    if (showToast) toast.success('Channel left.')
-  })
-  .catch(() => {
-    toast.error('An error occurred when leaving this channel.')
-  })
+  return postMessageNotification(cid, uid, config.CHANNEL_LEAVE_NID)
+    .then(() => {
+      return Promise.all([
+        setDoc(docRefUID, { uidToCid: newEntryCID }, { merge: true }),
+        setDoc(docRefCID, { cidToUid: newEntryUID }, { merge: true })
+      ])
+    }).then(() => {
+      if (showToast) toast.success('Channel left.');
+    }).catch((err) => {
+      toast.error(`An error occurred when leaving this channel: ${err.message}`);
+    })
 }
 
 export function getArrayOfUserData (uidArray) {

@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import Modal from '..';
-import { leaveUserToChannel } from '../../../firebase/database';
+import { leaveUserFromChannel } from '../../../firebase/database';
 import {  setShowChannelLeaveModal } from '../../../redux/actions';
 
 export default function ChannelLeaveModal () {
@@ -18,7 +18,7 @@ export default function ChannelLeaveModal () {
 
   const onConfirm = () => {
     navigate('/channels');
-    leaveUserToChannel(userData?.uid, channelData?.cid, true);
+    leaveUserFromChannel(userData?.uid, channelData?.cid, true);
     onClose();
   }
   

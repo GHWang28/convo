@@ -5,14 +5,24 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import EditIcon from '@mui/icons-material/Edit';
 import ButtonMenu from '../../../components/ButtonMenu';
-import { useDispatch } from 'react-redux';
-import { setShowChannelEditModal, setShowChannelLeaveModal, setShowChannelMemberModal } from '../../../redux/actions';
+import AnnouncementIcon from '@mui/icons-material/Announcement';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import { useDispatch, useSelector } from 'react-redux';
+import { setShowChannelEditModal, setShowChannelLeaveModal, setShowChannelMemberModal, setShowChannelNotifications } from '../../../redux/actions';
 import { getArrayOfUserData } from '../../../firebase/database';
 
 export default function Settings ({ channelData }) {
   const dispatch = useDispatch();
+  const channelNotificationToggle = useSelector(state => state.channelNotification);
 
   const options = [
+    {
+      text: (channelNotificationToggle) ? 'Hide Announcements' : 'Show Announcements',
+      icon: (channelNotificationToggle) ? <CancelOutlinedIcon /> : <AnnouncementIcon />,
+      onClick: () => {
+        dispatch(setShowChannelNotifications(!channelNotificationToggle))
+      }
+    },
     {
       text: 'View Channel Members',
       icon: <PeopleAltIcon />,

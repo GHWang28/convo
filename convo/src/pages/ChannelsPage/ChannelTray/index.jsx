@@ -30,9 +30,7 @@ export default function ChannelTray () {
               height,
               width: '25px',
               bgcolor: 'mainColorLight',
-              '&:hover': {
-                filter: 'brightness(105%)'
-              },
+              '&:hover': { filter: 'brightness(105%)' },
               cursor: 'pointer',
               display: 'flex',
               justifyContent: 'center',

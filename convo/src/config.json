@@ -3,7 +3,6 @@
     "MAX_CHAR": 2000,
     "MESSAGE_BUFFER_TIMESTAMP_SECONDS": 180,
     "TOTAL_CHANNEL_ICONS": 19,
-    "CHANNEL_EDIT_NID": 0,
     "MAX_REACTORS": 10,
     "MIN_HANDLE_NAME": 1,
     "MAX_HANDLE_NAME": 20,
@@ -39,5 +38,8 @@
         "Thursday",
         "Friday",
         "Saturday"
-    ]
+    ],
+    "CHANNEL_EDIT_NID": 0,
+    "CHANNEL_JOIN_NID": 1,
+    "CHANNEL_LEAVE_NID": 2
 }

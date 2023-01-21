@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
 
 export default function TypographyTruncate ({ text, width, sx, ...props }) {
   return (
@@ -25,3 +26,9 @@ export default function TypographyTruncate ({ text, width, sx, ...props }) {
     </Box>
   )
 }
+
+TypographyTruncate.propTypes = {
+  text: PropTypes.string,
+  width: PropTypes.string,
+  sx: PropTypes.object
+};

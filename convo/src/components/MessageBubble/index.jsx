@@ -202,7 +202,7 @@ function BubbleImage ({ onClick, src, color }) {
     <Fragment>
       {(!loaded) && (
         <Box p={5} sx={{ color, borderRadius: '15px', width: 'fit-content', height: 'fit-content', bgcolor: 'mainColorDark' }}>
-          <CircularProgress color='inherit' />
+          <CircularProgress title='Loading' color='inherit' />
         </Box>
       )}
       <Box

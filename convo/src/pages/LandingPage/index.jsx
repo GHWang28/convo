@@ -3,6 +3,7 @@ import { Box, Grid, useMediaQuery } from '@mui/material';
 import LandingCard from './LandingCard';
 import Logo from '../../components/Logo';
 import NewUserModal from '../../components/Modal/NewUserModal';
+import VersionNumber from '../../components/VersionNumber';
 
 export default function LandingPage () {
   const largeMq = useMediaQuery((theme) => theme.breakpoints.up('lg'));
@@ -19,6 +20,7 @@ export default function LandingPage () {
             <LandingCard />
           </Grid>
         </Grid>
+        <VersionNumber position='fixed' />
       </Box>
     </Fragment>
   )

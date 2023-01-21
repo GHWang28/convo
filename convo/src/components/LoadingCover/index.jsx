@@ -25,7 +25,7 @@ export default function LoadingCover ({ display }) {
           zIndex: 999
         }}
       >
-        <CircularProgress color='inherit' />
+        <CircularProgress title='Loading' color='inherit' />
       </AnimatedBox>
     ) : null
   ))

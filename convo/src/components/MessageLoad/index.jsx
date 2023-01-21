@@ -13,7 +13,7 @@ export default function MessageLoad ({ loading, color }) {
       }}
     >
       {(loading) ? (
-        <LinearProgress color='inherit' sx={{ height: '20px', mx: 2, my: 3 }} />
+        <LinearProgress title='Loading' color='inherit' sx={{ height: '20px', mx: 2, my: 3 }} />
       ) : (
         <Fragment>
           <Box component='hr' mt={5} sx={hrSx}/>

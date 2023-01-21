@@ -32,7 +32,7 @@ export default function ListItemChannel ({ cid, closeSearchModal, showDesc, show
         }}
       >
         {(loading) ? (
-          <LinearProgress sx={{ height: '100%', width: '100%' }} />
+          <LinearProgress title='Loading' sx={{ height: '100%', width: '100%' }} />
         ) : (
           <Typography color='error.main' fontWeight='bold'>
             {'Error Loading'}

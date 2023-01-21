@@ -122,6 +122,7 @@ export default function ChannelSender ({ cid }) {
       </Box>
       <Box sx={{ height: '7px', width: '100%', color: 'white', position: 'relative' }}>
         <LinearProgress
+          title='Message Capacity'
           color={(messagePercentage >= 100) ? 'error' : 'inherit'}
           sx={{ height: '7px' }}
           variant={(sending) ? 'indeterminate' : 'determinate'}

@@ -60,10 +60,8 @@ export default function Modal ({
         )}
         {(fetching) && (
           <CircularProgress
-            sx={{
-              position: 'absolute',
-              left: 20
-            }}
+            title='Loading'
+            sx={{ position: 'absolute', left: 20 }}
           />
         )}
       </DialogActions>

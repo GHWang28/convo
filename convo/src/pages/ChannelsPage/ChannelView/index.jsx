@@ -44,7 +44,7 @@ export default function ChannelView () {
         (!fetching) ? (
           <NoPermChannel />
         ) : (
-          <CircularProgress />
+          <CircularProgress title='Loading' />
         )
       ) : (
         (!channelData && cid) ? (

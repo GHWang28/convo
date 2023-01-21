@@ -10,8 +10,7 @@ import { setShowMessageDeleteModal } from '../../redux/actions';
 import Picker from '@emoji-mart/react'
 import { postDelMessageReact } from '../../firebase/database';
 
-
-export default function MessageOptions ({ position, isSender, color = 'whitesmoke', messageData, setEdit }) {
+export default function MessageOptions ({ position, isSender, color = 'whitesmoke', messageData, setEdit, setHover }) {
   const dispatch = useDispatch();
   const userData = useSelector(state => state.loggedInUserData);
   let options = [
@@ -71,6 +70,9 @@ export default function MessageOptions ({ position, isSender, color = 'whitesmok
         transformOrigin={{
           vertical: 'top',
           horizontal: 'right',
+        }}
+        onClose={() => {
+          setHover(false);
         }}
       >
         {({ onClose }) => (

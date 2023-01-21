@@ -5,20 +5,8 @@ body {
   margin: 0;
   width: 100vw;
   height: 100vh;
-  overflow: 'clip';
+  overflow: clip;
   background-color: rgb(32,32,32);
-}
-
-#dropzone {
-  box-sizing: border-box;
-  display: none;
-	position: fixed;
-	width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  z-index: 99999;
-  background: rgba(0,0,0,0.5);
 }
 
 ::-webkit-scrollbar-corner {
@@ -46,4 +34,33 @@ body {
 /* Hover color */
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(93, 99, 109);
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(46deg, #ff7575, #ffc5c5, #ffecec);
+  background-size: 600% 600%;
+
+  color: #000;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
+  animation: shine 22s linear infinite;
+}
+
+@-webkit-keyframes shine {
+  0%{background-position:0% 52%}
+  50%{background-position:100% 49%}
+  100%{background-position:0% 52%}
+}
+@-moz-keyframes shine {
+  0%{background-position:0% 52%}
+  50%{background-position:100% 49%}
+  100%{background-position:0% 52%}
+}
+@keyframes shine {
+  0%{background-position:0% 52%}
+  50%{background-position:100% 49%}
+  100%{background-position:0% 52%}
 }

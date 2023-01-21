@@ -46,6 +46,7 @@ export default function Settings ({ channelData }) {
   return (
     <ButtonMenu
       id='settings'
+      title='Channel Settings'
       icon={<SettingsIcon/>}
       menuItems={options}
       anchorOrigin={{

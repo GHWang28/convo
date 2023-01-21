@@ -37,8 +37,8 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
   }, [messageData?.uid, messageData?.text]);
 
   const editedTimestamp = (messageData?.timestampEdit) ? (
-    <Typography component='span' fontSize={9} fontStyle='italic' color='secondary' mb={0.5}>
-      {` [Edited on ${convertEpochToDate(messageData?.timestampEdit?.seconds)}]`}
+    <Typography component='span' fontSize={9} fontStyle='italic' color='secondary' mb={0.5} noWrap>
+      {` [ Edited on ${convertEpochToDate(messageData?.timestampEdit?.seconds)} ]`}
     </Typography>
   ) : (
     null
@@ -84,13 +84,16 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
         onMouseEnter={() => { setHover(true) }}
         onMouseLeave={() => { setHover(false) }}
       >
-        {(arrow && isStart) && <MessageTail hover={hover} right={viewerIsSender}/>}
+        {(arrow && isStart) && (
+          <MessageTail right={viewerIsSender} />
+        )}
         {(showOptions && hover) && (
           <MessageOptions
             isSender={viewerIsSender}
             position={{ top: -20, right: 0 }}
             messageData={messageData}
             setEdit={setEdit}
+            setHover={setHover}
             color={color}
           />
         )}
@@ -99,7 +102,11 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
             <TypographyTruncate
               width={'50%'}
               text={sender?.handle}
-              sx={{ fontWeight: 'bold', fontSize: 16, color: 'secondary.main' }}
+              sx={{
+                fontWeight: 'bold',
+                fontSize: 16,
+                color: (viewerIsSender) ? color : 'secondary.main'
+              }}
             />
             <DateDisplay time={messageData?.timestamp?.seconds || messageData?.timestamp} align='left'/>
             <Box component='hr' sx={{ opacity: 0.5, borderColor: color }} />
@@ -113,7 +120,7 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
         )}
         {/* Show as image or text */}
         {(edit) ? (
-          <EditMode messageData={messageData} setEdit={setEdit} color={color} />
+          <EditMode messageData={messageData} setEdit={setEdit}/>
         ) : (
           <Fragment>
             {(isImg) ? (
@@ -165,7 +172,7 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
   )
 }
 
-function MessageTail ({ right, hover }) {
+function MessageTail ({ right }) {
   return (
     <Box
       component='span'
@@ -174,7 +181,7 @@ function MessageTail ({ right, hover }) {
         height: '15px',
         position: 'absolute',
         display: '',
-        bgcolor: (hover) ? 'mainColorSlightLight' : 'mainColorLight',
+        bgcolor: 'inherit',
         rotate: (right) ? '-135deg' : '45deg',
         top: 14,
         left: (!right) && -6,

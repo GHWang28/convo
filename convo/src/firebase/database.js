@@ -20,7 +20,8 @@ import { firebaseDatabase } from '.';
 import config from '../config.json';
 
 export function recordNewUser (newUserData) {
-  return setDoc(doc(firebaseDatabase, 'users', newUserData.uid), newUserData);
+  return setDoc(doc(firebaseDatabase, 'users', newUserData.uid), newUserData)
+    .catch((err) => { toast.error(err?.message) });
 }
 
 export function joinUserToChannel (uid, cid, showToast = true) {
@@ -164,7 +165,8 @@ export function postMessage (cid, uid, message) {
     cid,
     mid: newDoc.id
   }
-  return setDoc(newDoc, messagePackage);
+  return setDoc(newDoc, messagePackage)
+    .catch((err) => { toast.error(err?.message) });
 }
 
 export function deleteMessage (cid, mid) {

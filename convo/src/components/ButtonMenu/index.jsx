@@ -2,13 +2,25 @@ import { IconButton, ListItemIcon, Menu, MenuItem, Typography } from '@mui/mater
 import React, { Fragment, useState } from 'react';
 import BootstrapTooltip from '../BootstrapTooltip';
 
-export default function ButtonMenu ({ icon, menuItems, children, id, sx, size, title, anchorOrigin, transformOrigin }) {
+export default function ButtonMenu ({
+  icon,
+  menuItems,
+  children,
+  id,
+  sx,
+  size,
+  title,
+  anchorOrigin,
+  transformOrigin,
+  onClose
+}) {
   const [anchor, setAnchor] = useState(null);
   const onClick = (event) => {
     setAnchor(event.currentTarget);
   };
-  const onClose = () => {
+  const onCloseHandler = () => {
     setAnchor(null);
+    if (onClose) onClose();
   };
 
   const button = (
@@ -29,7 +41,7 @@ export default function ButtonMenu ({ icon, menuItems, children, id, sx, size, t
       <Menu
         anchorEl={anchor}
         open={Boolean(anchor)}
-        onClose={onClose}
+        onClose={onCloseHandler}
         MenuListProps={{
           'aria-labelledby': id,
           disablePadding: Boolean(children)
@@ -45,7 +57,7 @@ export default function ButtonMenu ({ icon, menuItems, children, id, sx, size, t
         transformOrigin={transformOrigin}
       >
         {children ? (
-          children({ onClose })
+          children({ onClose: onCloseHandler })
         ) : (
           menuItems && menuItems.map((item, index) => (
             <MenuItem key={`menu-item-${index}`} onClick={item?.onClick}>

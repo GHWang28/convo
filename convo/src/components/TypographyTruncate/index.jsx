@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 
-export default function TypographyTruncate ({ text, width, sx }) {
+export default function TypographyTruncate ({ text, width, sx, ...props }) {
   return (
     <Box
       sx={{
@@ -11,6 +11,7 @@ export default function TypographyTruncate ({ text, width, sx }) {
       }}
     >
       <Typography
+        {...props}
         sx={{
           display: 'table-cell',
           textOverflow: 'ellipsis',

@@ -5,6 +5,8 @@
     "TOTAL_CHANNEL_ICONS": 19,
     "CHANNEL_EDIT_NID": 0,
     "MAX_REACTORS": 10,
+    "MIN_HANDLE_NAME": 1,
+    "MAX_HANDLE_NAME": 20,
     "MOTD": [
         "🗿",
         "If you've accidentally sent the wrong react to a message, you can click on your react under the message to 'unreact'.",

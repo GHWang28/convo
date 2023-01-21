@@ -12,6 +12,8 @@ import BootstrapTooltip from '../../BootstrapTooltip';
 import { auth } from '../../../firebase';
 import { recordNewUser } from '../../../firebase/database';
 import { useNavigate } from 'react-router';
+import { compressImage } from '../../../helpers';
+import config from '../../../config.json';
 
 export default function NewUserModal () {
   const dispatch = useDispatch();
@@ -20,6 +22,7 @@ export default function NewUserModal () {
   const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm'));
   const newUserData = useSelector(state => state.newUserModal);
   const [handle, setHandle] = useState('');
+  const invalidHandle = !(handle.length >= config.MIN_HANDLE_NAME && handle.length <= config.MAX_HANDLE_NAME);
   const [bio, setBio] = useState('');
   const [profilePic, setProfilePic] = useState([]);
 
@@ -28,11 +31,15 @@ export default function NewUserModal () {
     dispatch(setShowNewUserModal(null));
   }
 
-  const onImageChange = (imageList) => {
-    setProfilePic(imageList);
+  const onImageChange = (newImage) => {
+    (newImage.at(0)?.dataURL) ? compressImage(newImage.at(0)?.file, setProfilePic) : setProfilePic(newImage);
   }
 
   const onConfirm = () => {
+    if (invalidHandle) {
+      toast.error(`Your handle name must be inclusively between ${config.MIN_HANDLE_NAME} to ${config.MAX_HANDLE_NAME} characters long.`)
+      return;
+    }
     recordNewUser({
       handle,
       bio: '',
@@ -70,9 +77,9 @@ export default function NewUserModal () {
           value={profilePic}
           onChange={onImageChange}
           onError={(errors) => {
-            if (errors.acceptType) toast.error('File type not accepted. Must be jpg, png or gif.');
+            if (errors.acceptType) toast.error('File type not accepted. Must be jpg or png.');
           }}
-          acceptType={['jpg', 'gif', 'png']}
+          acceptType={['jpg', 'png']}
         >
           {({
             imageList,
@@ -98,7 +105,7 @@ export default function NewUserModal () {
                   }}
                 >
                   <Typography align='center' fontWeight='bold'>
-                    {'Drop image here to upload!'}
+                    {'Drop image here to upload'}
                   </Typography>
                 </Box>
               )}
@@ -153,11 +160,11 @@ export default function NewUserModal () {
         sx={{ mt: 3 }}
         InputProps={{ sx: { bgcolor: 'mainColorNormal' } }}
         label='Handle Name *'
-        helperText='The name other users will know you by.'
+        helperText={`The name other users will know you by. Must be inclusively between ${config.MIN_HANDLE_NAME}-${config.MAX_HANDLE_NAME} characters long.`}
         variant='outlined'
         fullWidth
         value={handle}
-        error={handle.length === 0}
+        error={invalidHandle}
         onChange={(event) => { setHandle(event.target.value) }}
       />
       <TextField

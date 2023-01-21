@@ -5,6 +5,7 @@ import ReactImageUploading from 'react-images-uploading';
 import { Fragment } from 'react';
 import { toast } from 'react-toastify';
 import BootstrapTooltip from '../BootstrapTooltip';
+import { compressImage } from '../../helpers';
 
 const shakingKeyframes = keyframes`
   0% {
@@ -23,11 +24,13 @@ export default function ImageUploader ({ image, onChange }) {
   return (
     <ReactImageUploading
       value={image}
-      onChange={onChange}
-      onError={(errors) => {
-        if (errors.acceptType) toast.error('File type not accepted. Must be jpg, png or gif.');
+      onChange={(newImage) => {
+        (newImage.at(0)?.dataURL) ? compressImage(newImage.at(0)?.file, onChange) : onChange(newImage);
       }}
-      acceptType={['jpg', 'gif', 'png']}
+      onError={(errors) => {
+        if (errors.acceptType) toast.error('File type not accepted. Must be jpg or png.');
+      }}
+      acceptType={['jpg', 'png']}
     >
       {({
         imageList,
@@ -54,14 +57,16 @@ export default function ImageUploader ({ image, onChange }) {
             </IconButton>
           </BootstrapTooltip>
           {(imageList.length !== 0) && imageList.map((imageItem, index) => (
-            <IconButton key={`uploaded-img-${index}`} onClick={() => { onImageRemove(index) }} sx={{ borderRadius: 0, height: '42px', width: '42px' }}>
-              <Box
-                alt={`Uploaded-${index}`}
-                component='img'
-                src={imageItem.dataURL} 
-                sx={{ maxHeight: '100%', maxWidth: '100%' }}
-              />
-            </IconButton>
+            <BootstrapTooltip title='Delete Image' placement='top'>
+              <IconButton key={`uploaded-img-${index}`} onClick={() => { onImageRemove(index) }} sx={{ borderRadius: 0, height: '51px', width: '51px' }}>
+                <Box
+                  alt={`Uploaded-${index}`}
+                  component='img'
+                  src={imageItem.dataURL} 
+                  sx={{ maxHeight: '100%', maxWidth: '100%' }}
+                />
+              </IconButton>
+            </BootstrapTooltip>
           ))}
         </Fragment>
       )}

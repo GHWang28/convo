@@ -1,5 +1,6 @@
 import moment from "moment/moment"
 import { toast } from "react-toastify";
+import Compressor from 'compressorjs';
 
 /**
  * Generates a random integer between min and max inclusively
@@ -30,6 +31,41 @@ export function convertEpochToDate (epoch, short = true) {
  */
 export function parseRGB (RGBString) {
   return RGBString.replace(/[^\d,]/g, '').split(',');
+}
+
+export function calcHue (RGBString) {
+  const [r, g, b] = parseRGB(RGBString).map((value) => ( value / 255 ));
+  const maxValue = Math.max(r, g, b);
+  const minValue = Math.min(r, g, b);
+  let hue = 0;
+
+  if (r === maxValue) {
+    hue = ((g - b) / (maxValue - minValue));
+  } else if (g === maxValue) {
+    hue = (2.0 + (b - r) / (maxValue - minValue));
+  } else {
+    hue = (4.0 + (r - g) / (maxValue - minValue));
+  }
+  hue *= 60;
+
+  return (hue < 0) ? (hue + 360) : hue;
+}
+
+export function compressImage (imageFile, setImage) {
+  if (!imageFile) return;
+
+  new Compressor(imageFile, {
+    quality: 0.1,
+    success(result) {
+      convertImgToURL(result)
+        .then((compressedURL) => {
+          setImage([{ dataURL: compressedURL }])
+        })
+    },
+    error(err) {
+      toast.error(`Image compression failed: ${err.message}`);
+    },
+  })
 }
 
 export function getTextColor (bgRGBstring) {

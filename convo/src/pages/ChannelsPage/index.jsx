@@ -13,6 +13,7 @@ import ChannelLeaveModal from '../../components/Modal/ChannelLeaveModal';
 import ChannelMemberModal from '../../components/Modal/ChannelMemberModal';
 import MOTDModal from '../../components/Modal/MOTDModal';
 import MessageDeleteModal from '../../components/Modal/MessageDeleteModal';
+import UserModal from '../../components/Modal/UserModal';
 
 export default function ChannelsPage () {
 
@@ -29,6 +30,7 @@ export default function ChannelsPage () {
       <ChannelSearchModal />
       <ChannelInfoModal />
       <ChannelEditModal />
+      <UserModal />
       <Box
         sx={{
           width: '100vw',

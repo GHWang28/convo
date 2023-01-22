@@ -1,11 +1,12 @@
 import React from 'react';
-import { Avatar, Box, Grid, TextField, Typography } from '@mui/material';
+import { Box, Grid, TextField, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchIcon from '@mui/icons-material/Search';
 import ButtonCreateChannel from '../../../components/ButtonCreateChannel';
 import ButtonLogOut from '../../../components/ButtonLogOut';
 import ListItemChannel from '../../../components/ListItemChannel';
 import { setShowChannelSearchModal } from '../../../redux/actions';
+import ProfilePic from '../../../components/ProfilePic';
 
 export default function ChannelTrayContent ({ height }) {
   const userData = useSelector(state => state.loggedInUserData);
@@ -66,7 +67,7 @@ export default function ChannelTrayContent ({ height }) {
           p: 2
         }}
       >
-        {channelIdList.length && channelIdList.map((cid) => (
+        {Boolean(channelIdList.length) && channelIdList.map((cid) => (
           <ListItemChannel key={cid} cid={cid} showPressed />
         ))}
       </Box>
@@ -83,13 +84,11 @@ export default function ChannelTrayContent ({ height }) {
         }}
       >
         <Grid item xs={3}>
-          <Avatar
-            sx={{
-              ml: 2
-            }}
+          <ProfilePic
+            sx={{ ml: 2 }}
+            uid={userData?.uid}
             alt={userData?.handle}
-            title={userData?.handle}
-            src={userData?.profilePic || `${process.env.PUBLIC_URL}/images/default-dp-white.svg`}
+            src={userData?.profilePic}
           />
         </Grid>
         <Grid item xs={7}>

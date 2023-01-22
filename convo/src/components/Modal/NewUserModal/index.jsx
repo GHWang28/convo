@@ -1,5 +1,5 @@
-import { Avatar, Badge, badgeClasses, Box, Button, Collapse, IconButton, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React, { Fragment, useState } from 'react';
+import { Badge, badgeClasses, Box, Button, Collapse, IconButton, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect } from 'react';
 import ReactImageUploading from 'react-images-uploading';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,6 +14,7 @@ import { recordNewUser } from '../../../firebase/database';
 import { useNavigate } from 'react-router';
 import { compressImage } from '../../../helpers';
 import config from '../../../config.json';
+import ProfilePic from '../../ProfilePic';
 
 export default function NewUserModal () {
   const dispatch = useDispatch();
@@ -22,9 +23,9 @@ export default function NewUserModal () {
   const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm'));
   const newUserData = useSelector(state => state.newUserModal);
   const [handle, setHandle] = useState('');
-  const invalidHandle = !(handle.length >= config.MIN_HANDLE_NAME && handle.length <= config.MAX_HANDLE_NAME);
   const [bio, setBio] = useState('');
   const [profilePic, setProfilePic] = useState([]);
+  const invalidHandle = !(handle.length >= config.MIN_HANDLE_NAME && handle.length <= config.MAX_HANDLE_NAME);
 
   const onClose = () => {
     auth.signOut();
@@ -42,7 +43,7 @@ export default function NewUserModal () {
     }
     recordNewUser({
       handle,
-      bio: '',
+      bio,
       profilePic: profilePic?.at(0)?.dataURL || '',
       uid: newUserData?.uid
     }).then(() => {
@@ -136,11 +137,10 @@ export default function NewUserModal () {
                   height: '0px',
                 } }}
               >
-                <Avatar
+                <ProfilePic
                   {...dragProps}
                   alt={handle || 'You'}
-                  title={handle || 'You'}
-                  src={imageList?.at(0)?.dataURL || `${process.env.PUBLIC_URL}/images/default-dp-white.svg`}
+                  src={imageList?.at(0)?.dataURL}
                   sx={{ ...imageSize, bgcolor: 'mainColorNormal' }}
                 />
               </Badge>

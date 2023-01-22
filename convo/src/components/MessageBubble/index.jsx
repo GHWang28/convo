@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Avatar, Box, CircularProgress, Collapse, IconButton, Link, TextField, Typography, useMediaQuery } from '@mui/material';
+import { Box, CircularProgress, Collapse, IconButton, Link, TextField, Typography, useMediaQuery } from '@mui/material';
 import Linkify from 'linkify-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { editMessage, getUser, isUrlToImage } from '../../firebase/database';
@@ -12,6 +12,7 @@ import MessageOptions from './MessageOptions';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import { convertEpochToDate } from '../../helpers';
+import ProfilePic from '../ProfilePic';
 
 function padding (smallMq, isStart) {
   if (isStart) return 1;
@@ -38,7 +39,7 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
 
   const editedTimestamp = (messageData?.timestampEdit) ? (
     <Typography component='span' fontSize={9} fontStyle='italic' color='secondary' mb={0.5} noWrap>
-      {` [ Edited on ${convertEpochToDate(messageData?.timestampEdit?.seconds)} ]`}
+      {` [ Edited on ${convertEpochToDate(messageData?.timestamp?.seconds || messageData?.timestamp)} ]`}
     </Typography>
   ) : (
     null
@@ -58,12 +59,7 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
       }}
     >
       {(isStart) && (
-        <Avatar
-          alt={sender?.handle}
-          title={sender?.handle}
-          src={sender?.profilePic || `${process.env.PUBLIC_URL}/images/default-dp-white.svg`}
-          sx={{ width: (smallMq) ? 40 : 32, height: (smallMq) ? 40 : 32, mt: (!smallMq) && 1 }}
-        />
+        <ProfilePic uid={sender?.uid} alt={sender?.handle} src={sender?.profilePic} sx={{ width: (smallMq) ? 40 : 32, height: (smallMq) ? 40 : 32, mt: (!smallMq) && 1 }}/>
       )}
       {/* Message Box */}
       <Box
@@ -71,16 +67,16 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
           bgcolor: (hover) ? 'mainColorSlightLight' : 'mainColorLight',
           position: 'relative',
           width: '100%',
-          ml: (!viewerIsSender) && 2,
-          mr: (viewerIsSender) && 2,
-          pt: (isStart) && 1,
-          pb: (isEnd) && 1,
-          px: 2,
           borderTopLeftRadius: (isStart) && '15px',
           borderTopRightRadius: (isStart) && '15px',
           borderBottomLeftRadius: (isEnd) && '15px',
           borderBottomRightRadius: (isEnd) && '15px'
         }}
+        ml={(!viewerIsSender) && 2}
+        mr={(viewerIsSender) && 2}
+        pt={(isStart) && 1}
+        pb={(isEnd) && 1}
+        px={2}
         onMouseEnter={() => { setHover(true) }}
         onMouseLeave={() => { setHover(false) }}
       >

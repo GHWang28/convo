@@ -88,7 +88,10 @@ export function setShowChannelInfoModal (boolean, channelData = {}) {
   
   return {
     type: 'CHANNEL_INFO_MODAL_SHOW',
-    value: {...channelData}
+    value: {
+      ...channelData,
+      dateCreated: channelData?.dateCreated?.seconds,
+    }
   }
 }
 
@@ -117,6 +120,13 @@ export function setShowNewUserModal (newUser = {}) {
   return {
     type: 'NEW_USER_MODAL',
     value: { ...newUser }
+  }
+}
+
+export function setShowUserModal (uid) {
+  return {
+    type: 'USER_MODAL',
+    value: uid
   }
 }
 

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Box, Chip, Collapse, Divider } from '@mui/material';
+import { Box, Chip, Collapse, Divider } from '@mui/material';
 import { getUser } from '../../firebase/database';
 import config from '../../config.json';
 import { parseRGB } from '../../helpers';
 import { useSelector } from 'react-redux';
 import EditIcon from '@mui/icons-material/Edit';
+import ProfilePic from '../ProfilePic';
 
 export default function NotificationBubble ({ notificationData, color }) {
   const [sender, setSender] = useState(null);
@@ -18,7 +19,7 @@ export default function NotificationBubble ({ notificationData, color }) {
       })
   }, [notificationData?.uid]);
 
-  const { label, icon, avatar } = generateNotificationMessage(notificationData.nid, sender?.handle, sender?.profilePic);
+  const { label, icon, avatar } = generateNotificationMessage(notificationData.nid, sender);
 
   return (
     <Collapse in={channelNotificationToggle}>
@@ -47,20 +48,20 @@ export default function NotificationBubble ({ notificationData, color }) {
   )
 }
 
-function generateNotificationMessage (nid, handle, profilePic) {
-  const avatarProps = { alt: handle, title: handle, src: profilePic || `${process.env.PUBLIC_URL}/images/default-dp-white.svg` }
+function generateNotificationMessage (nid, sender) {
+  const avatarProps = { alt: sender?.handle, src: sender?.profilePic, uid: sender?.uid };
   switch (nid) {
     case config.CHANNEL_EDIT_NID: return {
-      label: `${handle} edited the Channel settings.`,
+      label: `${sender?.handle} edited the Channel settings.`,
       icon: <EditIcon />
     }
     case config.CHANNEL_JOIN_NID: return {
-      label: `${handle} joined the Channel.`,
-      avatar: <Avatar {...avatarProps}/>
+      label: `${sender?.handle} joined the Channel.`,
+      avatar: <ProfilePic {...avatarProps}/>
     }
     case config.CHANNEL_LEAVE_NID: return {
-      label: `${handle} left the Channel.`,
-      avatar: <Avatar {...avatarProps} sx={{ filter: 'grayscale(1)' }}/>
+      label: `${sender?.handle} left the Channel.`,
+      avatar: <ProfilePic {...avatarProps} sx={{ filter: 'grayscale(1)' }}/>
     }
     default: return {
       label: 'Unrecognised Channel Announcement.',

@@ -78,13 +78,15 @@ export default function MessageOptions ({ position, isSender, color = 'whitesmok
         {({ onClose }) => (
           <Picker
             theme='dark'
+            skinTonePosition='search'
             onEmojiSelect={(emojiData) => {
               postDelMessageReact(
                 messageData?.cid,
                 messageData?.mid,
                 userData?.uid,
-                emojiData?.id,
-                Boolean(!messageData?.reactions?.[emojiData?.id]?.[userData?.uid])
+                emojiData?.shortcodes,
+                // Checking if the user has reacted before
+                Boolean(!messageData?.reactions?.[emojiData?.shortcodes]?.[userData?.uid])
               );
               onClose();
             }}

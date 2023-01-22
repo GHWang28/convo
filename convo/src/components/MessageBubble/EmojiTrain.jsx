@@ -105,7 +105,7 @@ function EmojiChip ({ reactionData, rid, cid, mid, viewerUID, color, interactabl
               bgcolor: (reactionData?.[viewerUID]) ? `rgba(${r},${g},${b},0.7)` : `rgba(${r},${g},${b},0.3)`
             }
           }}
-          icon={<em-emoji id={rid} />}
+          icon={<em-emoji shortcodes={rid} />}
           label={totalReacts}
           onClick={onClick}
         />

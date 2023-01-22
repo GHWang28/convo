@@ -35,7 +35,6 @@ export default function App() {
       mainColorLight: 'rgb(54, 57, 63)',
       highlightColor: 'rgba(255, 255, 255, 0.1)',
       contrastColor: 'whitesmoke',
-      iconColor: 'whitesmoke',
       mode: 'dark',
     },
     typography: {

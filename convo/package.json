@@ -1,6 +1,6 @@
 {
   "name": "convo",
-  "version": "0.0.1",
+  "version": "0.5.1",
   "homepage": "https://GHWang28.github.io/convo",
   "private": true,
   "dependencies": {
@@ -32,6 +32,7 @@
     "react-router-dom": "^6.6.1",
     "react-scripts": "5.0.1",
     "react-spring": "^9.5.5",
+    "react-swipeable": "^7.0.0",
     "react-toastify": "^9.1.1",
     "react-type-animation": "^2.1.2",
     "use-local-storage": "^2.3.6",

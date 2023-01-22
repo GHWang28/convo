@@ -1,8 +1,9 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Backdrop, Box, Collapse, useMediaQuery } from '@mui/material';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChannelTrayContent from './ChannelTrayContent';
+import { useSwipeable } from 'react-swipeable';
 
 export default function ChannelTray () {
   const [showChannelTray, setShowChannelTray] = useState(true);
@@ -12,13 +13,23 @@ export default function ChannelTray () {
     setShowChannelTray(!showChannelTray);
   }
 
+  const { ref: documentRef } = useSwipeable({
+    onSwipedRight: () => { setShowChannelTray(true) },
+    onSwipedLeft: () => { setShowChannelTray(false) }
+  });
+
+  useEffect(() => {
+    // Adds swipeable to the document
+    documentRef(document);
+  }, [documentRef]);
+
   const height = (mediumMq) ? '100%' : '100vh';
 
   return (
     <Fragment>
-      <Box sx={{ position: (mediumMq) ? 'static' : 'absolute', display: 'flex', top: 0 }}>
+      <Box sx={{ position: (mediumMq) ? 'static' : 'absolute', display: 'flex', top: 0, zIndex: 4 }}>
         {/* Info with tray content */}
-        <Collapse in={showChannelTray} orientation='horizontal' sx={{ zIndex: 2 }}>
+        <Collapse in={showChannelTray} orientation='horizontal'>
           <ChannelTrayContent height={height} />
         </Collapse>
 
@@ -36,16 +47,15 @@ export default function ChannelTray () {
               justifyContent: 'center',
               alignItems: 'center',
               boxShadow: '0 0 30px rgba(0,0,0,1)',
-              clipPath: 'inset(0px -30px 0px 0px)',
-              zIndex: 2
+              clipPath: 'inset(0px -30px 0px 0px)'
             }}
             onClick={onToggleTray}
           >
             <ArrowRightIcon
               sx={{
-                color: 'iconColor',
+                color: 'contrastColor',
                 rotate: (showChannelTray) ? '-180deg' : '0deg',
-                transition: 'rotate, 0.25s ease-in-out'
+                transition: 'rotate 0.25s ease-in-out'
               }}
               fontSize='large'
             />
@@ -62,13 +72,13 @@ export default function ChannelTray () {
             }}
             onClick={onToggleTray}
           >
-            <MenuIcon sx={{ color: 'iconColor', height: '100%', width: '100%' }}/>
+            <MenuIcon sx={{ color: 'contrastColor', height: '100%', width: '100%' }}/>
           </Box>
         )}
       </Box>
       <Backdrop
         open={!mediumMq && showChannelTray}
-        sx={{ zIndex: 1 }}
+        sx={{ zIndex: 2 }}
         onClick={onToggleTray}
       />
     </Fragment>

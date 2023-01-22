@@ -13,7 +13,7 @@ export default function VersionNumber ({ position = 'absolute' }) {
       fontWeight='bold'
       onMouseEnter={() => { setHover(true) }}
       onMouseLeave={() => { setHover(false) }}
-      sx={{ position, bottom: '5px', left: '5px', opacity: (hover) ? 1.0 : 0.5, transition: 'opacity 0.5s ease-in-out' }}
+      sx={{ position, userSelect: 'none', bottom: '5px', left: '5px', opacity: (hover) ? 1.0 : 0.5, transition: 'opacity 0.5s ease-in-out' }}
     >
       {`v${packageJSON.version}`}
     </Typography>

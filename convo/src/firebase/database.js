@@ -221,11 +221,8 @@ export function postDelMessageReact (cid, mid, uid, rid, post = true) {
 }
 
 export function isUrlToImage (url) {
-  const img = new Image();
-  img.src = url;
-
-  return new Promise((resolve) => {
-    img.onerror = () => resolve(false);
-    img.onload = () => resolve(true);
-  });
+  return fetch(url, { method: 'HEAD' })
+    .then((response) => (
+      response.headers.get('Content-Type').startsWith('image')
+    ))
 }

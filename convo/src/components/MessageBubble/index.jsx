@@ -38,7 +38,7 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
   }, [messageData?.uid, messageData?.text]);
 
   const editedTimestamp = (messageData?.timestampEdit) ? (
-    <BootstrapTooltip title={convertEpochToDate(messageData?.timestamp?.seconds || messageData?.timestamp, false)} placement='top'>
+    <BootstrapTooltip title={convertEpochToDate(messageData?.timestampEdit?.seconds || messageData?.timestampEdit, false)} placement='top'>
       <Typography component='span' fontSize={10} fontStyle='italic' color='secondary' sx={{ userSelect: 'none' }} mb={0.5} noWrap>
         {' [Edited]'}
       </Typography>

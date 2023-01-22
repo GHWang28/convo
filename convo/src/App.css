@@ -9,6 +9,8 @@ body {
   background-color: rgb(32,32,32);
 }
 
+/* Scrollbar styling */
+
 ::-webkit-scrollbar-corner {
   background: rgba(0, 0, 0, 0.5);
 }
@@ -17,6 +19,13 @@ body {
   opacity: 0.5;
   width: 10px;
   height: 10px;
+}
+
+@media (orientation: portrait) {
+  ::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+  }
 }
 
 /* Track of scrollbar. Where the thumb can move to */

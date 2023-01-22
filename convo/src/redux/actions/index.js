@@ -135,6 +135,7 @@ export const setImageZoom = (src) => {
 }
 
 export function setShowChannelNotifications (boolean) {
+  localStorage.setItem('showNotification', boolean);
   return {
     type: 'CHANNEL_NOTIFICTION',
     value: boolean

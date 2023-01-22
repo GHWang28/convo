@@ -38,7 +38,7 @@ export default function NotificationBubble ({ notificationData, color }) {
               bgcolor: `rgba(${colorParse[0]},${colorParse[1]},${colorParse[2]},0.25)`,
               color: 'whitesmoke',
               border: `1px solid ${color}`,
-              fontSize: 'min(2.5vw, 15px)'
+              fontSize: 'min(2.6vw, 14px)'
             }}
           />
         </Divider>
@@ -62,6 +62,8 @@ function generateNotificationMessage (nid, handle, profilePic) {
       label: `${handle} left the Channel.`,
       avatar: <Avatar {...avatarProps} sx={{ filter: 'grayscale(1)' }}/>
     }
-    default: return 'Unrecognised channel activity.'
+    default: return {
+      label: 'Unrecognised Channel Announcement.',
+    }
   }
 }

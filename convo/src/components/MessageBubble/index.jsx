@@ -38,9 +38,11 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
   }, [messageData?.uid, messageData?.text]);
 
   const editedTimestamp = (messageData?.timestampEdit) ? (
-    <Typography component='span' fontSize={9} fontStyle='italic' color='secondary' mb={0.5} noWrap>
-      {` [ Edited on ${convertEpochToDate(messageData?.timestamp?.seconds || messageData?.timestamp)} ]`}
-    </Typography>
+    <BootstrapTooltip title={convertEpochToDate(messageData?.timestamp?.seconds || messageData?.timestamp, false)} placement='top'>
+      <Typography component='span' fontSize={10} fontStyle='italic' color='secondary' sx={{ userSelect: 'none' }} mb={0.5} noWrap>
+        {' [Edited]'}
+      </Typography>
+    </BootstrapTooltip>
   ) : (
     null
   )
@@ -239,11 +241,14 @@ function EditMode ({ messageData, setEdit, color }) {
     }
   }
   const onConfirm = () => {
-    if (message === messageData?.text) {
+    if (message.trim() === messageData?.text?.trim()) {
       onCancel();
       return;
     };
-    if (message.length === 0) dispatch(setShowMessageDeleteModal({ ...messageData, color }));
+    if (message.length === 0) {
+      dispatch(setShowMessageDeleteModal({ ...messageData, color }));
+      return;
+    };
     editMessage(message, messageData?.cid, messageData?.mid).then(onCancel);
   }
   const onCancel = () => {

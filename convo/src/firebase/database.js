@@ -20,7 +20,7 @@ import { firebaseDatabase } from '.';
 import config from '../config.json';
 
 export function recordNewUser (newUserData) {
-  return setDoc(doc(firebaseDatabase, 'users', newUserData.uid), newUserData)
+  return setDoc(doc(firebaseDatabase, 'users', newUserData.uid), newUserData, { merge: true })
     .catch((err) => { toast.error(err?.message) });
 }
 

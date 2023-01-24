@@ -1,6 +1,6 @@
 {
   "name": "convo",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "homepage": "https://GHWang28.github.io/convo",
   "private": true,
   "dependencies": {
@@ -15,7 +15,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "compressorjs": "^1.1.1",
-    "emoji-mart": "^5.5.1",
+    "emoji-mart": "^5.5.2",
     "firebase": "^9.15.0",
     "gif-picker-react": "^1.1.0",
     "linkify-react": "^4.1.0",

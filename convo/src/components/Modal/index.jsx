@@ -1,9 +1,9 @@
 import React, { forwardRef } from 'react';
-import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, Slide, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, Typography, Zoom } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 const Transition = forwardRef((props, ref) => (
-  <Slide direction='down' ref={ref} {...props} />
+  <Zoom ref={ref} {...props} />
 ));
 
 export default function Modal ({

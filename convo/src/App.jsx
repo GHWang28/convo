@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import { Route, Routes, useNavigate } from 'react-router';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useDispatch } from 'react-redux';
-import { setLogUserIn, setShowNewUserModal } from './redux/actions';
+import { setLogUserIn, setShowEditUserModal } from './redux/actions';
 import { auth, firebaseDatabase } from './firebase';
 import { getUser } from './firebase/database';
 import { doc, onSnapshot } from 'firebase/firestore';
@@ -14,6 +14,10 @@ import ChannelsPage from './pages/ChannelsPage';
 import LandingPage from './pages/LandingPage';
 import LoadingCover from './components/LoadingCover';
 import ImageZoomer from './components/ImageZoomer';
+import data from '@emoji-mart/data'
+import { init } from 'emoji-mart'
+
+init({ data });
 
 export default function App() {
   const theme = createTheme({
@@ -64,7 +68,12 @@ export default function App() {
       navigate('/');
     } else {
       getUser(user.uid, true).then((userData) => {
-        (userData) ? navigate('/channels') : dispatch(setShowNewUserModal({ uid: user.uid, displayName: user.displayName, photoURL: user.photoURL }));
+        (userData) ? navigate('/channels') : dispatch(setShowEditUserModal({
+          uid: user.uid,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          creationTime: user?.metadata?.creationTime
+        }));
       })
     }
   }});

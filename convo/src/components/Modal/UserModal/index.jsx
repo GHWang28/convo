@@ -1,23 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { setShowUserModal } from '../../../redux/actions';
-import { getUser } from '../../../firebase/database';
+import { setShowEditUserModal, setShowUserModal } from '../../../redux/actions';
+import EditIcon from '@mui/icons-material/Edit';
 import Modal from '..';
 import ProfilePic from '../../ProfilePic';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { firebaseDatabase } from '../../../firebase';
+import BootstrapTooltip from '../../BootstrapTooltip';
+import { convertEpochToDate } from '../../../helpers';
 
 export default function UserModal () {
   const dispatch = useDispatch();
   const userUID = useSelector(state => state.userModal);
+  const viewerUID = useSelector(state => state.loggedInUserData)?.uid;
   const [userData, setUserData] = useState(null);
   const theme = useTheme();
 
   useEffect(() => {
     if (!userUID) return;
-    getUser(userUID, true)
-      .then((data) => {
-        setUserData({ ...data });
-      })
+
+    return onSnapshot(doc(firebaseDatabase, 'users', userUID), (doc) => {
+      setUserData({ ...doc.data() });
+    });
   }, [userUID]);
 
   const onClose = () => {
@@ -31,9 +36,24 @@ export default function UserModal () {
       open={Boolean(userData) && Boolean(userUID)}
       handleClose={onClose}
       title={`${userData?.handle}`}
-      subtitle='Profile'
+      subtitle={`Joined on ${convertEpochToDate(userData?.creationTime?.seconds)}`}
       fullWidth
     >
+      {(viewerUID === userUID) && (
+        <BootstrapTooltip title='Edit your Profile' placement='top'>
+          <IconButton
+            sx={{ position: 'absolute', top: 20, right: 20 }}
+            onClick={() => {
+              dispatch(setShowEditUserModal({
+                uid: userData?.uid,
+                displayName: userData?.handle,
+                photoURL: userData?.profilePic
+              }, true))
+            }}>
+            <EditIcon />
+          </IconButton>
+        </BootstrapTooltip>
+      )}
       <Box mb={3} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
         <ProfilePic
           alt={userData?.handle || 'You'}

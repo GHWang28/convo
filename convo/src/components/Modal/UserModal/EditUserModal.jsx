@@ -1,11 +1,11 @@
 import React, { Fragment, useState } from 'react';
-import { Badge, badgeClasses, Box, Button, Collapse, IconButton, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Alert, Badge, badgeClasses, Box, Button, Collapse, IconButton, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect } from 'react';
 import ReactImageUploading from 'react-images-uploading';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Modal from '..';
-import { setShowNewUserModal } from '../../../redux/actions';
+import { setShowEditUserModal } from '../../../redux/actions';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BootstrapTooltip from '../../BootstrapTooltip';
@@ -16,46 +16,56 @@ import { compressImage } from '../../../helpers';
 import config from '../../../config.json';
 import ProfilePic from '../../ProfilePic';
 
-export default function NewUserModal () {
+export default function EditUserModal () {
+  const newUserData = useSelector(state => state.editUserModal);
+  const [newUserDataState, setNewUserDataState] = useState(null);
+  const editMode = Boolean(newUserDataState?.editMode);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
   const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm'));
-  const newUserData = useSelector(state => state.newUserModal);
   const [handle, setHandle] = useState('');
   const [bio, setBio] = useState('');
   const [profilePic, setProfilePic] = useState([]);
   const invalidHandle = !(handle.length >= config.MIN_HANDLE_NAME && handle.length <= config.MAX_HANDLE_NAME);
 
   const onClose = () => {
-    auth.signOut();
-    dispatch(setShowNewUserModal(null));
+    if (!editMode) auth.signOut();
+    dispatch(setShowEditUserModal(null));
+  }
+  const onConfirm = () => {
+    if (invalidHandle) {
+      toast.error(`Your handle name must be inclusively between ${config.MIN_HANDLE_NAME} to ${config.MAX_HANDLE_NAME} characters long.`)
+      return;
+    }
+
+    let userDataPackage = {
+      handle,
+      bio,
+      profilePic: profilePic?.at(0)?.dataURL || '',
+      uid: newUserDataState?.uid
+    }
+    if (newUserDataState?.creationTime) userDataPackage.creationTime = new Date(newUserDataState?.creationTime);
+
+    recordNewUser(userDataPackage).then(() => {
+      dispatch(setShowEditUserModal(null));
+      if (!editMode) navigate('/channels');
+    })
   }
 
   const onImageChange = (newImage) => {
     (newImage.at(0)?.dataURL) ? compressImage(newImage.at(0)?.file, setProfilePic) : setProfilePic(newImage);
   }
 
-  const onConfirm = () => {
-    if (invalidHandle) {
-      toast.error(`Your handle name must be inclusively between ${config.MIN_HANDLE_NAME} to ${config.MAX_HANDLE_NAME} characters long.`)
-      return;
-    }
-    recordNewUser({
-      handle,
-      bio,
-      profilePic: profilePic?.at(0)?.dataURL || '',
-      uid: newUserData?.uid
-    }).then(() => {
-      dispatch(setShowNewUserModal(null));
-      navigate('/channels');
-    })
-  }
-
   useEffect(() => {
-    setHandle(newUserData?.displayName || '');
-    setProfilePic((newUserData?.photoURL) ? [{ dataURL: newUserData?.photoURL }] : '');
-  }, [newUserData]);
+    setHandle(newUserDataState?.displayName || '');
+    setProfilePic((newUserDataState?.photoURL) ? [{ dataURL: newUserDataState?.photoURL }] : '');
+  }, [newUserDataState]);
+  useEffect(() => {
+    if (newUserData === null) return;
+    setNewUserDataState({...newUserData});
+  }, [newUserData])
 
   const imageSize = { height: '150px', width: '150px' };
 
@@ -64,12 +74,12 @@ export default function NewUserModal () {
       open={Boolean(newUserData) && Boolean(auth.currentUser)}
       handleClose={onClose}
       closeColor='error'
-      closeTitle='Sign out'
+      closeTitle={(editMode) ? 'Close' : 'Sign out'}
       handleConfirm={onConfirm}
       confirmColor='success'
-      confirmTitle='Create Account'
-      title='Greetings, New User!'
-      subtitle='Set up your new account'
+      confirmTitle={(editMode) ? 'Save' : 'Create Account'}
+      title={(editMode) ? 'Edit your Profile' : 'Greetings, New User!'}
+      subtitle={(editMode) ? 'Re-identify yourself' : 'Set up your new account'}
       fullWidth
       fullScreen={!smallMq}
     >
@@ -157,7 +167,7 @@ export default function NewUserModal () {
         </Typography>
       </Box>
       <TextField
-        sx={{ mt: 3 }}
+        sx={{ mt: 1 }}
         InputProps={{ sx: { bgcolor: 'mainColorNormal' } }}
         label='Handle Name *'
         helperText={`The name other users will know you by. Must be inclusively between ${config.MIN_HANDLE_NAME}-${config.MAX_HANDLE_NAME} characters long.`}
@@ -179,6 +189,11 @@ export default function NewUserModal () {
         multiline
         maxRows={5}
       />
+      {(editMode) && (
+        <Alert severity='warning' sx={{ mt: 3 }}>
+          {'Changes may not reflect immediately.'}
+        </Alert>
+      )}
     </Modal>
   )
 }

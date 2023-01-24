@@ -11,9 +11,9 @@ import fetchingReducer from './fetchingReducer';
 import loggedInUserDataReducer from './loggedInUserDataReducer';
 import logOutModalReducer from './logOutModalReducer';
 import messageDeleteModalReducer from './messageDeleteModalReducer';
-import newUserModalReducer from './newUserModalReducer';
 import setImageZoomReducer from './setImageZoomReducer';
 import userModalReducer from './userModalReducer';
+import editUserModalReducer from './editUserModalReducer';
 
 /**
  * Combines reducers for Redux
@@ -30,7 +30,7 @@ const combinedReducer = combineReducers({
   channelSearchModal: channelSearchModalReducer,
   channelInfoModal: channelInfoModalReducer,
   channelEditModal: channelEditModalReducer,
-  newUserModal: newUserModalReducer,
+  editUserModal: editUserModalReducer,
   userModal: userModalReducer,
   imgZoom: setImageZoomReducer,
   fetching: fetchingReducer

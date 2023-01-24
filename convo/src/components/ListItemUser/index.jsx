@@ -3,9 +3,12 @@ import { Box, useTheme } from '@mui/material';
 import BootstrapTooltip from '../BootstrapTooltip';
 import TypographyTruncate from '../TypographyTruncate';
 import ProfilePic from '../ProfilePic';
+import { useDispatch } from 'react-redux';
+import { setShowUserModal } from '../../redux/actions';
 
 export default function ListItemUser ({ userData }) {
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   return (
     <BootstrapTooltip title={userData?.handle} placement='left'>
@@ -20,7 +23,7 @@ export default function ListItemUser ({ userData }) {
           cursor: 'pointer',
           '&:hover': { bgcolor: 'highlightColor' },
         }}
-        onClick={() => { alert('Work in Progress - Under construction') }}
+        onClick={() => { dispatch(setShowUserModal(userData?.uid)) }}
       >
         <Box
           sx={{
@@ -30,7 +33,7 @@ export default function ListItemUser ({ userData }) {
             gap: 2
           }}
         >
-          <ProfilePic uid={userData?.uid} alt={userData?.handle} src={userData?.profilePic} />
+          <ProfilePic alt={userData?.handle} src={userData?.profilePic} />
           <Box>
             <TypographyTruncate text={userData?.handle} width='100%' sx={{ fontWeight: 'bold' }}/>
             <TypographyTruncate text={'\xa0\xa0' + (userData?.bio || 'No Bio')} width='100%' sx={{ color: 'secondary.main' }}/>

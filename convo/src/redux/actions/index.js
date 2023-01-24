@@ -1,7 +1,10 @@
 export function setLogUserIn (userData) {
   return {
     type: 'LOG_USER_IN',
-    value: userData
+    value: {
+      ...userData,
+      creationTime: userData?.creationTime?.seconds
+    }
   }
 }
 
@@ -111,15 +114,15 @@ export function setShowMessageDeleteModal (messageData = {}) {
   }
 }
 
-export function setShowNewUserModal (newUser = {}) {
+export function setShowEditUserModal (newUser = {}, editMode = false) {
   if (!newUser) return {
-    type: 'NEW_USER_MODAL',
+    type: 'EDIT_USER_MODAL',
     value: null
   }
 
   return {
-    type: 'NEW_USER_MODAL',
-    value: { ...newUser }
+    type: 'EDIT_USER_MODAL',
+    value: { ...newUser, editMode }
   }
 }
 

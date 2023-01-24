@@ -36,9 +36,7 @@ export default function ChannelLeaveModal () {
       </Typography>
       {(!channelData?.publicMode) && (
         <Alert severity='warning' sx={{ mt: 2 }}>
-          <Typography>
-            {'If you leave a private server, you will need to be invited back in.'}
-          </Typography>
+          {'If you leave a private server, you will need to be invited back in.'}
         </Alert>
       )}
     </Modal>

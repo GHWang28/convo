@@ -14,6 +14,7 @@ export default function ProfilePic ({ uid, alt, src, sx, ...props }) {
   return (
     <BootstrapTooltip title={alt||'undefined'} placement='top'>
       <Avatar
+        role='button'
         alt={alt || 'undefined'}
         src={src || `${process.env.PUBLIC_URL}/images/default-dp-white.svg`}
         {...props}
@@ -24,6 +25,7 @@ export default function ProfilePic ({ uid, alt, src, sx, ...props }) {
               scale: '1.25'
             },
             cursor: 'pointer',
+            userSelect: 'none'
           },
           { ...sx }
         ]}

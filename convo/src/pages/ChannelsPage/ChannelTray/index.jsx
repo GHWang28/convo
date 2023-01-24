@@ -34,7 +34,7 @@ export default function ChannelTray () {
         </Collapse>
 
         {/* Tab */}
-        {(mediumMq) ? (
+        {(mediumMq) && (
           <Box
             role='button'
             sx={{
@@ -60,22 +60,24 @@ export default function ChannelTray () {
               fontSize='large'
             />
           </Box>
-        ) : (
-          <Box
-            mt='2vh'
-            sx={{
-              height: '40px',
-              width: '40px',
-              cursor: 'pointer',
-              bgcolor: 'mainColorLight',
-              zIndex: 2
-            }}
-            onClick={onToggleTray}
-          >
-            <MenuIcon sx={{ color: 'contrastColor', height: '100%', width: '100%' }}/>
-          </Box>
         )}
       </Box>
+      {(!mediumMq) && (
+        <Box
+          mt='2vh'
+          sx={{
+            top: 0,
+            position: 'absolute',
+            height: '40px',
+            width: '40px',
+            cursor: 'pointer',
+            zIndex: 2
+          }}
+          onClick={onToggleTray}
+        >
+          <MenuIcon sx={{ color: 'contrastColor', height: '100%', width: '100%' }}/>
+        </Box>
+      )}
       <Backdrop
         open={!mediumMq && showChannelTray}
         sx={{ zIndex: 2 }}

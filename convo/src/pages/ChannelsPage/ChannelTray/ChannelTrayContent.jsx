@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Grid, TextField, Typography } from '@mui/material';
+import { Box, Grid, TextField, Typography, useMediaQuery } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchIcon from '@mui/icons-material/Search';
 import ButtonCreateChannel from '../../../components/ButtonCreateChannel';
@@ -9,6 +9,7 @@ import { setShowChannelSearchModal } from '../../../redux/actions';
 import ProfilePic from '../../../components/ProfilePic';
 
 export default function ChannelTrayContent ({ height }) {
+  const mediumMq = useMediaQuery((theme) => theme.breakpoints.up('md'));
   const userData = useSelector(state => state.loggedInUserData);
   const dispatch = useDispatch();
 
@@ -16,13 +17,16 @@ export default function ChannelTrayContent ({ height }) {
 
   return (
     <Box
-      sx={{
-        height,
-        width: 'min(250px, calc(100vw - 40px))',
-        bgcolor: 'mainColorNormal',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
+      sx={[
+        (!mediumMq) && { pr: 1 },
+        {
+          height,
+          width: 'min(250px, calc(100vw - 40px))',
+          bgcolor: 'mainColorLight',
+          display: 'flex',
+          flexDirection: 'column'
+        }
+      ]}
     >
       {/* Header */}
       <Box
@@ -31,7 +35,6 @@ export default function ChannelTrayContent ({ height }) {
           width: '100%',
           boxShadow: '0 0 30px rgba(0,0,0,0.5)',
           clipPath: 'inset(0px 0px -30px 0px)',
-          bgcolor: 'mainColorLight',
           boxSizing: 'border-box',
         }}
       >
@@ -64,6 +67,7 @@ export default function ChannelTrayContent ({ height }) {
           overflowY: 'overlay',
           flexGrow: 1,
           boxSizing: 'border-box',
+          bgcolor: 'mainColorNormal',
           p: 2
         }}
       >
@@ -79,7 +83,6 @@ export default function ChannelTrayContent ({ height }) {
           clipPath: 'inset(-30px 0px 0px 0px)',
           width: '100%',
           height: '60px',
-          bgcolor: 'mainColorLight',
           alignItems: 'center'
         }}
       >

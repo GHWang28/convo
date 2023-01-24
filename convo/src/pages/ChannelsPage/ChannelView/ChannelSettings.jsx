@@ -9,7 +9,6 @@ import AnnouncementIcon from '@mui/icons-material/Announcement';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { useDispatch, useSelector } from 'react-redux';
 import { setShowChannelEditModal, setShowChannelLeaveModal, setShowChannelMemberModal, setShowChannelNotifications } from '../../../redux/actions';
-import { getArrayOfUserData } from '../../../firebase/database';
 
 export default function Settings ({ channelData }) {
   const dispatch = useDispatch();
@@ -27,10 +26,7 @@ export default function Settings ({ channelData }) {
       text: 'View Channel Members',
       icon: <PeopleAltIcon />,
       onClick: () => {
-        getArrayOfUserData(Object.keys(channelData?.cidToUid))
-          .then((result) => {
-            dispatch(setShowChannelMemberModal(result));
-          })
+        dispatch(setShowChannelMemberModal(Object.keys(channelData?.cidToUid)));
       }
     },
     {

@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '..';
 import SearchIcon from '@mui/icons-material/Search';
 import { setShowChannelMemberModal } from '../../../redux/actions';
 import { Box, IconButton, TextField, Typography, useMediaQuery } from '@mui/material';
 import ListItemUser from '../../ListItemUser';
+import { getArrayOfUserData } from '../../../firebase/database';
 
 export default function ChannelMemberModal () {
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState('');
   const [prevSearch, setPrevSearch] = useState('');
-  const userArray = useSelector(state => state.channelMemberModal);
+  const userIDArray = useSelector(state => state.channelMemberModal);
+  const [userArray, setUserArray] = useState([]);
   const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm'));
 
   const onSearch = () => {
@@ -19,8 +21,17 @@ export default function ChannelMemberModal () {
 
   const onClose = () => {
     setPrevSearch('');
-    dispatch(setShowChannelMemberModal([]))
+    dispatch(setShowChannelMemberModal(''));
   }
+  const onExited = () => {
+    setUserArray([]);
+  }
+
+  useEffect(() => {
+    if (!Boolean(userIDArray)) return;
+
+    getArrayOfUserData(userIDArray).then(setUserArray)
+  }, [userIDArray])
 
   const displayedUser = userArray.filter((userData) => (
     userData?.handle.toLowerCase().startsWith(prevSearch.toLowerCase())
@@ -28,9 +39,10 @@ export default function ChannelMemberModal () {
 
   return (
     <Modal
-      open={Boolean(userArray?.length)}
+      open={userIDArray.length > 0}
       title='Channel Members'
       handleClose={onClose}
+      onExited={onExited}
       fullWidth
       fullScreen={!smallMq}
     >

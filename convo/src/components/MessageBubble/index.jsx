@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Box, CircularProgress, Collapse, IconButton, Link, TextField, Typography, useMediaQuery } from '@mui/material';
-import Linkify from 'linkify-react';
+import { Box, CircularProgress, Collapse, IconButton, TextField, Typography, useMediaQuery } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { editMessage, getUser, isUrlToImage } from '../../firebase/database';
 import { setImageZoom, setShowMessageDeleteModal } from '../../redux/actions';
@@ -13,6 +12,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import { convertEpochToDate } from '../../helpers';
 import ProfilePic from '../ProfilePic';
+import LinkifyWrapper from '../LinkifyWrapper';
 
 function padding (smallMq, isStart) {
   if (isStart) return 1;
@@ -132,19 +132,9 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
                 fontStyle={(Boolean(messageData?.timestampEdit)) ? 'italic' : 'normal' }
                 sx={{ wordBreak: 'break-word' }}
               >
-                <Linkify
-                  options={{ render: ({ attributes, content }) => {
-                    // Adds links to text that are potentially links
-                    const { href, ...props } = attributes;
-                    return (
-                      <BootstrapTooltip title={`Go to external page.`} placement='top'>
-                        <Link href={href} target='_blank' {...props}>{content}</Link>
-                      </BootstrapTooltip>
-                    )
-                  }}}
-                >
+                <LinkifyWrapper>
                   {messageData?.text}
-                </Linkify>
+                </LinkifyWrapper>
                 {/* Timestamp */}
                 {(messageData?.text.length !== 0) && (
                   editedTimestamp

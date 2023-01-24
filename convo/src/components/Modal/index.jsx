@@ -1,5 +1,7 @@
 import React, { forwardRef } from 'react';
 import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, Typography, Zoom } from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
 
 const Transition = forwardRef((props, ref) => (
@@ -12,8 +14,11 @@ export default function Modal ({
   closeTitle = 'Close',
   confirmColor = 'primary',
   closeColor = 'secondary',
+  confirmIcon = <CheckIcon />,
+  closeIcon = <CloseIcon />,
   handleConfirm,
   handleClose,
+  onExited,
   title,
   subtitle,
   fullWidth = false,
@@ -25,18 +30,17 @@ export default function Modal ({
   return (
     <Dialog
       open={open}
+      TransitionProps={{ onExited }}
       TransitionComponent={Transition}
       onClose={handleClose}
       fullWidth={fullWidth}
       fullScreen={fullScreen}
       aria-labelledby='dialog-title'
       PaperProps={{ sx: [{ p: 2 }, (!fullScreen) && { borderRadius: '15px', border: '1px solid whitesmoke' }] }}
-      sx={{
-        backdropFilter: 'blur(3px)',
-      }}
+      sx={{ backdropFilter: 'blur(3px)' }}
     >
       <Typography id='dialog-title' variant='h4' align='center' mt={2}>{title}</Typography>
-      {(subtitle) && (
+      {(Boolean(subtitle)) && (
         <Typography variant='subtitle1' align='center'>
           {subtitle}
         </Typography> 
@@ -49,12 +53,12 @@ export default function Modal ({
       </DialogContent>
       <DialogActions>
         {(handleConfirm) && (
-          <Button onClick={handleConfirm} variant='contained' color={confirmColor}>
+          <Button startIcon={confirmIcon} onClick={handleConfirm} variant='contained' color={confirmColor}>
             {confirmTitle}
           </Button>
         )}
         {(handleClose) && (
-          <Button onClick={handleClose} variant='contained' color={closeColor}>
+          <Button startIcon={closeIcon} onClick={handleClose} variant='contained' color={closeColor}>
             {closeTitle}
           </Button>
         )}

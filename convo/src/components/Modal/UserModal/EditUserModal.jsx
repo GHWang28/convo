@@ -49,7 +49,7 @@ export default function EditUserModal () {
     if (newUserDataState?.creationTime) userDataPackage.creationTime = new Date(newUserDataState?.creationTime);
 
     recordNewUser(userDataPackage).then(() => {
-      dispatch(setShowEditUserModal(null));
+      onClose();
       if (!editMode) navigate('/channels');
     })
   }

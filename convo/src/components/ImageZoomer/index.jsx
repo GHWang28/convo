@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Box } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setImageZoom } from '../../redux/actions';
@@ -14,6 +14,8 @@ export default function ImageZoomer () {
     leave: { backgroundColor: 'rgba(0,0,0,0)', backdropFilter: 'blur(0px)', y: '32.5%', opacity: 0  },
   });
   const AnimatedBox = animated(Box);
+  
+  const onClose = useCallback(() => { dispatch(setImageZoom(null)); }, [dispatch]);
 
   useEffect(() => {
     const windowKeyPress = (event) => {
@@ -21,8 +23,22 @@ export default function ImageZoomer () {
     }
     window.addEventListener('keydown', windowKeyPress);
 
-    return () => { window.removeEventListener('keydown', windowKeyPress) };
-  }, [dispatch])
+    return () => {
+      window.removeEventListener('keydown', windowKeyPress);
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (src) {
+      window.history.pushState('image-zoom', document.title, window.location.href);
+      window.addEventListener('popstate', onClose);
+    } else {
+      window.removeEventListener('popstate', onClose);
+      if (window.history.state === 'image-zoom') {
+        window.history.back();
+      }
+    }
+  }, [src, onClose]);
 
   return transitions((style, itemSrc) => (
     itemSrc ?
@@ -44,7 +60,7 @@ export default function ImageZoomer () {
           pointerEvents: (!src) && 'none',
           zIndex: 1100,
         }}
-        onClick={() => { dispatch(setImageZoom(null)); }}
+        onClick={onClose}
       >
         <AnimatedBox
           component='img'

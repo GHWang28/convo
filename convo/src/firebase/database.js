@@ -18,9 +18,11 @@ import {
 import { toast } from 'react-toastify';
 import { firebaseDatabase } from '.';
 import config from '../config.json';
+import { genTag } from '../helpers';
 
 export function recordNewUser (newUserData) {
-  return setDoc(doc(firebaseDatabase, 'users', newUserData.uid), newUserData, { merge: true })
+  return setDoc(doc(firebaseDatabase, 'users', newUserData.uid), { ...newUserData, searchTerm: newUserData?.handle?.toUpperCase() }, { merge: true })
+    .then(() => { toast.success('Profile saved.') })
     .catch((err) => { toast.error(err?.message) });
 }
 
@@ -111,9 +113,11 @@ export function postNewChannel (name, description, theme, publicMode, uid) {
     docRef,
     {
       name,
+      searchTerm: name?.toUpperCase(),
       description,
       publicMode,
       theme,
+      tag: genTag(),
       iconIndex: Number(!publicMode),
       cid,
       dateCreated: serverTimestamp()
@@ -129,7 +133,7 @@ export function postNewChannel (name, description, theme, publicMode, uid) {
 }
 
 export function editChannel (newInfo, cid, uid) {
-  return setDoc(doc(firebaseDatabase, 'channels', cid), newInfo)
+  return setDoc(doc(firebaseDatabase, 'channels', cid), { ...newInfo, searchTerm: newInfo?.name?.toUpperCase() })
     .then(() => {
       return postMessageNotification(cid, uid, config.CHANNEL_EDIT_NID)
     }).then(() => {
@@ -144,15 +148,27 @@ export function editChannel (newInfo, cid, uid) {
  * @returns {Promise<QuerySnapshot<DocumentData>>}
  */
 export function searchChannel (searchTerm) {
-  const upperCaseTerm = searchTerm.toUpperCase();
-  const lowerCaseTerm = searchTerm.toLowerCase();
+  const searchTermUpper = searchTerm.toUpperCase();
 
   return getDocs(query(
     collection(firebaseDatabase, 'channels'),
-    orderBy('name'),
-    startAt(upperCaseTerm),
-    endAt(lowerCaseTerm + '\uf8ff'),
+    orderBy('searchTerm'),
+    startAt(searchTermUpper),
+    endAt(searchTermUpper + '\uf8ff'),
     where('publicMode', '==', true)
+  )).then((querySnapshot) => {
+    return querySnapshot.docs.map((doc) => (doc.data()));
+  })
+}
+
+export function searchUser (searchTerm) {
+  const searchTermUpper = searchTerm.toUpperCase();
+
+  return getDocs(query(
+    collection(firebaseDatabase, 'users'),
+    orderBy('searchTerm'),
+    startAt(searchTermUpper),
+    endAt(searchTermUpper + '\uf8ff'),
   )).then((querySnapshot) => {
     return querySnapshot.docs.map((doc) => (doc.data()));
   })

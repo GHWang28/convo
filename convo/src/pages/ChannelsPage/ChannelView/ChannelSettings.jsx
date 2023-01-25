@@ -8,7 +8,7 @@ import ButtonMenu from '../../../components/ButtonMenu';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { useDispatch, useSelector } from 'react-redux';
-import { setShowChannelEditModal, setShowChannelLeaveModal, setShowChannelMemberModal, setShowChannelNotifications } from '../../../redux/actions';
+import { setShowChannelEditModal, setShowChannelInviteModal, setShowChannelLeaveModal, setShowChannelMemberModal, setShowChannelNotifications } from '../../../redux/actions';
 
 export default function Settings ({ channelData }) {
   const dispatch = useDispatch();
@@ -29,9 +29,12 @@ export default function Settings ({ channelData }) {
         dispatch(setShowChannelMemberModal(Object.keys(channelData?.cidToUid)));
       }
     },
-    {
-      text: 'Invite (WIP)',
-      icon: <PersonAddIcon />
+    (!channelData?.publicMode) && {
+      text: 'Invite',
+      icon: <PersonAddIcon />,
+      onClick: () => {
+        dispatch(setShowChannelInviteModal(Object.keys(channelData?.cidToUid)));
+      }
     },
     {
       text: 'Edit Channel',
@@ -54,7 +57,7 @@ export default function Settings ({ channelData }) {
       id='settings'
       title='Channel Settings'
       icon={<SettingsIcon/>}
-      menuItems={options}
+      menuItems={options.filter((option) => (option))}
       anchorOrigin={{
         vertical: 'top',
         horizontal: 'left',

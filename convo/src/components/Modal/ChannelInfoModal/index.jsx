@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '..';
@@ -16,16 +16,18 @@ export default function ChannelInfoModal () {
     <Modal
       open={displayInfo?.show}
       title={`${displayInfo?.name}`}
-      subtitle={`#${displayInfo?.cid}`}
+      subtitle={(displayInfo?.publicMode) ? 'Public Channel' : 'Private Channel'}
       handleClose={onClose}
       fullWidth
     >
       <Typography p={2} sx={{ bgcolor: 'mainColorDark', borderRadius: '5px' }}>
         {displayInfo?.description || 'No Channel Description.'}
       </Typography>
-      <Typography fontWeight='bold'>
-        {(displayInfo?.publicMode) ? 'Public' : 'Private'}
-        {' Channel'}
+      <Typography fontWeight='bold' mt={2} align='center'>
+        {'Channel Tag: '}
+        <Box component='span' sx={{ fontWeight: 'normal' }}>
+          {`#${displayInfo?.tag}`}
+        </Box>
       </Typography>
     </Modal>
   )

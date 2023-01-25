@@ -26,10 +26,12 @@ export default function ChannelSearchModal () {
   }
 
   const onClose = () => {
+    dispatch(setShowChannelSearchModal(false));
+  }
+  const onExited = () => {
     setChannels([]);
     setSearchTerm('');
     setSearched('');
-    dispatch(setShowChannelSearchModal(false));
   }
   
   return (
@@ -37,6 +39,7 @@ export default function ChannelSearchModal () {
       open={useSelector(state => state.channelSearchModal)}
       title='Channel Search'
       handleClose={onClose}
+      onExited={onExited}
       fullWidth
       fullScreen={!smallMq}
     >

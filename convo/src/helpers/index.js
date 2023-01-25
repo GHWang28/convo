@@ -1,6 +1,7 @@
 import moment from "moment/moment"
 import { toast } from "react-toastify";
 import Compressor from 'compressorjs';
+import ShortUniqueId from "short-unique-id";
 
 /**
  * Generates a random integer between min and max inclusively
@@ -169,4 +170,8 @@ export function getChannelIcon (iconIndex, color, opacity = 1) {
     `
     default: return ''
   }
+}
+
+export function genTag () {
+  return new ShortUniqueId({ length: 7 })();
 }

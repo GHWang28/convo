@@ -14,6 +14,7 @@ import messageDeleteModalReducer from './messageDeleteModalReducer';
 import setImageZoomReducer from './setImageZoomReducer';
 import userModalReducer from './userModalReducer';
 import editUserModalReducer from './editUserModalReducer';
+import channelInviteModalReducer from './channelInviteModalReducer';
 
 /**
  * Combines reducers for Redux
@@ -31,6 +32,7 @@ const combinedReducer = combineReducers({
   channelInfoModal: channelInfoModalReducer,
   channelEditModal: channelEditModalReducer,
   editUserModal: editUserModalReducer,
+  channelInviteModal: channelInviteModalReducer,
   userModal: userModalReducer,
   imgZoom: setImageZoomReducer,
   fetching: fetchingReducer

@@ -81,6 +81,13 @@ export function setShowChannelMemberModal (userIDArray) {
   }
 }
 
+export function setShowChannelInviteModal (excludedUserIDArray) {
+  return {
+    type: 'CHANNEL_INVITE_MODAL',
+    value: excludedUserIDArray
+  }
+}
+
 export function setShowChannelInfoModal (boolean, channelData = {}) {
   if (!boolean) {
     return {

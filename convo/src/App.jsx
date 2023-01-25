@@ -72,7 +72,8 @@ export default function App() {
           uid: user.uid,
           displayName: user.displayName,
           photoURL: user.photoURL,
-          creationTime: user?.metadata?.creationTime
+          creationTime: user?.metadata?.creationTime,
+          editMode: false
         }));
       })
     }

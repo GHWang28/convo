@@ -6,7 +6,7 @@ import ProfilePic from '../ProfilePic';
 import { useDispatch } from 'react-redux';
 import { setShowUserModal } from '../../redux/actions';
 
-export default function ListItemUser ({ userData }) {
+export default function ListItemUser ({ userData, onClick }) {
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -23,7 +23,7 @@ export default function ListItemUser ({ userData }) {
           cursor: 'pointer',
           '&:hover': { bgcolor: 'highlightColor' },
         }}
-        onClick={() => { dispatch(setShowUserModal(userData?.uid)) }}
+        onClick={(onClick) ? onClick : () => { dispatch(setShowUserModal(userData?.uid)) }}
       >
         <Box
           sx={{

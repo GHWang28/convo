@@ -12,7 +12,7 @@ import BootstrapTooltip from '../../BootstrapTooltip';
 import { auth } from '../../../firebase';
 import { recordNewUser } from '../../../firebase/database';
 import { useNavigate } from 'react-router';
-import { compressImage } from '../../../helpers';
+import { compressImage, genTag } from '../../../helpers';
 import config from '../../../config.json';
 import ProfilePic from '../../ProfilePic';
 
@@ -31,7 +31,9 @@ export default function EditUserModal () {
   const invalidHandle = !(handle.length >= config.MIN_HANDLE_NAME && handle.length <= config.MAX_HANDLE_NAME);
 
   const onClose = () => {
-    if (!editMode) auth.signOut();
+    if (!editMode) {
+      auth.signOut()
+    };
     dispatch(setShowEditUserModal(null));
   }
   const onConfirm = () => {
@@ -46,11 +48,18 @@ export default function EditUserModal () {
       profilePic: profilePic?.at(0)?.dataURL || '',
       uid: newUserDataState?.uid
     }
-    if (newUserDataState?.creationTime) userDataPackage.creationTime = new Date(newUserDataState?.creationTime);
+    if (newUserDataState?.creationTime) {
+      // If creation time is included, then  this is a new account to record.
+      // Fix creation time and add short uuid
+      userDataPackage.creationTime = new Date(newUserDataState?.creationTime);
+      userDataPackage.tag = genTag();
+    }
 
     recordNewUser(userDataPackage).then(() => {
-      onClose();
-      if (!editMode) navigate('/channels');
+      if (!editMode) {
+        navigate('/channels');
+      }
+      dispatch(setShowEditUserModal(null));
     })
   }
 

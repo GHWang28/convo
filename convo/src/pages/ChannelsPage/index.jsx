@@ -15,6 +15,7 @@ import MOTDModal from '../../components/Modal/MOTDModal';
 import MessageDeleteModal from '../../components/Modal/MessageDeleteModal';
 import UserModal from '../../components/Modal/UserModal';
 import EditUserModal from '../../components/Modal/UserModal/EditUserModal';
+import ChannelInviteModal from '../../components/Modal/ChannelInviteModal';
 
 export default function ChannelsPage () {
 
@@ -24,6 +25,7 @@ export default function ChannelsPage () {
       <MOTDModal />
       <LogOutModal />
       <EditUserModal />
+      <ChannelInviteModal />
       <MessageDeleteModal />
       <ChannelMemberModal />
       <ChannelLeaveModal />

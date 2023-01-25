@@ -50,8 +50,8 @@ export default function UserModal () {
       confirmColor='warning'
       handleClose={onClose}
       onExited={onExited}
-      title={`${userData?.handle}`}
-      subtitle={`Joined on ${convertEpochToDate(userData?.creationTime?.seconds)}`}
+      title={`${userData?.handle || '--'}`}
+      subtitle={(userData?.creationTime?.seconds) ? `Joined on ${convertEpochToDate(userData?.creationTime?.seconds)}` : '--'}
       fullWidth
     >
       {(userData === null) ? (
@@ -89,6 +89,12 @@ export default function UserModal () {
               </LinkifyWrapper>
             </Typography>
           )}
+          <Typography fontWeight='bold' mt={2} align='center'>
+            {'User Tag: '}
+            <Box component='span' sx={{ fontWeight: 'normal' }}>
+              {`#${userData?.tag}`}
+            </Box>
+          </Typography>
         </Fragment>
       )}
     </Modal>

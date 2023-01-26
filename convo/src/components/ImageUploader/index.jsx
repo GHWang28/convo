@@ -74,7 +74,6 @@ export default function ImageUploader ({ image, onChange }) {
           ))}
         </Fragment>
       )}
-      
     </ReactImageUploading>
   )
 }

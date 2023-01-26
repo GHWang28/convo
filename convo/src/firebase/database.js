@@ -13,7 +13,8 @@ import {
   deleteField,
   deleteDoc,
   arrayUnion,
-  arrayRemove
+  arrayRemove,
+  limit
 } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { firebaseDatabase } from '.';
@@ -148,6 +149,17 @@ export function editChannel (newInfo, cid, uid) {
  * @returns {Promise<QuerySnapshot<DocumentData>>}
  */
 export function searchChannel (searchTerm) {
+  if (!searchTerm) return Promise.resolve([]);
+  if (searchTerm.charAt(0) === '#') {
+    return getDocs(query(
+      collection(firebaseDatabase, 'channels'),
+      where('tag', '==', searchTerm.slice(1)),
+      limit(1)
+    )).then((querySnapshot) => {
+      return querySnapshot.docs.map((doc) => (doc.data()));
+    })
+  }
+
   const searchTermUpper = searchTerm.toUpperCase();
 
   return getDocs(query(
@@ -162,6 +174,17 @@ export function searchChannel (searchTerm) {
 }
 
 export function searchUser (searchTerm) {
+  if (!searchTerm) return Promise.resolve([]);
+  if (searchTerm.charAt(0) === '#') {
+    return getDocs(query(
+      collection(firebaseDatabase, 'users'),
+      where('tag', '==', searchTerm.slice(1)),
+      limit(1)
+    )).then((querySnapshot) => {
+      return querySnapshot.docs.map((doc) => (doc.data()));
+    })
+  }
+
   const searchTermUpper = searchTerm.toUpperCase();
 
   return getDocs(query(

@@ -65,7 +65,6 @@ export default function ImageZoomer () {
         <AnimatedBox
           component='img'
           alt='Zoomed in file'
-          onContextMenu={(event) => { event.preventDefault() }}
           src={itemSrc}
           style={{
             y: style.y,

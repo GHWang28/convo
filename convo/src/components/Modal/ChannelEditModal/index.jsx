@@ -31,8 +31,8 @@ export default function ChannelEditModal () {
   }, [channelData]);
 
   const onConfirm = () => {
-    if (!name) {
-      toast.error('Channel name needs to be filled out.');
+    if (!name || name.charAt(0) === '#') {
+      toast.error((!name) ? 'Channel name needs to be filled out.' : 'Channel name can not start with \'#\'.');
       setNameError(true);
       return;
     }
@@ -75,7 +75,7 @@ export default function ChannelEditModal () {
         variant='outlined'
         fullWidth
         value={name}
-        error={nameError && !name}
+        error={nameError && (!name || name.charAt(0))}
         onChange={(event) => { setName(event.target.value) }}
         onClick={() => { setNameError(false) }}
       />

@@ -13,7 +13,7 @@ export default function ChannelTrayContent ({ height }) {
   const userData = useSelector(state => state.loggedInUserData);
   const dispatch = useDispatch();
 
-  const channelIdList = Object.keys(userData?.uidToCid || {});
+  const channelIdList = Object.keys(userData?.uidToCid || {}).sort((cidA, cidB) => (cidA.localeCompare(cidB)));
 
   return (
     <Box

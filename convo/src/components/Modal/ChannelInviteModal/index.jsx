@@ -88,7 +88,7 @@ export default function ChannelInviteModal () {
             {(prevSearch) ? (
               `No users have a handle beginning with "${prevSearch}".`
             ) : (
-              'No users were found.'
+              'Search Users by their handle or Tag (which is case-sensitive).'
             )}
           </Typography>
         )}

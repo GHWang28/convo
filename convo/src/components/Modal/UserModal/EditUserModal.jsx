@@ -28,7 +28,7 @@ export default function EditUserModal () {
   const [handle, setHandle] = useState('');
   const [bio, setBio] = useState('');
   const [profilePic, setProfilePic] = useState([]);
-  const invalidHandle = !(handle.length >= config.MIN_HANDLE_NAME && handle.length <= config.MAX_HANDLE_NAME);
+  const invalidHandle = !(handle.length >= config.MIN_HANDLE_NAME && handle.length <= config.MAX_HANDLE_NAME) || handle.charAt(0) === '#';
 
   const onClose = () => {
     if (!editMode) {
@@ -38,7 +38,7 @@ export default function EditUserModal () {
   }
   const onConfirm = () => {
     if (invalidHandle) {
-      toast.error(`Your handle name must be inclusively between ${config.MIN_HANDLE_NAME} to ${config.MAX_HANDLE_NAME} characters long.`)
+      toast.error(`Your handle name must be inclusively between ${config.MIN_HANDLE_NAME} to ${config.MAX_HANDLE_NAME} characters long. The handle must also not start with '#'.`)
       return;
     }
 
@@ -98,12 +98,12 @@ export default function EditUserModal () {
           onChange={onImageChange}
           onError={(errors) => {
             if (errors.acceptType) {
-              toast.error('File type not accepted. Must be jpg, jpeg or png.');
+              toast.error('File type not accepted. Must be jpg, jpeg, webp, svg or png.');
             } else {
               toast.error('Failed to upload image.');
             }
           }}
-          acceptType={['jpg', 'png', 'jpeg']}
+          acceptType={['jpg', 'png', 'jpeg', 'webp', 'svg']}
         >
           {({
             imageList,
@@ -183,7 +183,7 @@ export default function EditUserModal () {
         sx={{ mt: 1 }}
         InputProps={{ sx: { bgcolor: 'mainColorNormal' } }}
         label='Handle Name *'
-        helperText={`The name other users will know you by. Must be inclusively between ${config.MIN_HANDLE_NAME}-${config.MAX_HANDLE_NAME} characters long.`}
+        helperText={`The name other users will know you by. Must be inclusively between ${config.MIN_HANDLE_NAME}-${config.MAX_HANDLE_NAME} characters long and not start with '#'.`}
         variant='outlined'
         fullWidth
         value={handle}

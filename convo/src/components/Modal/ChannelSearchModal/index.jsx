@@ -82,7 +82,7 @@ export default function ChannelSearchModal () {
           <Typography my={1} align='center'>
             {(searched)
               ? `No channels have a name similar to "${searched}".`
-              : 'Search for channels with similar names by entering keywords.'
+              : 'Search for Channels with similar names by entering keywords or by entering a Channel Tag (which is case-sensitive).'
             }
           </Typography>
         )}

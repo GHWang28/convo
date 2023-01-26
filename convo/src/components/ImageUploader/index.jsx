@@ -29,12 +29,12 @@ export default function ImageUploader ({ image, onChange }) {
       }}
       onError={(errors) => {
         if (errors.acceptType) {
-          toast.error('File type not accepted. Must be jpg, jpeg or png.');
+          toast.error('File type not accepted. Must be jpg, jpeg, webp, svg or png.');
         } else {
           toast.error('Failed to upload image.');
         }
       }}
-      acceptType={['jpg', 'png', 'jpeg']}
+      acceptType={['jpg', 'png', 'jpeg', 'webp', 'svg']}
     >
       {({
         imageList,

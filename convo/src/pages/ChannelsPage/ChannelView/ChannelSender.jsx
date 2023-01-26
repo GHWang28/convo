@@ -112,13 +112,15 @@ export default function ChannelSender ({ cid }) {
           }}
         />
         {/* Send Button that collapses in if there isn't anything to send */}
-        <Collapse in={Boolean(message.length || image.length)} orientation='horizontal'>
-          <BootstrapTooltip title='Send Message' placement='top'>
-            <IconButton color='secondary' onClick={onSend} sx={{ borderRadius: 0, bgcolor: 'mainColorSlightLight', width: '51px', height: '51px' }}>
-              <SendIcon />
-            </IconButton>
-          </BootstrapTooltip>
-        </Collapse>
+        <Box>
+          <Collapse in={Boolean(message.length || image.length)} orientation='horizontal'>
+            <BootstrapTooltip title='Send Message' placement='top'>
+              <IconButton color='secondary' onClick={onSend} sx={{ borderRadius: 0, bgcolor: 'mainColorSlightLight', width: '51px', height: '51px' }}>
+                <SendIcon />
+              </IconButton>
+            </BootstrapTooltip>
+          </Collapse>
+        </Box>
       </Box>
       <Box sx={{ height: '7px', width: '100%', color: 'white', position: 'relative' }}>
         <LinearProgress

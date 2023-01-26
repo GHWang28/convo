@@ -97,9 +97,13 @@ export default function EditUserModal () {
           value={profilePic}
           onChange={onImageChange}
           onError={(errors) => {
-            if (errors.acceptType) toast.error('File type not accepted. Must be jpg or png.');
+            if (errors.acceptType) {
+              toast.error('File type not accepted. Must be jpg, jpeg or png.');
+            } else {
+              toast.error('Failed to upload image.');
+            }
           }}
-          acceptType={['jpg', 'png']}
+          acceptType={['jpg', 'png', 'jpeg']}
         >
           {({
             imageList,

@@ -28,9 +28,13 @@ export default function ImageUploader ({ image, onChange }) {
         (newImage.at(0)?.dataURL) ? compressImage(newImage.at(0)?.file, onChange) : onChange(newImage);
       }}
       onError={(errors) => {
-        if (errors.acceptType) toast.error('File type not accepted. Must be jpg or png.');
+        if (errors.acceptType) {
+          toast.error('File type not accepted. Must be jpg, jpeg or png.');
+        } else {
+          toast.error('Failed to upload image.');
+        }
       }}
-      acceptType={['jpg', 'png']}
+      acceptType={['jpg', 'png', 'jpeg']}
     >
       {({
         imageList,
@@ -57,8 +61,8 @@ export default function ImageUploader ({ image, onChange }) {
             </IconButton>
           </BootstrapTooltip>
           {(imageList.length !== 0) && imageList.map((imageItem, index) => (
-            <BootstrapTooltip title='Delete Image' placement='top'>
-              <IconButton key={`uploaded-img-${index}`} onClick={() => { onImageRemove(index) }} sx={{ borderRadius: 0, height: '51px', width: '51px' }}>
+            <BootstrapTooltip key={`uploaded-img-${index}`} title='Delete Image' placement='top'>
+              <IconButton onClick={() => { onImageRemove(index) }} sx={{ borderRadius: 0, height: '51px', width: '51px' }}>
                 <Box
                   alt={`Uploaded-${index}`}
                   component='img'

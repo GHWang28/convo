@@ -5,6 +5,7 @@ import config from '../../config.json';
 import { convertEpochToDate, parseRGB } from '../../helpers';
 import { useSelector } from 'react-redux';
 import EditIcon from '@mui/icons-material/Edit';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ProfilePic from '../ProfilePic';
 import BootstrapTooltip from '../BootstrapTooltip';
 
@@ -20,8 +21,6 @@ export default function NotificationBubble ({ notificationData, color }) {
       })
   }, [notificationData?.uid]);
 
-  const { label, icon, avatar } = generateNotificationMessage(notificationData.nid, sender);
-
   return (
     <Collapse in={channelNotificationToggle}>
       <Box
@@ -32,9 +31,7 @@ export default function NotificationBubble ({ notificationData, color }) {
         <Divider sx={{ '&::before, &::after': { borderColor: color, opacity: 0.5 } }}>
           <BootstrapTooltip title={convertEpochToDate(notificationData?.timestamp?.seconds, false)} placement='top'>
             <Chip
-              icon={icon}
-              avatar={avatar}
-              label={label}
+              {...generateNotificationMessage(notificationData.nid, sender)}
               size='medium'
               sx={{
                 fontWeight: 'bold',
@@ -52,7 +49,17 @@ export default function NotificationBubble ({ notificationData, color }) {
 }
 
 function generateNotificationMessage (nid, sender) {
-  const avatarProps = { alt: sender?.handle, src: sender?.profilePic, uid: sender?.uid };
+  const avatarProps = { alt: sender?.handle, src: sender?.profilePic, uid: sender?.uid, hideTooltip: true };
+
+  // Channel invite notification id is merged with the total amount of users invited
+  if (nid > config.CHANNEL_INVITE_NID) {
+    const totalInvites = nid - config.CHANNEL_INVITE_NID;
+    return {
+      label: `${sender?.handle} invited ${totalInvites} user${(totalInvites === 1) ? '' : 's'}.`,
+      icon: <PersonAddIcon />
+    }
+  }
+
   switch (nid) {
     case config.CHANNEL_EDIT_NID: return {
       label: `${sender?.handle} edited the Channel settings.`,

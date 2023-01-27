@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
-import { Box, Collapse, IconButton, LinearProgress, TextField, Typography } from '@mui/material';
+import { Box, Collapse, IconButton, LinearProgress, linearProgressClasses, styled, TextField, Typography } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { postMessage } from '../../../firebase/database';
 import { useSelector } from 'react-redux';
-import config from '../../../config.json';
 import { toast } from 'react-toastify';
-import GifPicker from 'gif-picker-react';
-import GifIcon from '@mui/icons-material/Gif';
 import ImageUploader from '../../../components/ImageUploader';
 import BootstrapTooltip from '../../../components/BootstrapTooltip';
-import ButtonMenu from '../../../components/ButtonMenu';
+import ButtonGifPicker from '../../../components/ButtonGifPicker';
+import config from '../../../config.json';
 
 export default function ChannelSender ({ cid }) {
   const [message, setMessage] = useState('');
@@ -67,36 +65,7 @@ export default function ChannelSender ({ cid }) {
           sx={{ flexGrow: 1 }}
           InputProps={{
             sx: { bgcolor: 'mainColorDark', height: '100%', borderRadius: 0 },
-            endAdornment: (
-              <ButtonMenu
-                icon={<GifIcon sx={{ scale: '1.6' }}/>}
-                title='Add Reaction'
-                size='small'
-                sx={{
-                  bgcolor: 'mainColorSlightLight',
-                  "&:hover, &.Mui-focusVisible": {
-                    bgcolor: 'mainColorLight'
-                  }
-                }}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-                transformOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-              >
-                {({ onClose }) => (
-                  <GifPicker
-                    theme='dark'
-                    autoFocusSearch={false}
-                    tenorApiKey='AIzaSyA1416HVoCuhmF86AeK6nI2fAS3V8lD0Z0'
-                    onGifClick={(tenorImageObj) => { onGifClick(tenorImageObj); onClose(); }}
-                  />
-                )}
-              </ButtonMenu>
-            )
+            endAdornment: (<ButtonGifPicker onGifClick={(tenorImageObj) => { onGifClick(tenorImageObj) }}/>)
           }}
           size='small'
           onChange={(event) => { setMessage(event.target.value) }}
@@ -122,18 +91,39 @@ export default function ChannelSender ({ cid }) {
           </Collapse>
         </Box>
       </Box>
-      <Box sx={{ height: '7px', width: '100%', color: 'white', position: 'relative' }}>
-        <LinearProgress
+      <Box sx={{ height: '7px', width: '100%', position: 'relative' }}>
+        <Typography
+          fontSize={8}
+          fontWeight='bold'
+          sx={{
+            position: 'absolute',
+            left: 1,
+            top: '50%',
+            translate: '0% -50%',
+            zIndex: 2,
+            mixBlendMode: 'difference',
+            lineHeight: 1
+          }}
+        >
+          {`${message.length} / ${config.MAX_CHAR} characters`}
+        </Typography>
+        <BorderLinearProgress
           title='Message Capacity'
           color={(messagePercentage >= 100) ? 'error' : 'inherit'}
-          sx={{ height: '7px' }}
+          sx={{
+            height: '7px',
+            bgcolor: 'black'
+          }}
           variant={(sending) ? 'indeterminate' : 'determinate'}
           value={Math.min(100, messagePercentage)}
         />
-        <Typography fontSize={8} fontWeight='bold' sx={{ color: 'black', position: 'absolute', left: 5, top: -2.5 }}>
-          {`${message.length} / ${config.MAX_CHAR} characters`}
-        </Typography>
       </Box>
     </Box>
   )
 }
+
+const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+  [`& .${linearProgressClasses.bar}`]: {
+    backgroundColor: theme.palette.mode === 'light' ? 'black' : 'whitesmoke',
+  },
+}));

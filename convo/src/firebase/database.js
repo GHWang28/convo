@@ -99,10 +99,13 @@ export function getUser (uid, fetchFromDatabase = false) {
 
   return getDoc(doc(firebaseDatabase, 'users', uid))
     .then((userData) => {
-      if (!userData.exists()) return null;
+      if (!userData.exists()) throw new Error('User does not exist');
       const newData = {...userData.data()};
       userCache[uid] = newData;
       return newData;
+    })
+    .catch((error) => {
+      toast.error(error.message);
     })
 }
 
@@ -257,6 +260,24 @@ export function postDelMessageReact (cid, mid, uid, rid, post = true) {
         }
       });
     });
+}
+
+export function inviteUsersToChannel (inviterUID, arrayOfUID, cid) {
+  const totalUsers = arrayOfUID.length;
+  if (totalUsers === 0) {
+    return Promise.resolve(null);
+  }
+
+  // Add total users to the invite notification ID to show how many users were invited
+  return postMessageNotification(cid, inviterUID, config.CHANNEL_INVITE_NID + totalUsers)
+    .then(() => (
+      Promise.all(arrayOfUID.map((uid) => (
+        joinUserToChannel(uid, cid, false)
+      ))).then(() => {
+        const totalUsers = arrayOfUID.length;
+        toast.success(`Invited ${totalUsers} user${(totalUsers === 1) ? '' : 's'} to the channel.`)
+      })
+    ));
 }
 
 export function isUrlToImage (url) {

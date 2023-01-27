@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { getChannelDocRef, getIsUserInChannel } from '../../../firebase/database';
@@ -7,7 +7,6 @@ import ChannelMessages from './ChannelMessages';
 import ChannelSender from './ChannelSender';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
 import { setShowChannelJoinModal } from '../../../redux/actions';
 
 export default function ChannelView () {

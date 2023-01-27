@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Box, IconButton, keyframes } from '@mui/material';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import ReactImageUploading from 'react-images-uploading';
-import { Fragment } from 'react';
 import { toast } from 'react-toastify';
 import BootstrapTooltip from '../BootstrapTooltip';
 import { compressImage } from '../../helpers';

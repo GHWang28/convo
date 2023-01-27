@@ -23,7 +23,16 @@ export default function DateDisplay ({ time, fontSize = 9, align }) {
           fontSize={fontSize}
           align={align}
           onClick={() => { setShorten(!shorten) }}
-          sx={{ cursor: 'pointer', userSelect: 'none', width: 'fit-content', position: 'absolute', top: 0, right: (align === 'right') && 0, left: (align === 'left') && 0 }}
+          sx={{
+            WebkitTapHighlightColor: 'transparent',
+            cursor: 'pointer',
+            userSelect: 'none',
+            width: 'fit-content',
+            position: 'absolute',
+            top: 0,
+            right: (align === 'right') && 0,
+            left: (align === 'left') && 0
+          }}
         >
           {convertEpochToDate(time, toShorten)}
         </AnimatedTypography>

@@ -58,6 +58,7 @@ export default function ImageZoomer () {
           alignItems: 'center',
           cursor: 'pointer',
           pointerEvents: (!src) && 'none',
+          WebkitTapHighlightColor: 'transparent',
           zIndex: 1100,
         }}
         onClick={onClose}

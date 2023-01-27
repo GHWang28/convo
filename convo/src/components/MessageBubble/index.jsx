@@ -205,6 +205,7 @@ function BubbleImage ({ onClick, src, color }) {
         sx={[
           (!loaded) && { display: 'none' },
           {
+            WebkitTapHighlightColor: 'transparent',
             border: `1px solid ${color}`,
             borderRadius: '15px',
             maxHeight: 'min(350px, 50vh)',

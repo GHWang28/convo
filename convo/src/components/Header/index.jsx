@@ -16,6 +16,7 @@ export default function Header () {
         alt='Cup left'
         src={process.env.PUBLIC_URL + '/images/logo/logo-string.png'}
         sx={{
+          WebkitTapHighlightColor: 'transparent',
           height: '1.5vh',
           opacity: 0.75,
           cursor: 'pointer'
@@ -28,7 +29,7 @@ export default function Header () {
         fontWeight='bold'
         fontFamily='Sofia Sans'
         fontSize='1.4vh'
-        sx={{ cursor: 'pointer' }}
+        sx={{ cursor: 'pointer', WebkitTapHighlightColor: 'transparent', }}
         onClick={onClick}
       >
         {'CONVO'}
@@ -38,6 +39,7 @@ export default function Header () {
         alt='Cup right'
         src={process.env.PUBLIC_URL + '/images/logo/logo-string.png'}
         sx={{
+          WebkitTapHighlightColor: 'transparent',
           height: '1.5vh',
           opacity: 0.75,
           transform: 'scaleX(-1)',

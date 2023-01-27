@@ -50,6 +50,7 @@ export default function ListItemChannel ({ cid, closeSearchModal, showDesc, show
         p={1}
         role='button'
         sx={{
+          WebkitTapHighlightColor: 'transparent',
           border: `1px solid ${channelData?.theme}`,
           borderRadius: '5px',
           display: 'flex',

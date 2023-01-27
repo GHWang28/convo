@@ -127,6 +127,7 @@ export function postNewChannel (uid, newChannelInfo) {
       tag: genTag(),
       iconIndex: Number(!newChannelInfo?.publicMode),
       cid,
+      creatorUid: uid,
       dateCreated: serverTimestamp()
     }
   ).then(() => {
@@ -140,7 +141,7 @@ export function postNewChannel (uid, newChannelInfo) {
 }
 
 export function editChannel (newInfo, cid, uid) {
-  return setDoc(doc(firebaseDatabase, 'channels', cid), { ...newInfo, searchTerm: newInfo?.name?.toUpperCase() })
+  return setDoc(doc(firebaseDatabase, 'channels', cid), { ...newInfo, searchTerm: newInfo?.name?.toUpperCase() }, { merge: true })
     .then(() => {
       return postMessageNotification(cid, uid, config.CHANNEL_EDIT_NID)
     }).then(() => {

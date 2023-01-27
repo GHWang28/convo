@@ -29,6 +29,7 @@ export default function ChannelHeader ({ channelData }) {
         onClick={() => { dispatch(setShowChannelInfoModal(true, channelData)) }}
         sx={{
           flexGrow: 1,
+          WebkitTapHighlightColor: 'transparent',
           height: '100%',
           cursor: 'pointer',
           transition: 'background-color 0.25s ease-in-out',

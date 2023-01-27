@@ -95,6 +95,7 @@ function EmojiChip ({ reactionData, rid, cid, mid, viewerUID, color, interactabl
           style={style}
           sx={{
             pl: 1,
+            WebkitTapHighlightColor: 'transparent',
             borderWidth: '1px',
             borderStyle: 'solid',
             borderColor: 'contrastColor',

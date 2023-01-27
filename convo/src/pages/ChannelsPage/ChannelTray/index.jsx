@@ -40,6 +40,7 @@ export default function ChannelTray () {
             role='button'
             sx={{
               height,
+              WebkitTapHighlightColor: 'transparent',
               width: '25px',
               bgcolor: 'mainColorLight',
               '&:hover': { filter: 'brightness(105%)' },
@@ -68,6 +69,7 @@ export default function ChannelTray () {
           mt='2vh'
           sx={{
             top: 0,
+            WebkitTapHighlightColor: 'transparent',
             position: 'absolute',
             height: '40px',
             width: '40px',

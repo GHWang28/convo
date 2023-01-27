@@ -26,7 +26,10 @@ export default function ProfilePic ({ uid, alt, src, placeholderSrc = `default-d
           cursor: 'pointer',
           userSelect: 'none'
         },
-        { ...sx }
+        {
+          ...sx,
+          WebkitTapHighlightColor: 'transparent'
+        }
       ]}
       onClick={onClick}
     />

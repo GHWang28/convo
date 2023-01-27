@@ -9,6 +9,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { firebaseDatabase } from '../../../firebase';
 import { convertEpochToDate } from '../../../helpers';
 import LinkifyWrapper from '../../LinkifyWrapper';
+import TagDisplay from '../../TagDisplay';
 
 export default function UserModal () {
   const dispatch = useDispatch();
@@ -89,12 +90,7 @@ export default function UserModal () {
               </LinkifyWrapper>
             </Typography>
           )}
-          <Typography fontWeight='bold' mt={2} align='center'>
-            {'User Tag: '}
-            <Box component='span' sx={{ fontWeight: 'normal' }}>
-              {`#${userData?.tag}`}
-            </Box>
-          </Typography>
+          <TagDisplay label='User Tag' tag={userData?.tag} />
         </Fragment>
       )}
     </Modal>

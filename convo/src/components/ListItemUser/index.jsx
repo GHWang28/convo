@@ -17,11 +17,12 @@ export default function ListItemUser ({ userData, onClick }) {
         p={1}
         role='button'
         sx={{
+          WebkitTapHighlightColor: 'transparent',
           border: `1px solid ${theme.palette.contrastColor}`,
           borderRadius: '5px',
           display: 'flex',
           cursor: 'pointer',
-          '&:hover': { bgcolor: 'highlightColor' },
+          '&:hover': { bgcolor: 'highlightColor' }
         }}
         onClick={(onClick) ? onClick : () => { dispatch(setShowUserModal(userData?.uid)) }}
       >

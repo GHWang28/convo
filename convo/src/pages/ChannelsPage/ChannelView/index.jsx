@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import { getChannelDocRef, getIsUserInChannel } from '../../../firebase/database';
+import { clearUserCache, getChannelDocRef, getIsUserInChannel } from '../../../firebase/database';
 import ChannelHeader from './ChannelHeader';
 import ChannelMessages from './ChannelMessages';
 import ChannelSender from './ChannelSender';
@@ -66,6 +66,10 @@ export default function ChannelView () {
 }
 
 function NoChannelSelected () {
+  useEffect(() => {
+    clearUserCache();
+  }, []);
+
   return (
     <Fragment>
       <Typography variant='h1' align='center'>

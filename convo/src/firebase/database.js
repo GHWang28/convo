@@ -92,6 +92,12 @@ export function getChannelDocRef (cid) {
 
 const userCache = {};
 
+export function clearUserCache () {
+  for (let userKey in userCache) {
+    delete userCache[userKey];
+  }
+}
+
 export function getUser (uid, fetchFromDatabase = false) {
   if (!fetchFromDatabase && userCache[uid]) {
     return Promise.resolve(userCache[uid]);

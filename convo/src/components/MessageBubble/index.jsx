@@ -13,6 +13,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { convertEpochToDate } from '../../helpers';
 import ProfilePic from '../ProfilePic';
 import LinkifyWrapper from '../LinkifyWrapper';
+import config from '../../config.json';
+import { toast } from 'react-toastify';
 
 function padding (smallMq, isStart) {
   if (isStart) return 1;
@@ -234,11 +236,15 @@ function EditMode ({ messageData, setEdit, color }) {
     if (message.trim() === messageData?.text?.trim()) {
       onCancel();
       return;
-    };
+    }
     if (message.length === 0) {
       dispatch(setShowMessageDeleteModal({ ...messageData, color }));
       return;
-    };
+    }
+    if (message.length > config.MAX_CHAR) {
+      toast.error(`The new message is too long and exceeds ${config.MAX_CHAR} characters`);
+      return;
+    }
     editMessage(message, messageData?.cid, messageData?.mid).then(onCancel);
   }
   const onCancel = () => {

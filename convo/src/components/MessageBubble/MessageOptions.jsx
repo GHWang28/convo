@@ -7,32 +7,46 @@ import { Box, IconButton } from '@mui/material';
 import BootstrapTooltip from '../BootstrapTooltip';
 import { useDispatch, useSelector } from 'react-redux';
 import { setShowMessageDeleteModal } from '../../redux/actions';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import Picker from '@emoji-mart/react'
 import { postDelMessageReact } from '../../firebase/database';
+import { toast } from 'react-toastify';
 
 export default function MessageOptions ({ position, isSender, color = 'whitesmoke', messageData, setEdit, setHover }) {
   const dispatch = useDispatch();
   const userData = useSelector(state => state.loggedInUserData);
-  let options = [
-    {
+  const options = [
+    (isSender) && {
       label: 'Edit Message',
       icon: <EditOutlinedIcon />,
       onClick: () => {
         setEdit(true);
       }
     },
-    {
+    (isSender) &&  {
       label: 'Delete Message',
       icon: <DeleteOutlineOutlinedIcon />,
       onClick: () => {
         dispatch(setShowMessageDeleteModal({ ...messageData, color }))
+      }
+    },
+    {
+      label: 'Copy Message Text',
+      icon: <ContentPasteIcon />,
+      onClick: () => {
+        if (messageData.text.length === 0) {
+          toast.error('This message does not have any text to copy.');
+        } else {
+          navigator.clipboard.writeText(messageData.text);
+          toast.success('Copied to clipboard.');
+        }
       }
     }
   ]
 
   return (
     <Box sx={{ position: 'absolute', ...position, zIndex: 2 }}>
-      {isSender && options.map((optionItem) => (
+      {options.filter((optionItem) => (optionItem)).map((optionItem) => (
         <BootstrapTooltip key={optionItem.label} title={optionItem.label} placement='top'>
           <IconButton
             onClick={optionItem?.onClick}

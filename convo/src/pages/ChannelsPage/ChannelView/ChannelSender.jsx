@@ -4,10 +4,10 @@ import SendIcon from '@mui/icons-material/Send';
 import { postMessage } from '../../../firebase/database';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import ImageUploader from '../../../components/ImageUploader';
 import BootstrapTooltip from '../../../components/BootstrapTooltip';
 import ButtonGifPicker from '../../../components/ButtonGifPicker';
 import config from '../../../config.json';
+import ChannelImageUploader from './ChannelImageUploader';
 
 export default function ChannelSender ({ cid }) {
   const [message, setMessage] = useState('');
@@ -60,7 +60,7 @@ export default function ChannelSender ({ cid }) {
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'end' }}>
-        <ImageUploader image={image} onChange={setImage} />
+        <ChannelImageUploader image={image} onChange={setImage} />
         <TextField
           sx={{ flexGrow: 1 }}
           InputProps={{

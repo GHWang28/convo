@@ -9,6 +9,7 @@ import TextInputRGB from '../../TextInputRGB';
 import config from '../../../config.json';
 import { getChannelIcon } from '../../../helpers';
 import { editChannel } from '../../../firebase/database';
+import ImageUploader from '../../ImageUploader';
 
 export default function ChannelEditModal () {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ export default function ChannelEditModal () {
   const [description, setDescription] = useState('');
   const [color, setColor] = useState('');
   const [icon, setIcon] = useState(0);
+  const [image, setImage] = useState([]);
   const [nameError, setNameError] = useState(false);
   const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm'));
 
@@ -28,6 +30,7 @@ export default function ChannelEditModal () {
     setDescription(channelData.description);
     setColor(channelData.theme);
     setIcon(channelData.iconIndex);
+    setImage([{ dataURL: channelData?.channelPic }]);
   }, [channelData]);
 
   const onConfirm = () => {
@@ -42,7 +45,8 @@ export default function ChannelEditModal () {
         name,
         description,
         theme: color,
-        iconIndex: icon
+        iconIndex: icon,
+        channelPic: image.at(0)?.dataURL || ''
       },
       channelData?.cid,
       userData?.uid
@@ -54,8 +58,14 @@ export default function ChannelEditModal () {
   }
 
   const onClose = () => {
-    setNameError(false);
     dispatch(setShowChannelEditModal(null));
+  }
+  const onExited = () => {
+    setNameError(false);
+    setDescription('');
+    setColor('');
+    setIcon(0);
+    setImage([]);
   }
   
   return (
@@ -64,11 +74,13 @@ export default function ChannelEditModal () {
       title='Channel Edit'
       subtitle='Pouring over a fresh coat of paint'
       handleConfirm={onConfirm}
+      onExited={onExited}
       handleClose={onClose}
       confirmColor='success'
       fullWidth
       fullScreen={!smallMq}
     >
+      <ImageUploader imageArray={image} setImageArray={setImage} alt={name || 'Existing Channel'} placeholderSrc={'default-channel-white.svg'}/>
       <TextField
         InputProps={{ sx: { bgcolor: 'mainColorNormal' } }}
         label='Channel Name *'
@@ -91,10 +103,10 @@ export default function ChannelEditModal () {
         onChange={(event) => { setDescription(event.target.value) }}
       />
       
-      <Grid container mt={1}>
+      <Grid container mt={3}>
         {/* Color Picker */}
         <Grid item xs={12} sm={6} pr={1}>
-          <Typography fontWeight='bold' ml={1} my={1}>
+          <Typography fontWeight='bold' ml={1} mt={1} my={2}>
             {'Channel Theme'}
           </Typography>
           <TextInputRGB color={color} setColor={setColor} />
@@ -135,7 +147,7 @@ export default function ChannelEditModal () {
         )}
         {/* Channel Icon */}
         <Grid item xs={12} sm={6} pl={1}>
-          <Typography fontWeight='bold' ml={1} my={1}>
+          <Typography fontWeight='bold' ml={1} mt={1} my={2}>
             {'Channel Icon'}
           </Typography>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>

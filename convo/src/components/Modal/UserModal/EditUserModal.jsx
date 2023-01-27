@@ -1,19 +1,16 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { Alert, Badge, badgeClasses, Box, Button, Collapse, IconButton, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
-import ReactImageUploading from 'react-images-uploading';
+import React, { useEffect, useState } from 'react';
+import { Alert, TextField, useMediaQuery } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Modal from '..';
 import { setShowEditUserModal } from '../../../redux/actions';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import DeleteIcon from '@mui/icons-material/Delete';
-import BootstrapTooltip from '../../BootstrapTooltip';
 import { auth } from '../../../firebase';
 import { recordNewUser } from '../../../firebase/database';
 import { useNavigate } from 'react-router';
-import { compressImage, genTag } from '../../../helpers';
+import { genTag } from '../../../helpers';
 import config from '../../../config.json';
-import ProfilePic from '../../ProfilePic';
+import ImageUploader from '../../ImageUploader';
+
 
 export default function EditUserModal () {
   const newUserData = useSelector(state => state.editUserModal);
@@ -22,7 +19,6 @@ export default function EditUserModal () {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const theme = useTheme();
   const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm'));
   const [handle, setHandle] = useState('');
   const [bio, setBio] = useState('');
@@ -62,10 +58,6 @@ export default function EditUserModal () {
     })
   }
 
-  const onImageChange = (newImage) => {
-    (newImage.at(0)?.dataURL) ? compressImage(newImage.at(0)?.file, setProfilePic) : setProfilePic(newImage);
-  }
-
   useEffect(() => {
     setHandle(newUserDataState?.displayName || '');
     setProfilePic((newUserDataState?.photoURL) ? [{ dataURL: newUserDataState?.photoURL }] : '');
@@ -75,7 +67,6 @@ export default function EditUserModal () {
     setNewUserDataState({...newUserData});
   }, [newUserData])
 
-  const imageSize = { height: '150px', width: '150px' };
 
   return (
     <Modal
@@ -91,95 +82,9 @@ export default function EditUserModal () {
       fullWidth
       fullScreen={!smallMq}
     >
-      <Box mb={3} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
-        <ReactImageUploading
-          value={profilePic}
-          onChange={onImageChange}
-          onError={(errors) => {
-            if (errors.acceptType) {
-              toast.error('File type not accepted. Must be jpg, jpeg, webp, svg or png.');
-            } else {
-              toast.error('Failed to upload image.');
-            }
-          }}
-          acceptType={['jpg', 'png', 'jpeg', 'webp', 'svg']}
-        >
-          {({
-            imageList,
-            onImageUpload,
-            onImageRemove,
-            isDragging,
-            dragProps,
-          }) => (
-            <Fragment>
-              {(isDragging) && (
-                <Box
-                  sx={{
-                    ...imageSize,
-                    position: 'absolute',
-                    top: 0,
-                    borderRadius: '50%',
-                    pointerEvents: 'none',
-                    bgcolor: 'rgba(0,0,0,0.5)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    zIndex: 2
-                  }}
-                >
-                  <Typography align='center' fontWeight='bold'>
-                    {'Drop image here to upload'}
-                  </Typography>
-                </Box>
-              )}
-              <Badge
-                color='secondary'
-                overlap='circular'
-                badgeContent={
-                  <BootstrapTooltip title='Upload new picture' placement='top'>
-                    <IconButton
-                      sx={{
-                        scale: (isDragging) ? 0 : 1,
-                        transition: 'scale 0.3s ease-in-out',
-                        color: 'mainColorNormal',
-                        border: `5px solid ${theme.palette.mainColorLight}`,
-                        bgcolor: 'rgb(255,255,255)',
-                        "&:hover, &.Mui-focusVisible": {
-                          bgcolor: 'rgb(230,230,230)'
-                        }
-                      }}
-                      onClick={onImageUpload}
-                    >
-                      <AddPhotoAlternateIcon />
-                    </IconButton>
-                  </BootstrapTooltip>
-                }
-                sx={{ [`& .${badgeClasses.badge}`]: {
-                  width: '0px',
-                  height: '0px',
-                } }}
-              >
-                <ProfilePic
-                  {...dragProps}
-                  alt={handle || 'You'}
-                  src={imageList?.at(0)?.dataURL}
-                  sx={{ ...imageSize, bgcolor: 'mainColorNormal' }}
-                />
-              </Badge>
-              <Collapse in={Boolean(profilePic)} sx={{ m: 1 }}>
-                <Button startIcon={<DeleteIcon />} onClick={() => { onImageRemove(0) }} variant='contained' color='error' size='small'>
-                  {'Delete Profile Picture'}
-                </Button>
-              </Collapse>
-            </Fragment>
-          )}
-        </ReactImageUploading>
-        <Typography align='center' color='secondary' fontSize={14}>
-          {'[To change profile picture: Click icon or drag/drop new image onto existing picture]'}
-        </Typography>
-      </Box>
+      <ImageUploader imageArray={profilePic} setImageArray={setProfilePic} alt={handle || 'You'}/>
       <TextField
-        sx={{ mt: 1 }}
+        sx={{ mt: 0.5 }}
         InputProps={{ sx: { bgcolor: 'mainColorNormal' } }}
         label='Handle Name *'
         helperText={`The name other users will know you by. Must be inclusively between ${config.MIN_HANDLE_NAME}-${config.MAX_HANDLE_NAME} characters long and not start with '#'.`}
@@ -190,7 +95,7 @@ export default function EditUserModal () {
         onChange={(event) => { setHandle(event.target.value) }}
       />
       <TextField
-        sx={{ mt: 3 }}
+        sx={{ mt: 1.5 }}
         InputProps={{ sx: { bgcolor: 'mainColorDark' } }}
         label='Bio'
         helperText='A description of yourself. Completely optional.'

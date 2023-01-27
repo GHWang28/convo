@@ -6,6 +6,7 @@ import { FormControlLabel, Grid, TextField, Alert, useMediaQuery, useTheme, Typo
 import { postNewChannel } from '../../../firebase/database';
 import { toast } from 'react-toastify';
 import { SwitchChannelCreate } from '../../SwitchChannelCreate';
+import ImageUploader from '../../ImageUploader';
 
 export default function ChannelCreateModal () {
   const dispatch = useDispatch();
@@ -13,7 +14,8 @@ export default function ChannelCreateModal () {
 
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState(false);
-  const [desc, setDesc] = useState('');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState([]);
   const [publicMode, setPublicMode] = useState(false);
   const theme = useTheme();
   const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm')); 
@@ -26,16 +28,22 @@ export default function ChannelCreateModal () {
       return;
     }
 
-    const themeScheme = (publicMode) ? theme.palette.publicColor : theme.palette.privateColor;
-
     dispatch(setFetching(true));
-    postNewChannel(name, desc, themeScheme, publicMode, userData?.uid)
-      .then(() => {
-        onClose();
-      })
-      .finally(() => {
-        dispatch(setFetching(false));
-      })
+    postNewChannel(
+      userData?.uid,
+      {
+        name,
+        description,
+        theme: (publicMode) ? theme.palette.publicColor : theme.palette.privateColor,
+        publicMode,
+        channelPic: image.at(0)?.dataURL || ''
+      }
+    ).then(() => {
+      onClose();
+    })
+    .finally(() => {
+      dispatch(setFetching(false));
+    })
   }
 
   const onClose = () => {
@@ -43,7 +51,8 @@ export default function ChannelCreateModal () {
   }
   const onExited = () => {
     setName('');
-    setDesc('');
+    setDescription('');
+    setImage([]);
     setPublicMode(false);
     setNameError(false);
   }
@@ -60,6 +69,7 @@ export default function ChannelCreateModal () {
       fullWidth
       fullScreen={!smallMq}
     >
+      <ImageUploader imageArray={image} setImageArray={setImage} alt={name || 'New Channel'} placeholderSrc={'default-channel-white.svg'}/>
       <Grid container sx={{ alignItems: 'center' }}>
         <Grid item xs={12} md={8}>
           <TextField
@@ -104,8 +114,8 @@ export default function ChannelCreateModal () {
         fullWidth
         multiline
         rows={6}
-        value={desc}
-        onChange={(event) => { setDesc(event.target.value) }}
+        value={description}
+        onChange={(event) => { setDescription(event.target.value) }}
       />
       <Alert severity='warning' sx={{ mt: 2 }}>
         {'The channel\'s public status can not be changed later!'}

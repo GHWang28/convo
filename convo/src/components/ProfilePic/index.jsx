@@ -4,7 +4,7 @@ import BootstrapTooltip from '../BootstrapTooltip';
 import { useDispatch } from 'react-redux';
 import { setShowUserModal } from '../../redux/actions';
 
-export default function ProfilePic ({ uid, alt, src, sx, hideTooltip = false, ...props }) {
+export default function ProfilePic ({ uid, alt, src, placeholderSrc = `default-dp-white.svg`, sx, hideTooltip = false, ...props }) {
   const dispatch = useDispatch();
   const onClick = () => {
     if (!uid) return;
@@ -15,7 +15,7 @@ export default function ProfilePic ({ uid, alt, src, sx, hideTooltip = false, ..
     <Avatar
       role='button'
       alt={alt || 'undefined'}
-      src={src || `${process.env.PUBLIC_URL}/images/default-dp-white.svg`}
+      src={src || `${process.env.PUBLIC_URL}/images/${placeholderSrc}`}
       {...props}
       sx={[
         (Boolean(uid)) && {

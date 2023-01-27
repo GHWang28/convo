@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, LinearProgress, Typography } from '@mui/material';
+import { Avatar, Box, LinearProgress, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useParams } from 'react-router-dom';
@@ -8,6 +8,7 @@ import BootstrapTooltip from '../BootstrapTooltip';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { getChannelDocRef } from '../../firebase/database';
 import { getTextColor } from '../../helpers';
+import TypographyTruncate from '../TypographyTruncate';
 
 export default function ListItemChannel ({ cid, closeSearchModal, showDesc, showPressed }) {
   const currViewingChannel = useParams().cid;
@@ -52,6 +53,7 @@ export default function ListItemChannel ({ cid, closeSearchModal, showDesc, show
           border: `1px solid ${channelData?.theme}`,
           borderRadius: '5px',
           display: 'flex',
+          gap: 1,
           cursor: (!pressed) && 'pointer',
           transition: 'background-color 0.25s ease-in-out',
           '&:hover': {
@@ -65,9 +67,11 @@ export default function ListItemChannel ({ cid, closeSearchModal, showDesc, show
           navigate(`/channels/${channelData?.cid}`);
         }}
       >
-        <Box sx={{ width: (showDesc) ? '48px' : '24px'}}>
-          {/* Possible Server Profile Picture */}
-        </Box>
+        <Avatar
+          alt={`${channelData?.name}`}
+          sx={{ bgcolor: 'mainColorNormal' }}
+          src={channelData?.channelPic || `${process.env.PUBLIC_URL}/images/default-channel-white.svg`}
+        />
         <Box
           sx={{
             flexGrow: 1,
@@ -76,21 +80,20 @@ export default function ListItemChannel ({ cid, closeSearchModal, showDesc, show
             alignItems: 'center'
           }}
         >
-          <Typography
+          <TypographyTruncate
+            text={channelData.name}
+            width='100%'
             sx={{
               fontWeight: 'bold',
               textOverflow: 'ellipsis',
               overflow: 'hidden',
               whiteSpace: 'nowrap',
-              width: '95%',
               transition: 'color 0.25s ease-in-out',
               color: (pressed)
                 ? getTextColor(channelData?.theme)
                 : channelData?.theme
             }}
-          >
-            {channelData.name}
-          </Typography>
+          />
           {(showDesc) && (
             <Typography
               sx={{

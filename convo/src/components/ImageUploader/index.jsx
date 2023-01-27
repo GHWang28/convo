@@ -1,78 +1,108 @@
-import React, { Fragment } from 'react';
-import { Box, IconButton, keyframes } from '@mui/material';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import ReactImageUploading from 'react-images-uploading';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ProfilePic from '../ProfilePic';
 import { toast } from 'react-toastify';
+import { Badge, badgeClasses, Box, Button, Collapse, IconButton, Typography, useTheme } from '@mui/material';
+import { Fragment } from 'react';
 import BootstrapTooltip from '../BootstrapTooltip';
 import { compressImage } from '../../helpers';
 
-const shakingKeyframes = keyframes`
-  0% {
-    rotate: -20deg
+export default function ImageUploader ({ imageArray, setImageArray, alt, placeholderSrc }) {
+  const theme = useTheme();
+  const imageSize = { height: '150px', width: '150px' };
+  const onImageChange = (newImage) => {
+    (newImage.at(0)?.dataURL) ? compressImage(newImage.at(0)?.file, setImageArray) : setImageArray(newImage);
   }
-  50% {
-    rotate: 20deg
-  }
-  100% {
-    rotate: -20deg
-  }
-`
-
-export default function ImageUploader ({ image, onChange }) {
 
   return (
-    <ReactImageUploading
-      value={image}
-      onChange={(newImage) => {
-        (newImage.at(0)?.dataURL) ? compressImage(newImage.at(0)?.file, onChange) : onChange(newImage);
-      }}
-      onError={(errors) => {
-        if (errors.acceptType) {
-          toast.error('File type not accepted. Must be jpg, jpeg, webp, svg or png.');
-        } else {
-          toast.error('Failed to upload image.');
-        }
-      }}
-      acceptType={['jpg', 'png', 'jpeg', 'webp', 'svg']}
-    >
-      {({
-        imageList,
-        onImageUpload,
-        onImageRemove,
-        isDragging,
-        dragProps,
-      }) => (
-        <Fragment>
-          <BootstrapTooltip title='Send Image'>
-            <IconButton
-              {...dragProps}
+    <Box mb={3} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+      <ReactImageUploading
+        value={imageArray}
+        onChange={onImageChange}
+        onError={(errors) => {
+          if (errors.acceptType) {
+            toast.error('File type not accepted. Must be jpg, jpeg, webp, svg or png.');
+          } else {
+            toast.error('Failed to upload image.');
+          }
+        }}
+        acceptType={['jpg', 'png', 'jpeg', 'webp', 'svg']}
+      >
+        {({
+          imageList,
+          onImageUpload,
+          onImageRemove,
+          isDragging,
+          dragProps,
+        }) => (
+          <Fragment>
+            {(isDragging) && (
+              <Box
+                sx={{
+                  ...imageSize,
+                  position: 'absolute',
+                  top: 0,
+                  borderRadius: '50%',
+                  pointerEvents: 'none',
+                  bgcolor: 'rgba(0,0,0,0.5)',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  zIndex: 2
+                }}
+              >
+                <Typography align='center' fontWeight='bold'>
+                  {'Drop image here to upload'}
+                </Typography>
+              </Box>
+            )}
+            <Badge
               color='secondary'
-              onClick={onImageUpload}
-              sx={{
-                borderRadius: 0,
-                height: '51px',
-                width: '51px',
-                bgcolor: 'mainColorSlightLight'
-              }}
+              overlap='circular'
+              badgeContent={
+                <BootstrapTooltip title='Upload New Picture' placement='top'>
+                  <IconButton
+                    sx={{
+                      scale: (isDragging) ? 0 : 1,
+                      transition: 'scale 0.3s ease-in-out',
+                      color: 'mainColorNormal',
+                      border: `5px solid ${theme.palette.mainColorLight}`,
+                      bgcolor: 'rgb(255,255,255)',
+                      "&:hover, &.Mui-focusVisible": {
+                        bgcolor: 'rgb(230,230,230)'
+                      }
+                    }}
+                    onClick={onImageUpload}
+                  >
+                    <AddPhotoAlternateIcon />
+                  </IconButton>
+                </BootstrapTooltip>
+              }
+              sx={{ [`& .${badgeClasses.badge}`]: {
+                width: '0px',
+                height: '0px',
+              } }}
             >
-              <AddPhotoAlternateIcon
-                sx={{ pointerEvents: 'none', animation: (isDragging) ? `${shakingKeyframes} 1.0s ease-in-out infinite` : null, animationDelay: '-0.5s' }} />
-            </IconButton>
-          </BootstrapTooltip>
-          {(imageList.length !== 0) && imageList.map((imageItem, index) => (
-            <BootstrapTooltip key={`uploaded-img-${index}`} title='Delete Image' placement='top'>
-              <IconButton onClick={() => { onImageRemove(index) }} sx={{ borderRadius: 0, height: '51px', width: '51px' }}>
-                <Box
-                  alt={`Uploaded-${index}`}
-                  component='img'
-                  src={imageItem.dataURL} 
-                  sx={{ maxHeight: '100%', maxWidth: '100%' }}
-                />
-              </IconButton>
-            </BootstrapTooltip>
-          ))}
-        </Fragment>
-      )}
-    </ReactImageUploading>
+              <ProfilePic
+                {...dragProps}
+                alt={alt}
+                src={imageList?.at(0)?.dataURL}
+                placeholderSrc={placeholderSrc}
+                sx={{ ...imageSize, bgcolor: 'mainColorNormal' }}
+              />
+            </Badge>
+            <Collapse in={Boolean(imageArray?.length)} sx={{ m: 1 }}>
+              <Button startIcon={<DeleteIcon />} onClick={() => { onImageRemove(0) }} variant='contained' color='error' size='small'>
+                {'Delete Picture'}
+              </Button>
+            </Collapse>
+          </Fragment>
+        )}
+      </ReactImageUploading>
+      <Typography align='center' color='secondary' fontSize={14}>
+        {'[To change picture: Click icon or drag/drop new image onto existing picture]'}
+      </Typography>
+    </Box>
   )
 }

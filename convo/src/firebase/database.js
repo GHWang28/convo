@@ -109,20 +109,17 @@ export function getUser (uid, fetchFromDatabase = false) {
     })
 }
 
-export function postNewChannel (name, description, theme, publicMode, uid) {
+export function postNewChannel (uid, newChannelInfo) {
   const docRef = doc(collection(firebaseDatabase, 'channels'));
   const cid = docRef.id;
 
   return setDoc(
     docRef,
     {
-      name,
-      searchTerm: name?.toUpperCase(),
-      description,
-      publicMode,
-      theme,
+      ...newChannelInfo,
+      searchTerm: newChannelInfo?.name?.toUpperCase(),
       tag: genTag(),
-      iconIndex: Number(!publicMode),
+      iconIndex: Number(!newChannelInfo?.publicMode),
       cid,
       dateCreated: serverTimestamp()
     }

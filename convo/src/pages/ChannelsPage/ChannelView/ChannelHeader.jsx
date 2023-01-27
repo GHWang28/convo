@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, useMediaQuery } from '@mui/material';
+import { Avatar, Box, Typography, useMediaQuery } from '@mui/material';
 import { getChannelIcon } from '../../../helpers';
 import { useDispatch } from 'react-redux';
 import { setShowChannelInfoModal } from '../../../redux/actions';
@@ -44,7 +44,10 @@ export default function ChannelHeader ({ channelData }) {
           mb={1}
           sx={{
             width: '100%',
-            height: '45%',
+            height: '55%',
+            display: 'flex',
+            gap: 1,
+            alignItems: 'center',
             boxSizing: 'border-box',
             borderBottomWidth: '1px',
             borderBottomColor: channelData?.theme,
@@ -55,6 +58,11 @@ export default function ChannelHeader ({ channelData }) {
             backgroundSize: 'auto 100%',
           }}
         >
+          <Avatar
+            alt={`${channelData?.name}`}
+            sx={{ bgcolor: 'mainColorNormal' }}
+            src={channelData?.channelPic || `${process.env.PUBLIC_URL}/images/default-channel-white.svg`}
+          />
           <TypographyTruncate
             width='100%'
             text={channelData?.name}
@@ -62,7 +70,7 @@ export default function ChannelHeader ({ channelData }) {
           />
         </Box>
         {/* Channel Description */}
-        <Box sx={{ height: '50%', p: 1, boxSizing: 'border-box', bgcolor: 'mainColorDark', borderRadius: '5px' }}>
+        <Box sx={{ height: '40%', p: 1, boxSizing: 'border-box', bgcolor: 'mainColorDark', borderRadius: '5px' }}>
           <Typography fontWeight='bold' fontSize={15} sx={{ opacity: 0.5 }}>
             {channelData.description}
           </Typography>

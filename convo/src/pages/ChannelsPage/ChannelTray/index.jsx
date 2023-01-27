@@ -14,6 +14,7 @@ export default function ChannelTray () {
   }
 
   const { ref: documentRef } = useSwipeable({
+    delta: 50,
     onSwipedRight: () => { setShowChannelTray(true) },
     onSwipedLeft: () => { setShowChannelTray(false) }
   });

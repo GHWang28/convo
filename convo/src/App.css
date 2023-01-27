@@ -23,8 +23,8 @@ body {
 
 @media (orientation: portrait) {
   ::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
+    width: 5px;
+    height: 5px;
   }
 }
 
@@ -35,7 +35,7 @@ body {
 
 /* Thumb of scrollbar. Where to click and drag */
 ::-webkit-scrollbar-thumb {
-  border: 0.5px solid rgba(245, 245, 245, 0.5);
+  border: 0.5px solid rgba(200, 200, 200, 0.5);
   background: rgba(65, 70, 80, 0.5); 
   border-radius: 5px;
 }

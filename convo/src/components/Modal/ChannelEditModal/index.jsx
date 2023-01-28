@@ -102,7 +102,6 @@ export default function ChannelEditModal () {
         value={description}
         onChange={(event) => { setDescription(event.target.value) }}
       />
-      
       <Grid container mt={3}>
         {/* Color Picker */}
         <Grid item xs={12} sm={6} pr={1}>

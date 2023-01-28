@@ -22,7 +22,7 @@ export default function ChannelCreateModal () {
   const mediumMq = useMediaQuery((theme) => theme.breakpoints.up('md')); 
 
   const onConfirm = () => {
-    if (!name || name.charAt(0) === '#') {
+    if (!name.trim() || name.trim().charAt(0) === '#') {
       toast.error((!name) ? 'Channel name needs to be filled out.' : 'Channel name can not start with \'#\'.');
       setNameError(true);
       return;
@@ -32,7 +32,7 @@ export default function ChannelCreateModal () {
     postNewChannel(
       userData?.uid,
       {
-        name,
+        name: name.trim(),
         description,
         theme: (publicMode) ? theme.palette.publicColor : theme.palette.privateColor,
         publicMode,

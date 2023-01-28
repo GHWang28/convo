@@ -41,7 +41,7 @@ export default function ChannelEditModal () {
     dispatch(setFetching(true));
     editChannel({
         ...channelData,
-        name,
+        name: name.trim(),
         description,
         theme: color,
         iconIndex: icon,

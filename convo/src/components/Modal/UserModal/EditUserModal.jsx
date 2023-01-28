@@ -38,7 +38,7 @@ export default function EditUserModal () {
     }
 
     let userDataPackage = {
-      handle,
+      handle: handle.trim(),
       bio,
       profilePic: profilePic?.at(0)?.dataURL || '',
       uid: newUserDataState?.uid

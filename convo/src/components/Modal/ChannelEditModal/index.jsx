@@ -157,6 +157,7 @@ export default function ChannelEditModal () {
                 role='button'
                 onClick={() => { setIcon(index) }}
                 sx={{
+                  WebkitTapHighlightColor: 'transparent' ,
                   border: `1px solid ${theme.palette.contrastColor}`,
                   borderRadius: '10px',
                   width: '32px',

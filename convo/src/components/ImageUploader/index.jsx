@@ -92,7 +92,7 @@ export default function ImageUploader ({ imageArray, setImageArray, alt, placeho
                 sx={{ ...imageSize, bgcolor: 'mainColorNormal' }}
               />
             </Badge>
-            <Collapse in={Boolean(imageArray?.length)} sx={{ m: 1 }}>
+            <Collapse in={Boolean(imageList?.at(0)?.dataURL)} sx={{ m: 1 }}>
               <Button startIcon={<DeleteIcon />} onClick={() => { onImageRemove(0) }} variant='contained' color='error' size='small'>
                 {'Delete Picture'}
               </Button>

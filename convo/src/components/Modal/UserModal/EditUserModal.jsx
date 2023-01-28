@@ -27,7 +27,7 @@ export default function EditUserModal () {
 
   const onClose = () => {
     if (!editMode) {
-      auth.signOut()
+      auth.signOut();
     };
     dispatch(setShowEditUserModal(null));
   }

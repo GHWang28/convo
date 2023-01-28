@@ -15,6 +15,7 @@ export default function ChannelInfoModal () {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
+    if (!displayInfo?.creatorUid) return;
     getUser(displayInfo?.creatorUid).then(setUserData);
   }, [displayInfo?.creatorUid, displayInfo?.show])
 

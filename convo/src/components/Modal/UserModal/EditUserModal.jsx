@@ -23,7 +23,7 @@ export default function EditUserModal () {
   const [handle, setHandle] = useState('');
   const [bio, setBio] = useState('');
   const [profilePic, setProfilePic] = useState([]);
-  const invalidHandle = !(handle.length >= config.MIN_HANDLE_NAME && handle.length <= config.MAX_HANDLE_NAME) || handle.charAt(0) === '#';
+  const invalidHandle = !(handle.trim().length >= config.MIN_HANDLE_NAME && handle.trim().length <= config.MAX_HANDLE_NAME) || handle.trim().charAt(0) === '#';
 
   const onClose = () => {
     if (!editMode) {

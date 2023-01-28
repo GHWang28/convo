@@ -21,8 +21,8 @@ export default function ChannelEditModal () {
   const [color, setColor] = useState('');
   const [icon, setIcon] = useState(0);
   const [image, setImage] = useState([]);
-  const [nameError, setNameError] = useState(false);
   const smallMq = useMediaQuery((theme) => theme.breakpoints.up('sm'));
+  const nameError = (!(name.trim()) || name.charAt(0) === '#');
 
   useEffect(() => {
     if (!channelData) return;
@@ -34,9 +34,8 @@ export default function ChannelEditModal () {
   }, [channelData]);
 
   const onConfirm = () => {
-    if (!name || name.charAt(0) === '#') {
+    if (nameError) {
       toast.error((!name) ? 'Channel name needs to be filled out.' : 'Channel name can not start with \'#\'.');
-      setNameError(true);
       return;
     }
     dispatch(setFetching(true));
@@ -61,7 +60,6 @@ export default function ChannelEditModal () {
     dispatch(setShowChannelEditModal(null));
   }
   const onExited = () => {
-    setNameError(false);
     setDescription('');
     setColor('');
     setIcon(0);
@@ -87,9 +85,8 @@ export default function ChannelEditModal () {
         variant='outlined'
         fullWidth
         value={name}
-        error={nameError && (!name || name.charAt(0))}
+        error={nameError}
         onChange={(event) => { setName(event.target.value) }}
-        onClick={() => { setNameError(false) }}
       />
       <TextField
         sx={{ mt: 2 }}

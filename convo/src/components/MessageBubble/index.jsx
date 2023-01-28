@@ -16,11 +16,6 @@ import LinkifyWrapper from '../LinkifyWrapper';
 import config from '../../config.json';
 import { toast } from 'react-toastify';
 
-function padding (smallMq, isStart) {
-  if (isStart) return 1;
-  return (smallMq) ? 6 : 5;
-}
-
 export default function MessageBubble ({ messageData, color, arrow, isStart = true, isEnd = true, showOptions = false }) {
   const dispatch = useDispatch();
   const [sender, setSender] = useState(null);
@@ -52,8 +47,8 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
   return (
     <Box
       sx={{
-        pl: (viewerIsSender) ? ((smallMq) ? 8 : 1) : padding(smallMq, isStart),
-        pr: (viewerIsSender) ? padding(smallMq, isStart) : ((smallMq) ? 8 : 1),
+        pl: (viewerIsSender) ? ((smallMq) ? 8 : 0.5) : ((isStart) ? 0.5 : 6),
+        pr: (viewerIsSender) ? ((isStart) ? 0.5 : 6) : ((smallMq) ? 8 : 0.5),
         pt: (isStart) && 1,
         pb: (isEnd) && 1,
         display: 'flex',
@@ -63,7 +58,15 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
       }}
     >
       {(isStart) && (
-        <ProfilePic uid={sender?.uid} alt={sender?.handle} src={sender?.profilePic} sx={{ width: (smallMq) ? 40 : 32, height: (smallMq) ? 40 : 32, mt: (!smallMq) && 1 }}/>
+        <ProfilePic
+          uid={sender?.uid}
+          alt={sender?.handle}
+          src={sender?.profilePic}
+          sx={{
+            width: 44,
+            height: 44
+          }}
+        />
       )}
       {/* Message Box */}
       <Box

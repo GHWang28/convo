@@ -21,7 +21,7 @@ export default function ProfilePic ({ uid, alt, src, placeholderSrc = `default-d
         (Boolean(uid)) && {
           transition: 'scale 0.25s ease-in-out',
           '&:hover': {
-            scale: '1.25'
+            scale: '1.1'
           },
           cursor: 'pointer',
           userSelect: 'none'

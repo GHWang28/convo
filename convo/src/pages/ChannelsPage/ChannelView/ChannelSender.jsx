@@ -11,13 +11,14 @@ import ChannelImageUploader from './ChannelImageUploader';
 
 export default function ChannelSender ({ cid }) {
   const [message, setMessage] = useState('');
+  const trimmedMessage = message.trim();
   const [image, setImage] = useState([]);
   const [sending, setSending] = useState(false);
-  const messagePercentage = 100 * message.length / config.MAX_CHAR;
+  const messagePercentage = 100 * trimmedMessage.length / config.MAX_CHAR;
   const userData = useSelector(state => state.loggedInUserData);
 
   const onSend = () => {
-    if (!(message || image.length)) return;
+    if (!(trimmedMessage || image.length)) return;
     if (messagePercentage >= 100) {
       toast.error('Message is too long to send.');
       return;
@@ -26,24 +27,20 @@ export default function ChannelSender ({ cid }) {
     setMessage('');
     setImage([]);
     setSending(true);
-    sendMessageToDatabase(message, image?.at(0)?.dataURL);
+    sendMessageToDatabase(trimmedMessage, image?.at(0)?.dataURL);
   }
-
   const onGifClick = (tenorImageObj) => {
     sendMessageToDatabase('', tenorImageObj?.url);
   }
-
   const sendMessageToDatabase = (inputMessage, imageURL) => {
     postMessage(cid, userData.uid, { text: inputMessage, image: imageURL || '' })
       .then(() => {
         // Delay before scrolling down
         return new Promise((resolve) => (setTimeout(resolve, 5)))
-      })
-      .then(() => {
+      }).then(() => {
         const msgContainer = document.getElementById('message-container');
         msgContainer.scrollTo({ top: msgContainer.scrollHeight, behavior: 'smooth' });
-      })
-      .finally(() => {
+      }).finally(() => {
         setSending(false);
       })
   }
@@ -82,7 +79,7 @@ export default function ChannelSender ({ cid }) {
         />
         {/* Send Button that collapses in if there isn't anything to send */}
         <Box>
-          <Collapse in={Boolean(message.length || image.length)} orientation='horizontal'>
+          <Collapse in={Boolean(trimmedMessage.length || image.length)} orientation='horizontal'>
             <BootstrapTooltip title='Send Message' placement='top'>
               <IconButton color='secondary' onClick={onSend} sx={{ borderRadius: 0, bgcolor: 'mainColorSlightLight', width: '51px', height: '51px' }}>
                 <SendIcon />
@@ -105,7 +102,7 @@ export default function ChannelSender ({ cid }) {
             lineHeight: 1
           }}
         >
-          {`${message.length} / ${config.MAX_CHAR} characters`}
+          {`${trimmedMessage.length} / ${config.MAX_CHAR} characters`}
         </Typography>
         <BorderLinearProgress
           title='Message Capacity'

@@ -45,7 +45,7 @@ export default function MessageOptions ({ position, isSender, color = 'whitesmok
   ]
 
   return (
-    <Box sx={{ position: 'absolute', ...position, zIndex: 2, display: 'flex', gap: 1 }}>
+    <Box sx={{ position: 'absolute', ...position, zIndex: 2, display: 'flex', gap: 0.25 }}>
       {options.filter((optionItem) => (optionItem)).map((optionItem) => (
         <BootstrapTooltip key={optionItem.label} title={optionItem.label} placement='top'>
           <IconButton

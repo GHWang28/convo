@@ -200,6 +200,12 @@ export function getChannelIcon (iconIndex, color, opacity = 1) {
   }
 }
 
+export function getMillisecondsToTomorrow () {
+  const d = new Date();
+  const msToday = d.getHours() * 3.6e+6 + d.getMinutes() * 60000 + d.getMilliseconds();
+  return 8.64e+7 - msToday;
+}
+
 export function genTag () {
   return new ShortUniqueId({ length: 7 })();
 }

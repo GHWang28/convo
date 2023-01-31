@@ -136,7 +136,7 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
               <Typography
                 fontSize={(smallMq) ? '15px' : '13px'}
                 fontStyle={(Boolean(messageData?.timestampEdit)) ? 'italic' : 'normal' }
-                sx={{ wordBreak: 'break-word' }}
+                sx={{ wordBreak: 'break-word', userSelect: 'none' }}
               >
                 <LinkifyWrapper>
                   {messageData?.text}

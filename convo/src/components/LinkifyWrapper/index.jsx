@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from '@mui/material';
 import Linkify from 'linkify-react';
 import BootstrapTooltip from '../BootstrapTooltip';
+import PropTypes from 'prop-types';
 
 export default function LinkifyWrapper ({ children }) {
   return (
@@ -19,4 +20,11 @@ export default function LinkifyWrapper ({ children }) {
       {children}
     </Linkify>
   )
+}
+
+LinkifyWrapper.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]).isRequired
 }

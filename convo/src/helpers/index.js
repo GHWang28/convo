@@ -52,6 +52,11 @@ export function calcHue (RGBString) {
   return (hue < 0) ? (hue + 360) : hue;
 }
 
+/**
+ * Compresses the given image file and returns it with the given setImage function
+ * @param {File} imageFile 
+ * @param {Function} setImage 
+ */
 export function compressImage (imageFile, setImage) {
   if (!imageFile) return;
 
@@ -69,13 +74,23 @@ export function compressImage (imageFile, setImage) {
   })
 }
 
-export function getTextColor (bgRGBstring) {
-  const [r, g, b] = parseRGB(bgRGBstring);
+/**
+ * Calculates a suitable color that contrasts with the given rgb string
+ * @param {String} RGBstring 
+ * @returns {String}
+ */
+export function getTextColor (RGBstring) {
+  const [r, g, b] = parseRGB(RGBstring);
   // Calculate luminosity to give text that contrasts with it the background
   const luminosity = (0.299 * Number(r) + 0.587 * Number(g) + 0.114 * Number(b));
   return (luminosity < (255 / 2)) ? 'whitesmoke' : 'black';
 }
 
+/**
+ * Converts the given image file to base64 string
+ * @param {File} file 
+ * @returns {Promise<any>}
+ */
 export function convertImgToURL (file) {
   const reader = new FileReader();
 
@@ -200,12 +215,22 @@ export function getChannelIcon (iconIndex, color, opacity = 1) {
   }
 }
 
+/**
+ * Get the total amount of milliseonds till tomorrow currently
+ * @returns {Number}
+ */
 export function getMillisecondsToTomorrow () {
-  const d = new Date();
-  const msToday = d.getHours() * 3.6e+6 + d.getMinutes() * 60000 + d.getMilliseconds();
+  const date = new Date();
+  // Converts the current time to milliseconds
+  const msToday = date.getHours() * 3.6e+6 + date.getMinutes() * 60000 + date.getMilliseconds();
+  // Subtracts total ms in a day from the milliseconds elapsed so far
   return 8.64e+7 - msToday;
 }
 
+/**
+ * Generated a tag of length 7 and returns it
+ * @returns {String}
+ */
 export function genTag () {
   return new ShortUniqueId({ length: 7 })();
 }

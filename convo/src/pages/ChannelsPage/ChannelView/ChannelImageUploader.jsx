@@ -5,6 +5,7 @@ import ReactImageUploading from 'react-images-uploading';
 import { toast } from 'react-toastify';
 import { compressImage } from '../../../helpers'
 import BootstrapTooltip from '../../../components/BootstrapTooltip';
+import PropTypes from 'prop-types';
 
 const shakingKeyframes = keyframes`
   0% {
@@ -75,4 +76,12 @@ export default function ChannelImageUploader ({ image, onChange }) {
       )}
     </ReactImageUploading>
   )
+}
+
+ChannelImageUploader.propTypes = {
+  image: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.object),
+    PropTypes.string
+  ]).isRequired,
+  onChange: PropTypes.func.isRequired
 }

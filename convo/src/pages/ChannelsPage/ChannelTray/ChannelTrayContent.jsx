@@ -7,6 +7,7 @@ import ButtonLogOut from '../../../components/ButtonLogOut';
 import ListItemChannel from '../../../components/ListItemChannel';
 import { setShowChannelSearchModal } from '../../../redux/actions';
 import ProfilePic from '../../../components/ProfilePic';
+import PropTypes from 'prop-types';
 
 export default function ChannelTrayContent ({ height }) {
   const mediumMq = useMediaQuery((theme) => theme.breakpoints.up('md'));
@@ -105,4 +106,8 @@ export default function ChannelTrayContent ({ height }) {
       </Grid>
     </Box>
   )
+}
+
+ChannelTrayContent.propTypes = {
+  height: PropTypes.string
 }

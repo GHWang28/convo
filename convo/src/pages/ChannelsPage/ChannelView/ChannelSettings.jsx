@@ -9,8 +9,9 @@ import AnnouncementIcon from '@mui/icons-material/Announcement';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { useDispatch, useSelector } from 'react-redux';
 import { setShowChannelEditModal, setShowChannelInviteModal, setShowChannelLeaveModal, setShowChannelMemberModal, setShowChannelNotifications } from '../../../redux/actions';
+import PropTypes from 'prop-types';
 
-export default function Settings ({ channelData }) {
+export default function ChannelSettings ({ channelData }) {
   const dispatch = useDispatch();
   const channelNotificationToggle = useSelector(state => state.channelNotification);
 
@@ -68,4 +69,8 @@ export default function Settings ({ channelData }) {
       }}
     />
   )
+}
+
+ChannelSettings.propTypes = {
+  channelData: PropTypes.object.isRequired,
 }

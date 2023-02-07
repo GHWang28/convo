@@ -8,6 +8,7 @@ import MessageLoad from '../../../components/MessageLoad';
 import config from '../../../config.json';
 import NotificationBubble from '../../../components/NotificationBubble';
 import MessageBubble from '../../../components/MessageBubble';
+import PropTypes from 'prop-types';
 
 export default function ChannelMessages ({ channelData }) {
   const [page, setPage] = useState(0);
@@ -86,4 +87,8 @@ export default function ChannelMessages ({ channelData }) {
 function separateByTimestamp (timestampA, timestampB) {
   if (!timestampA || !timestampB) return true;
   return Math.abs(timestampA.seconds - timestampB.seconds) > config.MESSAGE_BUFFER_TIMESTAMP_SECONDS
+}
+
+ChannelMessages.propTypes = {
+  channelData: PropTypes.object.isRequired,
 }

@@ -3,6 +3,7 @@ import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, Ty
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
 const Transition = forwardRef((props, ref) => (
   <Zoom ref={ref} {...props} />
@@ -72,3 +73,24 @@ export default function Modal ({
     </Dialog>
   )
 }
+
+Modal.propTypes = {
+  open: PropTypes.bool.isRequired,
+  confirmTitle: PropTypes.string,
+  closeTitle: PropTypes.string,
+  confirmColor: PropTypes.string,
+  closeColor: PropTypes.string,
+  confirmIcon: PropTypes.element,
+  closeIcon: PropTypes.element,
+  handleConfirm: PropTypes.func,
+  handleClose: PropTypes.func,
+  onExited: PropTypes.func,
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+  fullWidth: PropTypes.bool,
+  fullScreen: PropTypes.bool,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ])
+};

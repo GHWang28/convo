@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Box, Grid, useMediaQuery } from '@mui/material';
 import LandingCard from './LandingCard';
-import Logo from '../../components/Logo';
+import Logo from './Logo';
 import VersionNumber from '../../components/VersionNumber';
 import EditUserModal from '../../components/Modal/UserModal/EditUserModal';
 

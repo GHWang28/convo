@@ -3,8 +3,9 @@ import { Avatar, Box, Typography, useMediaQuery } from '@mui/material';
 import { getChannelIcon } from '../../../helpers';
 import { useDispatch } from 'react-redux';
 import { setShowChannelInfoModal } from '../../../redux/actions';
-import Settings from './ChannelSettings';
+import ChannelSettings from './ChannelSettings';
 import TypographyTruncate from '../../../components/TypographyTruncate';
+import PropTypes from 'prop-types';
 
 export default function ChannelHeader ({ channelData }) {
   const dispatch = useDispatch();
@@ -77,19 +78,14 @@ export default function ChannelHeader ({ channelData }) {
           </Typography>
         </Box>
       </Box>
-
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '40px',
-          boxSizing: 'border-box',
-          height: '100%'
-        }}
-      >
-        <Settings channelData={channelData}/>
+      {/* Channel Settings */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <ChannelSettings channelData={channelData}/>
       </Box>
     </Box>
   )
+}
+
+ChannelHeader.propTypes = {
+  channelData: PropTypes.object.isRequired
 }

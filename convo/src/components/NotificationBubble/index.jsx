@@ -8,6 +8,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ProfilePic from '../ProfilePic';
 import BootstrapTooltip from '../BootstrapTooltip';
+import PropTypes from 'prop-types';
 
 export default function NotificationBubble ({ notificationData, color }) {
   const [sender, setSender] = useState(null);
@@ -47,6 +48,11 @@ export default function NotificationBubble ({ notificationData, color }) {
     </Collapse>
   )
 }
+
+NotificationBubble.propTypes = {
+  notificationData: PropTypes.object.isRequired,
+  color: PropTypes.string
+};
 
 function generateNotificationMessage (nid, sender) {
   const avatarProps = { alt: sender?.handle, src: sender?.profilePic, uid: sender?.uid, hideTooltip: true };

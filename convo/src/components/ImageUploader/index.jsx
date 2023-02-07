@@ -1,12 +1,13 @@
+import React, { Fragment } from 'react';
 import ReactImageUploading from 'react-images-uploading';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ProfilePic from '../ProfilePic';
 import { toast } from 'react-toastify';
 import { Badge, badgeClasses, Box, Button, Collapse, IconButton, Typography, useTheme } from '@mui/material';
-import { Fragment } from 'react';
 import BootstrapTooltip from '../BootstrapTooltip';
 import { compressImage } from '../../helpers';
+import PropTypes from 'prop-types';
 
 export default function ImageUploader ({ imageArray, setImageArray, alt, placeholderSrc }) {
   const theme = useTheme();
@@ -105,4 +106,14 @@ export default function ImageUploader ({ imageArray, setImageArray, alt, placeho
       </Typography>
     </Box>
   )
+}
+
+ImageUploader.propTypes = {
+  imageArray: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.object),
+    PropTypes.string
+  ]).isRequired,
+  setImageArray: PropTypes.func.isRequired,
+  alt: PropTypes.string.isRequired,
+  placeholderSrc: PropTypes.string
 }

@@ -15,9 +15,9 @@ import ProfilePic from '../ProfilePic';
 import LinkifyWrapper from '../LinkifyWrapper';
 import config from '../../config.json';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 
 export default function MessageBubble ({ messageData, color, arrow, isStart = true, isEnd = true, showOptions = false }) {
-  const dispatch = useDispatch();
   const [sender, setSender] = useState(null);
   const [edit, setEdit] = useState(false);
   const [hover, setHover] = useState(false);
@@ -127,11 +127,7 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
         ) : (
           <Fragment>
             {(isImg) ? (
-              <BubbleImage
-                src={messageData?.text}
-                onClick={() => { dispatch(setImageZoom(messageData?.text)) }}
-                color={color}
-              />
+              <BubbleImage src={messageData?.text} color={color}/>
             ) : (
               <Typography
                 fontSize={(smallMq) ? '15px' : '13px'}
@@ -150,11 +146,7 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
           </Fragment>
         )}
         {(messageData?.image) && (
-          <BubbleImage
-            src={messageData?.image}
-            onClick={() => { dispatch(setImageZoom(messageData?.image)) }}
-            color={color}
-          />
+          <BubbleImage src={messageData?.image} color={color}/>
         )}
         {(messageData?.text.length === 0) && (
           editedTimestamp
@@ -164,6 +156,15 @@ export default function MessageBubble ({ messageData, color, arrow, isStart = tr
     </Box>
 
   )
+}
+
+MessageBubble.propTypes = {
+  messageData: PropTypes.object,
+  color: PropTypes.string,
+  arrow: PropTypes.bool,
+  isStart: PropTypes.bool,
+  isEnd: PropTypes.bool,
+  showOptions: PropTypes.bool
 }
 
 function MessageTail ({ right }) {
@@ -185,12 +186,19 @@ function MessageTail ({ right }) {
   )
 }
 
-function BubbleImage ({ onClick, src, color }) {
+MessageTail.propTypes = {
+  right: PropTypes.bool
+}
+
+function BubbleImage ({ src, color }) {
+  const dispatch = useDispatch();
   const [loaded, setLoaded] = useState(false);
 
   const onLoad = () => {
     setLoaded(true);
   }
+
+  const onClick = () => { dispatch(setImageZoom(src)) }
 
   return (
     <Fragment>
@@ -222,6 +230,11 @@ function BubbleImage ({ onClick, src, color }) {
       />
     </Fragment>
   )
+}
+
+BubbleImage.propTypes = {
+  src: PropTypes.string.isRequired,
+  color: PropTypes.string
 }
 
 function EditMode ({ messageData, setEdit, color }) {
@@ -297,4 +310,10 @@ function EditMode ({ messageData, setEdit, color }) {
       maxRows={5}
     />
   )
+}
+
+EditMode.propTypes = {
+  messageData: PropTypes.object,
+  setEdit: PropTypes.func.isRequired,
+  color: PropTypes.string
 }

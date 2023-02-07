@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, TextField, useMediaQuery } from '@mui/material'
 import { parseRGB } from '../../helpers';
+import PropTypes from 'prop-types';
 
 export default function TextInputRGB ({ color, setColor }) {
   const [r, g, b] = parseRGB(color);
@@ -44,3 +45,8 @@ export default function TextInputRGB ({ color, setColor }) {
     </Box>
   )
 }
+
+TextInputRGB.propTypes = {
+  color: PropTypes.string,
+  setColor: PropTypes.func
+};

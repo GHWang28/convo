@@ -3,6 +3,7 @@ import { Avatar } from '@mui/material';
 import BootstrapTooltip from '../BootstrapTooltip';
 import { useDispatch } from 'react-redux';
 import { setShowUserModal } from '../../redux/actions';
+import PropTypes from 'prop-types';
 
 export default function ProfilePic ({ uid, alt, src, placeholderSrc = `default-dp-white.svg`, sx, hideTooltip = false, ...props }) {
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ export default function ProfilePic ({ uid, alt, src, placeholderSrc = `default-d
       onClick={onClick}
     />
   )
-  
+
   return (hideTooltip) ? (
     avatar
   ) : (
@@ -43,3 +44,18 @@ export default function ProfilePic ({ uid, alt, src, placeholderSrc = `default-d
     </BootstrapTooltip>
   )
 }
+
+ProfilePic.propTypes = {
+  uid: PropTypes.string,
+  alt: PropTypes.string,
+  src: PropTypes.string,
+  placeholderSrc: PropTypes.string,
+  sx: PropTypes.oneOfType([
+    PropTypes.arrayOf(
+      PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool]),
+    ),
+    PropTypes.func,
+    PropTypes.object,
+  ]),
+  hideTooltip: PropTypes.bool
+};

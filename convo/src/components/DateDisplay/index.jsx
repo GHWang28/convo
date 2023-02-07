@@ -2,19 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { convertEpochToDate, getMillisecondsToTomorrow } from '../../helpers';
 import { animated, useTransition } from 'react-spring';
+import PropTypes from 'prop-types';
 
 const DATE_REF_ENUM = {
   TODAY: 1,
   YESTERDAY: 2,
-  LONG_AGO: 0
+  LONGAGO: 0
 }
 
 export default function DateDisplay ({ time, fontSize = 9, align }) {
   const [dateRef, setDateRef] = useState(0);
   const [shorten, setShorten] = useState(true);
+
+  // Calculate the day for timestamp, in seconds and for time now, in milliseconds
   useEffect(() => {
     const updateTime = () => {
-      // Calculate the day for timestamp, in seconds and for time now, in milliseconds
       const timestampDay = Math.round((time) / 86400);
       const todayDay =  Math.round(Date.now() / 8.64e+7);
 
@@ -30,7 +32,9 @@ export default function DateDisplay ({ time, fontSize = 9, align }) {
     updateTime();
 
     return () => { clearTimeout(timeout) }
-  }, [time])
+  }, [time]);
+
+  // React spring animations
   const transitions = useTransition(shorten, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -39,9 +43,7 @@ export default function DateDisplay ({ time, fontSize = 9, align }) {
   const AnimatedTypography = animated(Typography);
 
   return (
-    <Box
-      sx={{ position: 'relative', height: fontSize * 1.2 }}
-    >
+    <Box sx={{ position: 'relative', height: fontSize * 1.2 }}>
       {transitions((style, toShorten) => (
         <AnimatedTypography
           style={style}
@@ -73,4 +75,10 @@ export default function DateDisplay ({ time, fontSize = 9, align }) {
       ))}
     </Box>
   )
+}
+
+DateDisplay.propTypes = {
+  time: PropTypes.string.isRequired,
+  fontSize: PropTypes.number.isRequired,
+  align: PropTypes.string
 }

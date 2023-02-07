@@ -1,5 +1,6 @@
 import { Box, CircularProgress } from '@mui/material';
 import { animated, useTransition } from 'react-spring';
+import PropTypes from 'prop-types';
 
 export default function LoadingCover ({ display }) {
   const transitions = useTransition(display, {
@@ -29,4 +30,8 @@ export default function LoadingCover ({ display }) {
       </AnimatedBox>
     ) : null
   ))
+}
+
+LoadingCover.propTypes = {
+  display: PropTypes.bool
 }

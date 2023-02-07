@@ -5,6 +5,7 @@ import TypographyTruncate from '../TypographyTruncate';
 import ProfilePic from '../ProfilePic';
 import { useDispatch } from 'react-redux';
 import { setShowUserModal } from '../../redux/actions';
+import PropTypes from 'prop-types';
 
 export default function ListItemUser ({ userData, onClick }) {
   const theme = useTheme();
@@ -43,4 +44,9 @@ export default function ListItemUser ({ userData, onClick }) {
       </Box>
     </BootstrapTooltip>
   )
+}
+
+ListItemUser.propTypes = {
+  userData: PropTypes.object.isRequired,
+  onClick: PropTypes.func
 }

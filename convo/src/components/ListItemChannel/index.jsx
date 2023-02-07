@@ -9,6 +9,7 @@ import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { getChannelDocRef } from '../../firebase/database';
 import { getTextColor } from '../../helpers';
 import TypographyTruncate from '../TypographyTruncate';
+import PropTypes from 'prop-types';
 
 export default function ListItemChannel ({ cid, closeSearchModal, showDesc, showPressed }) {
   const currViewingChannel = useParams().cid;
@@ -112,4 +113,11 @@ export default function ListItemChannel ({ cid, closeSearchModal, showDesc, show
       </Box>
     </BootstrapTooltip>
   )
+}
+
+ListItemChannel.propTypes = {
+  cid: PropTypes.string.isRequired,
+  closeSearchModal: PropTypes.bool,
+  showDesc: PropTypes.bool,
+  showPressed: PropTypes.bool
 }

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 /**
  * A div that contains Material UI chips
  */
-function ChipContainer ({ children, width, maxHeight = '96px', sx }) {
+export default function ChipContainer ({ children, width, maxHeight = '96px', sx }) {
   const theme = useTheme();
   const chipContainerStyle = {
     display: 'flex',
@@ -41,5 +41,3 @@ ChipContainer.propTypes = {
   maxHeight: PropTypes.string,
   style: PropTypes.object
 };
-
-export default ChipContainer;

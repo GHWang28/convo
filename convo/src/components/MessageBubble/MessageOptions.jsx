@@ -11,6 +11,7 @@ import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import Picker from '@emoji-mart/react'
 import { postDelMessageReact } from '../../firebase/database';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 
 export default function MessageOptions ({ position, isSender, color = 'whitesmoke', messageData, setEdit, setHover }) {
   const dispatch = useDispatch();
@@ -109,4 +110,13 @@ export default function MessageOptions ({ position, isSender, color = 'whitesmok
       </ButtonMenu>
     </Box>
   )
+}
+
+MessageOptions.propTypes = {
+  position: PropTypes.string,
+  isSender: PropTypes.bool,
+  color: PropTypes.string,
+  messageData: PropTypes.object.isRequired,
+  setEdit: PropTypes.func.isRequired,
+  setHover: PropTypes.func.isRequired
 }

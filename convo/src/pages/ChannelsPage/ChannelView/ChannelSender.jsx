@@ -8,6 +8,7 @@ import BootstrapTooltip from '../../../components/BootstrapTooltip';
 import ButtonGifPicker from '../../../components/ButtonGifPicker';
 import config from '../../../config.json';
 import ChannelImageUploader from './ChannelImageUploader';
+import PropTypes from 'prop-types';
 
 export default function ChannelSender ({ cid }) {
   const [message, setMessage] = useState('');
@@ -124,3 +125,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'light' ? 'black' : 'whitesmoke',
   },
 }));
+
+ChannelSender.propTypes = {
+  cid: PropTypes.string.isRequired,
+}

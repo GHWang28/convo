@@ -2,12 +2,14 @@ import React from 'react';
 import ButtonMenu from '../ButtonMenu';
 import GifPicker from 'gif-picker-react';
 import GifIcon from '@mui/icons-material/Gif';
+import PropTypes from 'prop-types';
 
 export default function ButtonGifPicker ({ onGifClick }) {
   return (
     <ButtonMenu
       icon={<GifIcon sx={{ scale: '1.6' }}/>}
       title='Add Reaction'
+      id='gif-picker-btn'
       size='small'
       sx={{
         bgcolor: 'mainColorSlightLight',
@@ -21,7 +23,7 @@ export default function ButtonGifPicker ({ onGifClick }) {
       }}
       transformOrigin={{
         vertical: 'bottom',
-        horizontal: 'right',
+        horizontal: 'left'
       }}
     >
       {({ onClose }) => (
@@ -37,4 +39,8 @@ export default function ButtonGifPicker ({ onGifClick }) {
       )}
     </ButtonMenu>
   )
+}
+
+ButtonGifPicker.propTypes = {
+  onGifClick: PropTypes.func.isRequired
 }

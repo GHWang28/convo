@@ -1,6 +1,7 @@
-import { IconButton, ListItemIcon, Menu, MenuItem, Typography } from '@mui/material';
 import React, { Fragment, useState } from 'react';
+import { IconButton, ListItemIcon, Menu, MenuItem, Typography } from '@mui/material';
 import BootstrapTooltip from '../BootstrapTooltip';
+import PropTypes from 'prop-types';
 
 export default function ButtonMenu ({
   icon,
@@ -78,3 +79,31 @@ export default function ButtonMenu ({
     </Fragment>
   )
 }
+
+ButtonMenu.propTypes = {
+  icon: PropTypes.element,
+  menuItems: PropTypes.arrayOf(PropTypes.object),
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]),
+  id: PropTypes.string.isRequired,
+  sx: PropTypes.oneOfType([
+    PropTypes.arrayOf(
+      PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool]),
+    ),
+    PropTypes.func,
+    PropTypes.object,
+  ]),
+  size: PropTypes.string,
+  title: PropTypes.string,
+  anchorOrigin: PropTypes.shape({
+    horizontal: PropTypes.string,
+    vertical: PropTypes.string
+  }),
+  transformOrigin: PropTypes.shape({
+    horizontal: PropTypes.string,
+    vertical: PropTypes.string
+  }),
+  onClose: PropTypes.func
+};

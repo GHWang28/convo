@@ -5,12 +5,14 @@ import { getUser, postDelMessageReact } from '../../firebase/database';
 import { animated, useTransition } from 'react-spring';
 import { getTextColor, parseRGB } from '../../helpers';
 import config from '../../config.json';
+import PropTypes from 'prop-types';
 
 export default function EmojiTrain ({ messageData, viewerUID, color, interactable = false }) {
   if (!(messageData?.reactions && Object.keys(messageData?.reactions).length !== 0)) return null;
   
   return (
     <Box
+      p={0.4}
       sx={{
         bgcolor: 'mainColorDark',
         width: 'fit-content',
@@ -20,8 +22,7 @@ export default function EmojiTrain ({ messageData, viewerUID, color, interactabl
         gridTemplateColumns: 'repeat(auto-fit, minmax(60px, max-content))',
         justifyContent: 'left',
         alignItems: 'flex-start',
-        gap: 0.4,
-        p: 0.4
+        gap: 0.4
       }}
     >
       {messageData?.reactionsOrder.map((rid) => {
@@ -41,6 +42,13 @@ export default function EmojiTrain ({ messageData, viewerUID, color, interactabl
       })}
     </Box>
   )
+}
+
+EmojiTrain.propTypes = {
+  messageData: PropTypes.object.isRequired,
+  viewerUID: PropTypes.string.isRequired,
+  color: PropTypes.string,
+  interactable: PropTypes.bool
 }
 
 function EmojiChip ({ reactionData, rid, cid, mid, viewerUID, color, interactable }) {
@@ -113,4 +121,14 @@ function EmojiChip ({ reactionData, rid, cid, mid, viewerUID, color, interactabl
       </BootstrapTooltip>
     )
   ))
+}
+
+EmojiChip.propTypes = {
+  reactionData: PropTypes.object.isRequired,
+  rid: PropTypes.string.isRequired,
+  cid: PropTypes.string.isRequired,
+  mid: PropTypes.string.isRequired,
+  viewerUID: PropTypes.string.isRequired,
+  color: PropTypes.string,
+  interactable: PropTypes.bool
 }

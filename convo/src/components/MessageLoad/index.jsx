@@ -1,5 +1,6 @@
+import React, { Fragment } from 'react';
 import { Box, LinearProgress, Typography } from '@mui/material';
-import { Fragment } from 'react';
+import PropTypes from 'prop-types';
 
 export default function MessageLoad ({ loading, color }) {
   const hrSx = { borderColor: color, width: '90%' };
@@ -25,4 +26,9 @@ export default function MessageLoad ({ loading, color }) {
       )}
     </Box>
   )
+}
+
+MessageLoad.propTypes = {
+  loading: PropTypes.bool,
+  color: PropTypes.string
 }

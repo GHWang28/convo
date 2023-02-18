@@ -17,6 +17,7 @@ import ImageZoomer from './components/ImageZoomer';
 import data from '@emoji-mart/data'
 import { init } from 'emoji-mart'
 
+// Initialise Emoji Data
 init({ data });
 
 export default function App() {
@@ -67,7 +68,7 @@ export default function App() {
     if (!user) {
       navigate('/');
     } else {
-      getUser(user.uid, true).then((userData) => {
+      getUser(user.uid, true, false).then((userData) => {
         (userData) ? navigate('/channels') : dispatch(setShowEditUserModal({
           uid: user.uid,
           displayName: user.displayName,

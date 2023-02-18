@@ -69,7 +69,7 @@ export function leaveUserFromChannel (uid, cid, showToast = true) {
 
 export function getArrayOfUserData (uidArray) {
   return Promise.all(uidArray.map((uid) => (
-      getUser(uid)
+    getUser(uid)
   )))
 }
 
@@ -98,7 +98,7 @@ export function clearUserCache () {
   }
 }
 
-export function getUser (uid, fetchFromDatabase = false) {
+export function getUser (uid, fetchFromDatabase = false, showError = true) {
   if (!fetchFromDatabase && userCache[uid]) {
     return Promise.resolve(userCache[uid]);
   }
@@ -111,7 +111,7 @@ export function getUser (uid, fetchFromDatabase = false) {
       return newData;
     })
     .catch((error) => {
-      toast.error(error.message);
+      if (showError) toast.error(error.message);
     })
 }
 

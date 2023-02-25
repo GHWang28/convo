@@ -113,7 +113,7 @@ export default function MessageOptions ({ position, isSender, color = 'whitesmok
 }
 
 MessageOptions.propTypes = {
-  position: PropTypes.string,
+  position: PropTypes.object,
   isSender: PropTypes.bool,
   color: PropTypes.string,
   messageData: PropTypes.object.isRequired,

@@ -85,9 +85,10 @@ ButtonMenu.propTypes = {
   menuItems: PropTypes.arrayOf(PropTypes.object),
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
+    PropTypes.node,
+    PropTypes.func
   ]),
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   sx: PropTypes.oneOfType([
     PropTypes.arrayOf(
       PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool]),

@@ -285,12 +285,16 @@ export function inviteUsersToChannel (inviterUID, arrayOfUID, cid) {
 }
 
 export function isUrlToImage (url) {
-  if (!(/^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url))) {
-    return Promise.resolve(false);
-  }
+  const imgCheck = new Image();
+  imgCheck.src = url;
 
-  return fetch(url, { method: 'HEAD' })
-    .then((response) => (
-      response.headers.get('Content-Type').startsWith('image')
-    ))
+  // Checks if image loads properly
+  return new Promise((resolve) => {
+    imgCheck.onerror = () => {
+      resolve(false);
+    }
+    imgCheck.onload = () => {
+      resolve(true);
+    }
+  })
 }

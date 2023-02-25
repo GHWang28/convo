@@ -78,7 +78,7 @@ export default function DateDisplay ({ time, fontSize = 9, align }) {
 }
 
 DateDisplay.propTypes = {
-  time: PropTypes.string.isRequired,
-  fontSize: PropTypes.number.isRequired,
+  time: PropTypes.number.isRequired,
+  fontSize: PropTypes.number,
   align: PropTypes.string
 }
